@@ -13,6 +13,7 @@
 
 ## Deskripsi Aplikasi
     Litracker adalah sebuah aplikasi pendidikan digital yang menawarkan pengalaman pembelajaran literasi yang interaktif dan mendalam bagi penggunanya. Dengan fitur-fitur unggulan seperti autentikasi yang aman, rekomendasi buku yang disesuaikan, pencarian buku yang canggih, serta komunitas ulasan buku, Litracker bukan hanya sekadar aplikasi, melainkan teman setia bagi para pencinta literasi. Aplikasi ini tidak hanya memfasilitasi pengguna dalam menemukan buku sesuai minat mereka, tetapi juga membentuk komunitas literasi yang kuat. 
+
     Melalui fitur ulasan buku, Litracker menciptakan ruang untuk berbagi pemikiran dan pandangan, memperkuat konektivitas antar-pengguna. Manfaat utama dari Litracker terletak pada peningkatan minat literasi di Indonesia. Dengan algoritma rekomendasi yang canggih, Litracker merangsang minat membaca siswa, mendukung mereka menjelajahi dunia literasi, dan secara signifikan memajukan kemampuan literasi. Aplikasi ini bukan hanya mendukung pembelajaran perorangan, tetapi juga membangun fondasi untuk komunitas literasi yang berkembang, mendekatkan masyarakat pada keajaiban membaca, dan memperkaya budaya literasi di Indonesia. Dengan Litracker, literasi bukan hanya menjadi keterampilan, tetapi gaya hidup yang diperkaya oleh pengalaman bersama dalam dunia kata-kata dan ide-ide yang menginspirasi.
 
 ## Daftar Modul yang diimplementasikan
@@ -30,39 +31,39 @@ Fitur “Buku” akan menampilkan buku-buku dan bisa diakses oleh user, guest, d
 
 3. Review Buku (review setiap buku dari user) (Dikerjakan oleh Anindya Maulida Widyatmoko)
 Review Buku dimana pengguna dapat memberikan ulasan dan pandangan pribadi mereka terhadap buku yang telah mereka baca. 
-- Create :
+        - Create :
 Ketika pengguna ingin membuat ulasan baru untuk suatu buku yang telah mereka baca. Pengguna dapat memberikan peringkat dengan jumlah bintang, menambahkan judul ulasan, dan menulis ulasan mereka sendiri tentang buku tersebut. Proses ini memungkinkan pengguna untuk berbagi pengalaman dan pandangan mereka dengan pengguna lain.
-- Update :
+        - Update :
 Ketika pengguna ingin mengedit ulasan yang telah mereka buat sebelumnya. Pengguna dapat memperbarui peringkat bintang, mengubah judul ulasan, atau memperbarui konten ulasan sesuai dengan perubahan pendapat mereka tentang buku tersebut. Ini memberikan fleksibilitas kepada pengguna untuk memperbarui ulasan mereka seiring berjalannya waktu atau setelah membaca buku lebih lanjut.
-- Edit :
+        - Edit :
 Ketika pengguna ingin mengoreksi atau memperbaiki informasi yang mereka masukkan dalam ulasan. Pengguna dapat memperbaiki tata bahasa, struktur kalimat, atau kesalahan pengetikan yang mungkin terjadi saat menulis ulasan.
-Read:
+        - Read:
 Pengguna dapat membaca ulasan review buku pengguna lain untuk mendapatkan rekomendasi mendalam terkait kecocokan dengan buku yang sesuai dengan preferensi mereka.
-- Delete :
+        - Delete :
 Ketika pengguna ingin menghapus ulasan yang mereka buat sebelumnya. Pengguna dapat memilih untuk menghapus ulasan jika mereka tidak ingin ulasan tersebut tersedia untuk publik atau jika mereka ingin menarik ulasan yang tidak lagi mewakili pendapat mereka.
 
 4. Reading History (buku yang telah dibaca user) (Dikerjakan oleh Henry Soedibjo)
 Reading History akan mencatat buku yang telah dibaca oleh pengguna. Penjelasan secara implementasi CRUDnya seperti dibawah ini:
-- Create (Membuat Data Riwayat Bacaan):
+        - Create (Membuat Data Riwayat Bacaan):
 Ketika seorang pengguna menyelesaikan membaca sebuah buku, maka akan dibuat catatan baru dalam model Reading History.
 Informasi seperti ID pengguna, ID buku yang telah dibaca, tanggal selesai membaca, dan mungkin sejauh mana kemajuan yang telah dicapai oleh pengguna (misalnya, halaman terakhir yang dibaca) akan disimpan.
-- Read (Membaca Data Riwayat Bacaan):
+        - Read (Membaca Data Riwayat Bacaan):
 Pengguna dapat membaca riwayat bacaan mereka dengan mudah untuk melihat buku mana yang telah mereka baca sebelumnya. Mereka dapat melihat informasi seperti judul buku, penulis, tanggal selesai membaca, dan kemajuan membaca.
-- Update (Memperbarui Data Riwayat Bacaan):
+        - Update (Memperbarui Data Riwayat Bacaan):
 Pengguna dapat memperbarui data riwayat bacaan mereka jika mereka ingin menambahkan informasi tambahan, seperti tanggal selesai membaca atau kemajuan membaca yang lebih baru.
 Misalnya, jika pengguna ingin menandai ulang buku sebagai "Dibaca Kembali" atau "Selesai," mereka dapat memperbarui catatan ini.
-- Delete (Menghapus Data Riwayat Bacaan):
+        - Delete (Menghapus Data Riwayat Bacaan):
 Pengguna juga harus memiliki opsi untuk menghapus buku dari riwayat bacaan mereka jika mereka ingin menghapus buku tertentu dari catatan mereka.
 
 5. Upvote Buku (User dapat memberikan vote ke buku yang mereka sukai) (Dikerjakan oleh Muhammad Fawwaz Arshad Said)
 Upvote buku akan memberikan status populer pada buku. Penjelasan secara implementasi CRUD sebagai berikut:
-- Create (Menambahkan Buku ke List Buku yang Diupvote pada Dashboard)
+        - Create (Menambahkan Buku ke List Buku yang Diupvote pada Dashboard)
 Pengguna dapat menekan tombol upvote pada buku yang dinilai menarik. Pada dashboard akan ditampilkan buku yang diupvote.
-- Read (Melihat Buku yang Diupvote)
+        - Read (Melihat Buku yang Diupvote)
 Pada laman dashboard, pengguna dapat melihat buku yang mereka upvote.
-- Update (Memperbarui Peringkat Buku)
+        - Update (Memperbarui Peringkat Buku)
 Buku akan disorting berdasarkan peringkat. Dalam hal ini, peringkat diambil dari total banyak vote yang diperoleh. Peringkat buku-buku akan diupdate seiring bertambah atau berkurangnya upvote.
-- Delete (Menghapus Buku dari Daftar Upvote)
+        - Delete (Menghapus Buku dari Daftar Upvote)
 Pengguna dapat undo upvote buku sehingga buku akan keluar dari daftar list upvote book mereka.
 
 6. Autentikasi (Login dan Register)
