@@ -3,11 +3,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:litracker_mobile/pages/adminLoginPage.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class AdminLoginPage extends StatelessWidget {
+  const AdminLoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: RichText(
                   text: const TextSpan(
-                    text: "Masuk Akun",
+                    text: "Login Administrator",
                     style: TextStyle(
                       color: Color.fromRGBO(8, 4, 22, 1),
                       fontFamily: 'SF-Pro',
@@ -67,7 +66,7 @@ class LoginPage extends StatelessWidget {
                 child: RichText(
                   text: const TextSpan(
                     text:
-                        "Untuk menikmati layanan, silakan masuk dengan akun Anda terlebih dahulu!",
+                        "Jika Anda bukan admin, Anda bisa kembali ke laman sebelumnya",
                     style: TextStyle(
                       color: Color.fromRGBO(8, 4, 22, 1),
                       fontFamily: 'SF-Pro',
@@ -197,73 +196,6 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(
                 height: 40,
-              ),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Belum punya akun?  ",
-                    style: const TextStyle(
-                      fontFamily: 'SF-Pro',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                      color: Color.fromRGBO(8, 4, 22, 1),
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Daftar",
-                        style: const TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromRGBO(72, 22, 236, 1),
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const RegistPage()),
-                            );
-                          },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Anda administrator?  ",
-                    style: const TextStyle(
-                      fontFamily: 'SF-Pro',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                      color: Color.fromRGBO(8, 4, 22, 1),
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Login di sini",
-                        style: const TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromRGBO(72, 22, 236, 1),
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const AdminLoginPage()),
-                            );
-                          },
-                      )
-                    ],
-                  ),
-                ),
               ),
             ],
           ),

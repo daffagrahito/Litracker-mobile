@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,7 +27,7 @@ class _OnBoardingState extends State<OnBoarding> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Scaffold(
-      backgroundColor: Color.fromRGBO(81, 33, 255, 1),
+      backgroundColor: const Color.fromRGBO(81, 33, 255, 1),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,7 +46,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   children: [
                     Container(
                       child: Container(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 60.0,
                           left: 40.0,
                           right: 40.0,
@@ -54,17 +56,17 @@ class _OnBoardingState extends State<OnBoarding> {
                           children: [
                             Text(
                               listKonten[i].title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontSize: 40,
                                 fontWeight: FontWeight.w800,
                                 color: Color.fromRGBO(255, 255, 255, 1),
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text(
                               listKonten[i].desc,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w200,
@@ -83,7 +85,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     ),
                     // Tombol dan checkpoint
                     Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 40,
                         right: 40,
                         bottom: 60,
@@ -101,12 +103,14 @@ class _OnBoardingState extends State<OnBoarding> {
                                 return Container(
                                   width: 12,
                                   height: 12,
-                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: currentPage == index
                                           ? Colors.white
-                                          : Color.fromRGBO(72, 22, 236, 1)),
+                                          : const Color.fromRGBO(
+                                              72, 22, 236, 1)),
                                 );
                               },
                             ),
@@ -116,26 +120,26 @@ class _OnBoardingState extends State<OnBoarding> {
                               if (currentPage < listKonten.length - 1) {
                                 _pageController.animateToPage(
                                   currentPage + 1,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.ease,
                                 );
                               } else {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
+                                      builder: (context) => const LoginPage()),
                                 );
                               }
                             },
                             child: Container(
                               width: 56,
                               height: 56,
-                              padding: EdgeInsets.all(14),
-                              child: SvgPicture.asset(
-                                'assets/images/arrow-right.svg',
-                              ),
+                              padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: SvgPicture.asset(
+                                'assets/images/arrow-right.svg',
                               ),
                             ),
                           ),

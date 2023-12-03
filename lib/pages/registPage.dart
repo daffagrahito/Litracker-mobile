@@ -4,10 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/adminLoginPage.dart';
-import 'package:litracker_mobile/pages/registPage.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegistPage extends StatelessWidget {
+  const RegistPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: RichText(
                   text: const TextSpan(
-                    text: "Masuk Akun",
+                    text: "Daftar",
                     style: TextStyle(
                       color: Color.fromRGBO(8, 4, 22, 1),
                       fontFamily: 'SF-Pro',
@@ -66,8 +65,7 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: RichText(
                   text: const TextSpan(
-                    text:
-                        "Untuk menikmati layanan, silakan masuk dengan akun Anda terlebih dahulu!",
+                    text: "Daftar sekarang dan nikmati layanan Litracker!",
                     style: TextStyle(
                       color: Color.fromRGBO(8, 4, 22, 1),
                       fontFamily: 'SF-Pro',
@@ -186,7 +184,7 @@ class LoginPage extends StatelessWidget {
                       0), // Set minimumSize ke lebar layar
                 ),
                 child: const Text(
-                  'Masuk Akun',
+                  'Daftar Sekarang',
                   style: TextStyle(
                     fontFamily: 'SF-Pro',
                     fontSize: 14,
@@ -201,7 +199,7 @@ class LoginPage extends StatelessWidget {
               Center(
                 child: RichText(
                   text: TextSpan(
-                    text: "Belum punya akun?  ",
+                    text: "Sudah punya akun?  ",
                     style: const TextStyle(
                       fontFamily: 'SF-Pro',
                       fontSize: 14,
@@ -210,7 +208,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: "Daftar",
+                        text: "Masuk",
                         style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 14,
@@ -220,10 +218,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const RegistPage()),
-                            );
+                            Navigator.of(context).pop();
                           },
                       )
                     ],
