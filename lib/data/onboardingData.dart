@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class kontenOnboarding {
   String title;
-  String image;
   String bg;
   String desc;
   kontenOnboarding({
     required this.title,
-    required this.image,
     required this.bg,
     required this.desc,
   });
@@ -15,18 +13,15 @@ class kontenOnboarding {
 
 List<kontenOnboarding> listKonten = [
   kontenOnboarding(
-      title: "lorem ipsum",
-      image: "lorem ipsum",
-      bg: 'lorem ipsum',
-      desc: "lorem ipsum"),
+      title: "Jelajahi Buku",
+      bg: 'assets/images/onboarding-1.png',
+      desc: "Kamu bisa mencari berbagai buku dari berbagai genre"),
   kontenOnboarding(
-      title: "lorem ipsum",
-      image: "lorem ipsum",
-      bg: 'lorem ipsum',
-      desc: "lorem ipsum"),
+      title: "Tambah ke Favorit",
+      bg: 'assets/images/onboarding-2.png',
+      desc: "Simpan buku untuk baca kapan saja"),
   kontenOnboarding(
-      title: "lorem ipsum",
-      image: "lorem ipsum",
-      bg: 'lorem ipsum',
-      desc: "lorem ipsum"),
+      title: "Tandai Halaman",
+      bg: 'assets/images/onboarding-3.png',
+      desc: "Baca lagi pada halaman yang kamu tandai"),
 ];
