@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/data/onboardingData.dart';
+import 'package:litracker_mobile/pages/loginPage.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -115,6 +116,11 @@ class _OnBoardingState extends State<OnBoarding> {
                                   currentPage + 1,
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.ease,
+                                );
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
                                 );
                               }
                             },
