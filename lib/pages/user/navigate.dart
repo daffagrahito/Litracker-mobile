@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/data/bottomNavData.dart';
 import 'history.dart'; // Import your HistoryContent class
 import 'home.dart';
 import 'profile.dart';
@@ -31,17 +30,7 @@ class _NavigateUserState extends State<NavigateUser> {
               ),
             ),
           ),
-          BottomNavigationBar(
-            currentIndex: _currentIndex,
-            items: BottomNavData.bottomNavBarItems,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-          ),
+          _buildCustomNavigationBar(),
         ],
       ),
     );
@@ -60,5 +49,72 @@ class _NavigateUserState extends State<NavigateUser> {
       default:
         return Container();
     }
+  }
+
+  Widget _buildCustomNavigationBar() {
+    return Container(
+      color: const Color.fromRGBO(72, 22, 236, 1),
+      padding: const EdgeInsets.only(
+        top: 20,
+        bottom: 32,
+        left: 40,
+        right: 40,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildNavItem(0, 'Beranda', 'assets/navbar/home-secondary.png',
+              'assets/navbar/home-primary.png'),
+          _buildNavItem(1, 'Ulas', 'assets/navbar/review-secondary.png',
+              'assets/navbar/review-primary.png'),
+          _buildNavItem(2, 'Riwayat', 'assets/navbar/history-secondary.png',
+              'assets/navbar/history-primary.png'),
+          _buildNavItem(3, 'Profil', 'assets/navbar/profile-secondary.png',
+              'assets/navbar/profile-primary.png'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(
+      int index, String label, String imagePath, String activeImagePath) {
+    bool isSelected = index == _currentIndex;
+
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            width: 40,
+            height: isSelected ? 32 : 40,
+            child: Image.asset(
+              isSelected ? activeImagePath : imagePath,
+              width: 40,
+              height: 40,
+            ),
+          ),
+          SizedBox(
+            height: isSelected ? 4 : 0,
+          ),
+          Visibility(
+            visible: isSelected,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'SF-Pro',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

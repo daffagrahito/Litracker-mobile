@@ -7,7 +7,7 @@ class ReviewContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1000,
-      color: Colors.orange, // Ganti warna sesuai keinginan
+      color: Colors.white, // Ganti warna sesuai keinginan
       child: const Center(
         child: const Text(
           'Konten Review',

@@ -5,7 +5,7 @@ class HistoryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1000,
-      color: Colors.blueGrey,
+      color: Colors.white, // Ganti warna sesuai keinginan
       child: const Center(
         child: Text(
           'Konten History',
