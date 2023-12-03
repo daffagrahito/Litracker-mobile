@@ -4,15 +4,26 @@ import 'home.dart';
 import 'profile.dart';
 import 'review.dart';
 
-class NavigateUser extends StatefulWidget {
-  const NavigateUser({Key? key}) : super(key: key);
+class NavigateUser2 extends StatefulWidget {
+  const NavigateUser2({Key? key}) : super(key: key);
 
   @override
-  _NavigateUserState createState() => _NavigateUserState();
+  _NavigateUser2State createState() => _NavigateUser2State();
 }
 
-class _NavigateUserState extends State<NavigateUser> {
+class _NavigateUser2State extends State<NavigateUser2>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,34 +96,41 @@ class _NavigateUserState extends State<NavigateUser> {
         setState(() {
           _currentIndex = index;
         });
+        _animateNavItems();
       },
       child: Hero(
         tag: 'navItem_$index',
         child: Center(
-          child: Column(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 width: 40,
-                height: isSelected ? 32 : 40,
+                height: isSelected ? 40 : 40,
                 child: Image.asset(
                   isSelected ? activeImagePath : imagePath,
                   width: 40,
                   height: 40,
                 ),
+                margin: EdgeInsets.only(
+                  left: isSelected ? 32 : 0,
+                  right: isSelected ? 8 : 0,
+                ),
               ),
-              SizedBox(
-                height: isSelected ? 4 : 24,
-              ),
-              Visibility(
-                visible: isSelected,
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'SF-Pro',
-                    fontWeight: FontWeight.w500,
+              Container(
+                margin: EdgeInsets.only(
+                  right: isSelected ? 32 : 0,
+                ),
+                child: Visibility(
+                  visible: isSelected,
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'SF-Pro',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
@@ -121,5 +139,14 @@ class _NavigateUserState extends State<NavigateUser> {
         ),
       ),
     );
+  }
+
+  void _animateNavItems() {
+    for (int i = 0; i < 4; i++) {
+      if (i != _currentIndex) {
+        _animationController.reset();
+        _animationController.forward();
+      }
+    }
   }
 }
