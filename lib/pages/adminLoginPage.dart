@@ -3,6 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:litracker_mobile/pages/admin/home.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
 
 class AdminLoginPage extends StatelessWidget {
@@ -184,7 +185,9 @@ class AdminLoginPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Aksi yang dijalankan saat tombol ditekan
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const AdminHome()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

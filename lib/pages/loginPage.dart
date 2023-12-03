@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/adminLoginPage.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
+import 'package:litracker_mobile/pages/user/navigate.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -185,7 +186,10 @@ class LoginPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Aksi yang dijalankan saat tombol ditekan
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const NavigateUser()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

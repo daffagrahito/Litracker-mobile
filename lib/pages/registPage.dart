@@ -183,7 +183,7 @@ class RegistPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Aksi yang dijalankan saat tombol ditekan
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
