@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unused_import
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +82,12 @@ class AdminLoginPage extends StatelessWidget {
               ),
               TextField(
                 obscureText: false,
+                style: const TextStyle(
+                  fontFamily: 'SF-Pro',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromRGBO(8, 4, 22, 1),
+                ),
                 decoration: InputDecoration(
                   labelText: 'Username',
                   labelStyle: const TextStyle(
@@ -127,6 +133,12 @@ class AdminLoginPage extends StatelessWidget {
               ),
               TextField(
                 obscureText: true,
+                style: const TextStyle(
+                  fontFamily: 'SF-Pro',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromRGBO(8, 4, 22, 1),
+                ),
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: const TextStyle(
