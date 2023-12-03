@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/data/onboardingData.dart';
 import 'package:litracker_mobile/pages/loginPage.dart';
@@ -22,6 +23,7 @@ class _OnBoardingState extends State<OnBoarding> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Scaffold(
       backgroundColor: Color.fromRGBO(81, 33, 255, 1),
       body: Column(
@@ -118,7 +120,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                   curve: Curves.ease,
                                 );
                               } else {
-                                Navigator.of(context).pushReplacement(
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage()),
                                 );
