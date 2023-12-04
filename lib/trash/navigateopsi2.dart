@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'history.dart'; // Import your HistoryContent class
-import 'home.dart';
-import 'profile.dart';
-import 'review.dart';
+import '../pages/user/history.dart'; // Import your HistoryContent class
+import '../pages/user/home.dart';
+import '../pages/user/profile.dart';
+import '../pages/user/review.dart';
 
 class NavigateUser2 extends StatefulWidget {
   const NavigateUser2({Key? key}) : super(key: key);
