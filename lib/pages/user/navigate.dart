@@ -53,7 +53,13 @@ class _NavigateUserState extends State<NavigateUser> {
 
   Widget _buildCustomNavigationBar() {
     return Container(
-      color: const Color.fromRGBO(72, 22, 236, 1),
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(72, 22, 236, 1),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
+      ),
       padding: const EdgeInsets.only(
         top: 20,
         bottom: 32,
@@ -95,7 +101,7 @@ class _NavigateUserState extends State<NavigateUser> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 width: 40,
-                height: isSelected ? 32 : 40,
+                height: isSelected ? 44 : 36,
                 child: Image.asset(
                   isSelected ? activeImagePath : imagePath,
                   width: 40,
