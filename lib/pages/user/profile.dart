@@ -10,7 +10,7 @@ class ProfileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.bottomCenter,
         children: [
           Transform.scale(
             scale: 2.0,
