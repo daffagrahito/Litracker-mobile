@@ -21,7 +21,7 @@ class ProfileContent extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 80,
+                  height: 40,
                 ),
                 Container(
                   alignment: Alignment.topLeft,
@@ -43,7 +43,7 @@ class ProfileContent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 Container(
                   alignment: Alignment.topLeft,
@@ -68,28 +68,30 @@ class ProfileContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 24,
+                        width: 12,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: "Halo,",
-                              style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontWeight: FontWeight.w300,
-                                color: Color.fromRGBO(132, 151, 172, 1),
-                                fontSize: 16,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: const TextSpan(
+                                text: "Halo,",
+                                style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontWeight: FontWeight.w300,
+                                  color: Color.fromRGBO(132, 151, 172, 1),
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          RichText(
-                            text: const TextSpan(
-                              text: "Mumu Peri",
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              "Mumu Peri",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                               style: TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w600,
@@ -98,8 +100,8 @@ class ProfileContent extends StatelessWidget {
                                 letterSpacing: -0.7,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -113,41 +115,44 @@ class ProfileContent extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40),
                   ),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpVoteList(),
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpVoteList(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(246, 247, 249, 1),
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(246, 247, 249, 1),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                      'assets/profile/profile-upvote.png'),
-                                  SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "1604",
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                        'assets/profile/profile-upvote.png'),
+                                    SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "1604",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w700,
@@ -155,11 +160,11 @@ class ProfileContent extends StatelessWidget {
                                             fontSize: 16,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "Buku Kamu Upvote",
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "Buku Kamu Upvote",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
@@ -169,52 +174,53 @@ class ProfileContent extends StatelessWidget {
                                             letterSpacing: -0.7,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 16),
-                              Image.asset(
-                                  'assets/profile/profile-directto.png'),
-                            ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 16),
+                                Image.asset(
+                                    'assets/profile/profile-directto.png'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 24),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WishlistList(),
+                        SizedBox(height: 24),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WishlistList(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(246, 247, 249, 1),
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(246, 247, 249, 1),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                      'assets/profile/profile-wishlist.png'),
-                                  SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "1604",
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                        'assets/profile/profile-wishlist.png'),
+                                    SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "1604",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w700,
@@ -222,11 +228,11 @@ class ProfileContent extends StatelessWidget {
                                             fontSize: 16,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "Buku di Wishlistmu",
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "Buku di Wishlistmu",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
@@ -236,19 +242,19 @@ class ProfileContent extends StatelessWidget {
                                             letterSpacing: -0.7,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 16),
-                              Image.asset(
-                                  'assets/profile/profile-directto.png'),
-                            ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 16),
+                                Image.asset(
+                                    'assets/profile/profile-directto.png'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

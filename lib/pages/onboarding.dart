@@ -41,6 +41,7 @@ class _OnBoardingState extends State<OnBoarding> {
               itemBuilder: (_, i) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       child: Container(
@@ -56,7 +57,7 @@ class _OnBoardingState extends State<OnBoarding> {
                               listKonten[i].title,
                               style: const TextStyle(
                                 fontFamily: 'SF-Pro',
-                                fontSize: 40,
+                                fontSize: 36,
                                 fontWeight: FontWeight.w800,
                                 color: Color.fromRGBO(255, 255, 255, 1),
                               ),
@@ -75,10 +76,13 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                       ),
                     ),
-                    Container(
-                      child: Image.asset(
-                        listKonten[i].bg,
-                        fit: BoxFit.cover,
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.asset(
+                          listKonten[i].bg,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],

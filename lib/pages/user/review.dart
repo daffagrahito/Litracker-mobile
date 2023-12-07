@@ -118,35 +118,41 @@ class ReviewContent extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("assets/review/dummy-book.png"),
+                    Image.asset('assets/review/dummy-book.png'),
                     SizedBox(
                       width: 12,
                     ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nature Kingdom",
-                            style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 16,
-                                letterSpacing: -0.7,
-                                fontWeight: FontWeight.w700,
-                                color: Color.fromRGBO(8, 4, 22, 1)),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Clove Griffith",
-                            style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 14,
-                                letterSpacing: -0.7,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(132, 151, 172, 1)),
-                          ),
-                        ]),
+                    Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nature Kingdom",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 16,
+                                  letterSpacing: -0.7,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromRGBO(8, 4, 22, 1)),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              "Clove Griffith",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 14,
+                                  letterSpacing: -0.7,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(132, 151, 172, 1)),
+                            ),
+                          ]),
+                    ),
                   ],
                 ),
                 SizedBox(
