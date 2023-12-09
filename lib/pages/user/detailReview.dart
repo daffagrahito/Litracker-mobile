@@ -32,9 +32,14 @@ class DetailReview extends StatelessWidget {
                         SizedBox(
                           height: 40,
                         ),
-                        Image.asset(
-                          "assets/review/back.png",
-                          width: 32,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Image.asset(
+                            "assets/review/back.png",
+                            width: 32,
+                          ),
                         ),
                         Center(
                           child: Column(children: [
