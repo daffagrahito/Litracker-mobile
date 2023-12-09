@@ -9,6 +9,7 @@ class DetailReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
       body: SlidingUpPanel(
           minHeight: 164,
           color: const Color.fromRGBO(72, 22, 236, 1),
@@ -119,7 +120,6 @@ class DetailReview extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                        color: Color.fromRGBO(236, 239, 242, 1),
                         borderRadius: BorderRadius.all(Radius.circular(32))),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +225,7 @@ class DetailReview extends StatelessWidget {
                       Container(
                         alignment: Alignment.topLeft,
                         child: const Text(
-                          "Ulasan Kamu",
+                          "Ulasan Saya",
                           style: TextStyle(
                               fontFamily: 'SF-Pro',
                               color: Colors.white,
