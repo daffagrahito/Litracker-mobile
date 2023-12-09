@@ -223,44 +223,40 @@ class _LoginPageState extends State<LoginPage> {
                   String username = _usernameController.text;
                   String password = _passwordController.text;
 
-                  // Cek kredensial
-                  final response = await request
-                      .login("http://localhost:8000/mobile-login/", {
-                    'username': username,
-                    'password': password,
-                  });
+                  try {
+                    final response = await request
+                        .login("http://localhost:8000/mobile-login/", {
+                      'username': username,
+                      'password': password,
+                    });
 
-                  if (request.loggedIn) {
-                    String message = response['message'];
-                    String uname = response['username'];
-                    int id = response['id'];
-                    loggedInUser = User(uname, id);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NavigateUser()),
-                    );
+                    if (request.loggedIn) {
+                      String message = response['message'];
+                      String uname = response['username'];
+                      int id = response['id'];
+                      loggedInUser = User(uname, id);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NavigateUser()),
+                      );
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(
+                            content: Text("$message Selamat datang, $uname.")));
+                    } else {
+                      String message = response != null
+                          ? response['message']
+                          : 'Login failed';
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(content: Text("$message")));
+                    }
+                  } catch (e) {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
-                      ..showSnackBar(SnackBar(
-                          content: Text(
-                              "$message Login Sukses! Selamat datang, $uname.")));
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Login Gagal'),
-                        content: Text(response['message']),
-                        actions: [
-                          TextButton(
-                            child: const Text('OK'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                      ..showSnackBar(
+                          SnackBar(content: Text("An error occurred: $e")));
                   }
                 },
                 style: ElevatedButton.styleFrom(
