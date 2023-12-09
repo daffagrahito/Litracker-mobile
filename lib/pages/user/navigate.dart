@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/reading_history/screens/list_history.dart'; // Import your HistoryContent class
-import 'home.dart';
+import '../../book/pages/home.dart';
 import 'profile.dart';
 import 'review.dart';
 
@@ -17,6 +17,7 @@ class _NavigateUserState extends State<NavigateUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
       body: Column(
         children: [
           Expanded(

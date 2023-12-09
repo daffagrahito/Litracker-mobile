@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const, use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 
 class HistoryContent extends StatelessWidget {
@@ -5,150 +7,120 @@ class HistoryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+    return SingleChildScrollView(
+      child: Container(
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.all(40),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 40,
-            ),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    child: Image.asset("assets/upvote/left-arrow.png"),
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
                 Text(
-                  "Buku Terupvote",
+                  "Riwayat Bacaan",
                   style: TextStyle(
                     fontFamily: 'SF-Pro',
-                    letterSpacing: -0.7,
-                    color: Color.fromRGBO(
-                      8,
-                      4,
-                      22,
-                      1,
-                    ),
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
+                    letterSpacing: -1,
                   ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              padding: EdgeInsets.all(12),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Color.fromRGBO(236, 239, 242, 1),
-                    width: 2,
-                  )),
-              child: Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      "assets/upvote/dummy-book.png",
-                      width: 52,
-                      height: 64,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Container(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Nature Kingdom",
-                              style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(8, 4, 22, 1),
-                                  letterSpacing: -0.7),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              "Clove Griffith",
-                              style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Color.fromRGBO(132, 151, 172, 1),
-                                  letterSpacing: -0.4),
-                            ),
-                          ]),
-                    )
-                  ],
                 ),
                 SizedBox(
-                  height: 12,
+                  height: 28,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(12.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(246, 247, 249, 1),
-                    borderRadius: BorderRadius.circular(28),
+                Text(
+                  "Halaman Tersimpan",
+                  style: TextStyle(
+                    color: Color.fromRGBO(88, 107, 132, 1),
+                    fontFamily: 'SF-Pro',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12),
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.topLeft,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Row(
-                          children: [
-                            Image.asset("assets/upvote/upvote-36.png"),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              "1604 upvote juga",
-                              style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(8, 4, 22, 1),
-                                  letterSpacing: -0.5),
-                            ),
-                          ],
+                        margin: EdgeInsets.only(right: 12),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(80, 166, 255, 1),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
+                        child: Text(
+                          "60",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'SF-Pro',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(81, 33, 255, 1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        height: 36,
-                        width: 88,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Batalkan",
-                          style: TextStyle(
-                              fontFamily: 'SF-Pro',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Colors.white),
-                        ),
+                        width: MediaQuery.of(context).size.width - 240,
+                        child: Flexible(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nama Buku",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(8, 4, 22, 1),
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "Nama Penulis",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(132, 151, 172, 1),
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            )
+                          ],
+                        )),
+                      ),
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/history/settings.png",
+                            width: 32,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Image.asset(
+                            "assets/history/delete.png",
+                            width: 32,
+                          ),
+                        ],
                       )
                     ],
                   ),
-                )
-              ]),
-            ),
+                ),
+              ],
+            )
           ],
         ),
       ),

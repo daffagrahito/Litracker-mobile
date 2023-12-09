@@ -1,25 +1,31 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/adminLoginPage.dart';
+import 'package:litracker_mobile/pages/loginPage.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
-class RegistPage extends StatelessWidget {
-  const RegistPage({Key? key}) : super(key: key);
+class RegistPage extends StatefulWidget {
+  const RegistPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+  _RegisterPageState createState() => _RegisterPageState();
+}
 
+class _RegisterPageState extends State<RegistPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.center,
-          width: screenWidth,
-          height: screenHeight,
           padding: const EdgeInsets.only(
             top: 60,
             right: 40,
@@ -80,6 +86,7 @@ class RegistPage extends StatelessWidget {
                 height: 40,
               ),
               TextField(
+                controller: _usernameController,
                 obscureText: false,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -131,6 +138,7 @@ class RegistPage extends StatelessWidget {
                 height: 20,
               ),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -182,8 +190,44 @@ class RegistPage extends StatelessWidget {
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+                onPressed: () async {
+                  String username = _usernameController.text;
+                  String password = _passwordController.text;
+
+                  final response = await request
+                      .post("http://localhost:8000/register-mobile/", {
+                    'username': username,
+                    'password': password,
+                  });
+
+                  if (response['status']) {
+                    String message = response['message'];
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text("$message")));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Register sebagai user gagal.'),
+                        content: Text(response['message']),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

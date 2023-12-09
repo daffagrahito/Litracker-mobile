@@ -21,7 +21,7 @@ class ProfileContent extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 80,
+                  height: 40,
                 ),
                 Container(
                   alignment: Alignment.topLeft,
@@ -43,7 +43,7 @@ class ProfileContent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 Container(
                   alignment: Alignment.topLeft,
@@ -68,28 +68,30 @@ class ProfileContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 24,
+                        width: 12,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: "Halo,",
-                              style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontWeight: FontWeight.w300,
-                                color: Color.fromRGBO(132, 151, 172, 1),
-                                fontSize: 16,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: const TextSpan(
+                                text: "Halo,",
+                                style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontWeight: FontWeight.w300,
+                                  color: Color.fromRGBO(132, 151, 172, 1),
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          RichText(
-                            text: const TextSpan(
-                              text: "Mumu Peri",
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              "Mumu Peri",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                               style: TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w600,
@@ -98,8 +100,8 @@ class ProfileContent extends StatelessWidget {
                                 letterSpacing: -0.7,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -140,26 +142,32 @@ class ProfileContent extends StatelessWidget {
                                   Image.asset(
                                       'assets/profile/profile-upvote.png'),
                                   SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "1604",
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "1604",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: -0.5,
                                             color: Color.fromRGBO(8, 4, 22, 1),
                                             fontSize: 16,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "Buku Kamu Upvote",
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "Buku Kamu Upvote",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
@@ -169,12 +177,11 @@ class ProfileContent extends StatelessWidget {
                                             letterSpacing: -0.7,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 16),
                               Image.asset(
                                   'assets/profile/profile-directto.png'),
                             ],
@@ -207,26 +214,32 @@ class ProfileContent extends StatelessWidget {
                                   Image.asset(
                                       'assets/profile/profile-wishlist.png'),
                                   SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "1604",
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "1604",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: -0.5,
                                             color: Color.fromRGBO(8, 4, 22, 1),
                                             fontSize: 16,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      RichText(
-                                        text: const TextSpan(
-                                          text: "Buku di Wishlistmu",
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "Buku di Wishlistmu",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
@@ -236,12 +249,11 @@ class ProfileContent extends StatelessWidget {
                                             letterSpacing: -0.7,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 16),
                               Image.asset(
                                   'assets/profile/profile-directto.png'),
                             ],

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,22 +6,54 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/adminLoginPage.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class LoginApp extends StatelessWidget {
+  const LoginApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    return MaterialApp(
+      title: 'Login',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
+      home: const LoginPage(),
+    );
+  }
+}
 
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoginPageState createState() => _LoginPageState();
+}
+
+User? loggedInUser;
+
+class User {
+  final String username;
+  final int id;
+
+  User(this.username, this.id);
+}
+
+class _LoginPageState extends State<LoginPage> {
+  // const LoginPage({Key? key}) : super(key: key);
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.center,
-          width: screenWidth,
-          height: screenHeight,
           padding: const EdgeInsets.only(
             top: 60,
             right: 40,
@@ -83,6 +115,7 @@ class LoginPage extends StatelessWidget {
                 height: 40,
               ),
               TextField(
+                controller: _usernameController,
                 obscureText: false,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -134,6 +167,7 @@ class LoginPage extends StatelessWidget {
                 height: 20,
               ),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -185,11 +219,45 @@ class LoginPage extends StatelessWidget {
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const NavigateUser()),
-                  );
+                onPressed: () async {
+                  String username = _usernameController.text;
+                  String password = _passwordController.text;
+
+                  try {
+                    final response = await request
+                        .login("http://localhost:8000/mobile-login/", {
+                      'username': username,
+                      'password': password,
+                    });
+
+                    if (request.loggedIn) {
+                      String message = response['message'];
+                      String uname = response['username'];
+                      int id = response['id'];
+                      loggedInUser = User(uname, id);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NavigateUser()),
+                      );
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(
+                            content: Text("$message Selamat datang, $uname.")));
+                    } else {
+                      String message = response != null
+                          ? response['message']
+                          : 'Login failed';
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(content: Text("$message")));
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                          SnackBar(content: Text("An error occurred: $e")));
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
