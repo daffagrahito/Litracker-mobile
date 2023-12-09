@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:litracker_mobile/models/product.dart';
 
-import 'package:<APP_NAME>/widgets/left_drawer.dart';
+import 'package:litracker_mobile/pages/user/navigate.dart';
+import 'package:litracker_mobile/reading_history/models/last_page.dart';
 
-class ProductPage extends StatefulWidget {
-    const ProductPage({Key? key}) : super(key: key);
+class HistoryContent extends StatefulWidget {
+    const HistoryContent({Key? key}) : super(key: key);
 
     @override
-    _ProductPageState createState() => _ProductPageState();
+    _HistoryContentState createState() => _HistoryContentState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _HistoryContentState extends State<HistoryContent> {
 Future<List<Product>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://<URL_APP_KAMU>/json/');
+        'http://127.0.0.1:8000/reading_history/fetch_history/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -32,6 +32,7 @@ Future<List<Product>> fetchProduct() async {
             list_product.add(Product.fromJson(d));
         }
     }
+    
     return list_product;
 }
 
@@ -41,7 +42,7 @@ Widget build(BuildContext context) {
         appBar: AppBar(
         title: const Text('Product'),
         ),
-        drawer: const LeftDrawer(),
+        drawer: const NavigateUser(),
         body: FutureBuilder(
             future: fetchProduct(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -52,7 +53,7 @@ Widget build(BuildContext context) {
                     return const Column(
                         children: [
                         Text(
-                            "Tidak ada data produk.",
+                            "Tidak ada data reading history.",
                             style:
                                 TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                         ),

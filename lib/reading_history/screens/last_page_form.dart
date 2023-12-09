@@ -77,7 +77,6 @@ class _LastPageFormState extends State<LastPageForm> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Last Page: $_lastPage'),
-                                    // TODO: Munculkan value-value lainnya
                                   ],
                                 ),
                               ),

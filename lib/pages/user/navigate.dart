@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'history.dart'; // Import your HistoryContent class
+import 'package:litracker_mobile/reading_history/screens/list_history.dart'; // Import your HistoryContent class
 import 'home.dart';
 import 'profile.dart';
 import 'review.dart';
