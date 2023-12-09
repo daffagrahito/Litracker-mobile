@@ -9,8 +9,11 @@ class UpVoteList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          color: Color.fromRGBO(246, 247, 249, 1),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 40,
+          ),
           child: Column(
             children: [
               SizedBox(
@@ -23,7 +26,10 @@ class UpVoteList extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      child: Image.asset("assets/upvote/left-arrow.png"),
+                      child: Image.asset(
+                        "assets/upvote/left-arrow.png",
+                        width: 36,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -40,7 +46,7 @@ class UpVoteList extends StatelessWidget {
                         22,
                         1,
                       ),
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                     ),
                   )
@@ -50,14 +56,11 @@ class UpVoteList extends StatelessWidget {
                 height: 40,
               ),
               Container(
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Color.fromRGBO(236, 239, 242, 1),
-                    width: 2,
-                  ),
                 ),
                 child: Column(children: [
                   Row(
@@ -72,6 +75,7 @@ class UpVoteList extends StatelessWidget {
                         width: 12,
                       ),
                       Container(
+                        width: MediaQuery.of(context).size.width - 220,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -122,7 +126,7 @@ class UpVoteList extends StatelessWidget {
                                 width: 4,
                               ),
                               Text(
-                                "1604 upvote juga",
+                                "1604",
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontWeight: FontWeight.w700,

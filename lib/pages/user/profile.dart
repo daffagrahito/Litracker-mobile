@@ -115,35 +115,37 @@ class ProfileContent extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40),
                   ),
-                  child: Expanded(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpVoteList(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(246, 247, 249, 1),
-                              borderRadius: BorderRadius.circular(24),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpVoteList(),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                        'assets/profile/profile-upvote.png'),
-                                    SizedBox(width: 16),
-                                    Column(
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(246, 247, 249, 1),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                      'assets/profile/profile-upvote.png'),
+                                  SizedBox(width: 16),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
@@ -155,7 +157,8 @@ class ProfileContent extends StatelessWidget {
                                           maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: -0.5,
                                             color: Color.fromRGBO(8, 4, 22, 1),
                                             fontSize: 16,
                                           ),
@@ -176,42 +179,45 @@ class ProfileContent extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                SizedBox(width: 16),
-                                Image.asset(
-                                    'assets/profile/profile-directto.png'),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                              Image.asset(
+                                  'assets/profile/profile-directto.png'),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 24),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WishlistList(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(246, 247, 249, 1),
-                              borderRadius: BorderRadius.circular(24),
+                      ),
+                      SizedBox(height: 24),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WishlistList(),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                        'assets/profile/profile-wishlist.png'),
-                                    SizedBox(width: 16),
-                                    Column(
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(246, 247, 249, 1),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                      'assets/profile/profile-wishlist.png'),
+                                  SizedBox(width: 16),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
@@ -223,7 +229,8 @@ class ProfileContent extends StatelessWidget {
                                           maxLines: 1,
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w700,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: -0.5,
                                             color: Color.fromRGBO(8, 4, 22, 1),
                                             fontSize: 16,
                                           ),
@@ -244,17 +251,16 @@ class ProfileContent extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                SizedBox(width: 16),
-                                Image.asset(
-                                    'assets/profile/profile-directto.png'),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                              Image.asset(
+                                  'assets/profile/profile-directto.png'),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
