@@ -53,7 +53,7 @@ class _HomeContentState extends State<HomeContent> {
                 return Card(
                   child: ListTile(
                     leading: Image.network(
-                      snapshot.data![index].fields.imageUrlM,
+                      snapshot.data![index].fields.imageUrlL,
                       width: 50,
                       fit: BoxFit.cover,
                     ),
