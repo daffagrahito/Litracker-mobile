@@ -31,6 +31,7 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent> {
   late Future<List<Book>> futureBooks;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -38,36 +39,70 @@ class _HomeContentState extends State<HomeContent> {
     futureBooks = fetchBooks();
   }
 
+  List<Book> filterBooks(List<Book> books, String query) {
+    return books.where((book) {
+      final title = book.fields.title.toLowerCase();
+      final author = book.fields.author.toLowerCase();
+      final searchLower = query.toLowerCase();
+
+      return title.contains(searchLower) || author.contains(searchLower);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 1000,
       color: Colors.blueGrey,
-      child: FutureBuilder<List<Book>>(
-        future: futureBooks,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: Image.network(
-                      snapshot.data![index].fields.imageUrlL,
-                      width: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(snapshot.data![index].fields.title),
-                    subtitle: Text(snapshot.data![index].fields.author),
-                  ),
-                );
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              onChanged: (value) {
+                setState(() {
+                  // Trigger rebuild when the text in the search bar changes
+                  futureBooks = fetchBooks(); // Reset the Future
+                });
               },
-            );
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-          return CircularProgressIndicator();
-        },
+              decoration: InputDecoration(
+                labelText: 'Search Books',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Book>>(
+              future: futureBooks,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Book> filteredBooks =
+                      filterBooks(snapshot.data!, searchController.text);
+                  return ListView.builder(
+                    itemCount: filteredBooks.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: Image.network(
+                            filteredBooks[index].fields.imageUrlL,
+                            width: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(filteredBooks[index].fields.title),
+                          subtitle: Text(filteredBooks[index].fields.author),
+                        ),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return CircularProgressIndicator();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
