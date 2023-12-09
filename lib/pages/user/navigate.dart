@@ -17,6 +17,7 @@ class _NavigateUserState extends State<NavigateUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
       body: Column(
         children: [
           Expanded(
