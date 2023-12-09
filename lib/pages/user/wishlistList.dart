@@ -8,6 +8,7 @@ class WishlistList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
       body: SingleChildScrollView(
         child: Container(
           color: Color.fromRGBO(246, 247, 249, 1),
