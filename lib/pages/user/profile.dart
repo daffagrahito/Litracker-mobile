@@ -89,7 +89,7 @@ class ProfileContent extends StatelessWidget {
                               height: 8,
                             ),
                             Text(
-                              "Mumu Peri",
+                              loggedInUser?.username ?? "Default Username",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(

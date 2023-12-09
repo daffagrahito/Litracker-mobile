@@ -195,7 +195,7 @@ class _RegisterPageState extends State<RegistPage> {
                   String password = _passwordController.text;
 
                   final response = await request
-                      .post("http://localhost:8000/register-mobile/", {
+                      .post("http://localhost:8080/register-mobile/", {
                     'username': username,
                     'password': password,
                   });

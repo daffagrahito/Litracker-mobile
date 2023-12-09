@@ -225,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   try {
                     final response = await request
-                        .login("http://localhost:8000/mobile-login/", {
+                        .login("http://localhost:8080/mobile-login/", {
                       'username': username,
                       'password': password,
                     });
