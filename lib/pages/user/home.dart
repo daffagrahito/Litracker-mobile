@@ -80,6 +80,8 @@ class _HomeContentState extends State<HomeContent> {
     final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
     final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
     final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
+    final kashmirBlue100 = Color.fromRGBO(36, 239, 242, 1);
+    final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
     final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
     final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
 
@@ -289,6 +291,8 @@ class _HomeContentState extends State<HomeContent> {
                                 children: [
                                   Text(
                                     "Nama Buku",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         fontSize: 20,
@@ -298,6 +302,8 @@ class _HomeContentState extends State<HomeContent> {
                                   ),
                                   Text(
                                     "Nama penulis",
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         fontSize: 14,
@@ -342,6 +348,8 @@ class _HomeContentState extends State<HomeContent> {
                               children: [
                                 Text(
                                   "1604",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: TextStyle(
                                       fontFamily: 'SF-Pro',
                                       fontSize: 16,
@@ -351,6 +359,8 @@ class _HomeContentState extends State<HomeContent> {
                                 ),
                                 Text(
                                   "Total Upvote",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: TextStyle(
                                       fontFamily: 'SF-Pro',
                                       fontSize: 14,
@@ -372,14 +382,219 @@ class _HomeContentState extends State<HomeContent> {
         Container(
           padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
           child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Mungkin Kamu Tertarik",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: kashmirBlue400)),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Lihat Semua",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: jaguar500)),
+                ),
+              ],
+            ),
+            // LOOP 5X
+            SizedBox(
+              height: 12,
+            ),
             Container(
-              alignment: Alignment.centerLeft,
-              child: Text("Buku Tersedia",
-                  style: TextStyle(
-                      fontFamily: 'SF-Pro',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: kashmirBlue400)),
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/home/dummy-book.png",
+                    width: 50,
+                    height: 60,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width - 272,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nama Buku",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontFamily: 'SF-Pro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: jaguar950),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "Penulis",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: kashmirBlue400,
+                              fontFamily: 'SF-Pro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    children: [
+                      Image.asset("assets/home/upvote-blank.png"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Image.asset("assets/home/wishlist-blank.png"),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/home/dummy-book.png",
+                    width: 50,
+                    height: 60,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width - 272,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nama Buku",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontFamily: 'SF-Pro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: jaguar950),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "Penulis",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: kashmirBlue400,
+                              fontFamily: 'SF-Pro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    children: [
+                      Image.asset("assets/home/upvote-blank.png"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Image.asset("assets/home/wishlist-blank.png"),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/home/dummy-book.png",
+                    width: 50,
+                    height: 60,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width - 272,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nama Buku",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontFamily: 'SF-Pro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: jaguar950),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "Penulis",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: kashmirBlue400,
+                              fontFamily: 'SF-Pro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    children: [
+                      Image.asset("assets/home/upvote-blank.png"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Image.asset("assets/home/wishlist-blank.png"),
+                    ],
+                  )
+                ],
+              ),
             ),
           ]),
         )
