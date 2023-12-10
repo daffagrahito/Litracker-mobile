@@ -48,7 +48,7 @@ class _HomeContentState extends State<HomeContent> {
   void initState() {
     super.initState();
     _controller = PageController(
-      viewportFraction: 0.8, // This controls the size of the pages
+      viewportFraction: 0.8,
       initialPage: 0,
     );
     futureBooks = fetchBooks();
@@ -56,7 +56,7 @@ class _HomeContentState extends State<HomeContent> {
 
   @override
   void dispose() {
-    _controller.dispose(); // Don't forget to dispose of the controller
+    _controller.dispose();
     super.dispose();
   }
 
