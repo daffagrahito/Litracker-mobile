@@ -5,6 +5,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
+import 'package:litracker_mobile/book/widgets/popular_book_card.dart';
+import 'package:litracker_mobile/book/widgets/search_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
 Future<List<Book>> fetchBooks() async {
   var url = Uri.parse('http://localhost:8080/api/book');
@@ -27,70 +31,6 @@ Future<List<Book>> fetchBooks() async {
   return books;
 }
 
-// Contoh Warna
-const Color searchBarColor = Color(0xFFE6EFF2);
-const Color textColor = Colors.black;
-
-// CustomSearchBar Widget
-class CustomSearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final Function(String) onChanged;
-
-  const CustomSearchBar({
-    Key? key,
-    required this.controller,
-    required this.onChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Calculate the size of the screen (or parent widget)
-    var screenSize = MediaQuery.of(context).size;
-
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: <Widget>[
-        // Custom background shape
-        Container(
-          height: 140, // Adjust the height to fit your design
-          width: screenSize.width,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(72, 22, 236, 1),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
-            ),
-          ),
-        ),
-        // Positioned TextField
-        Positioned(
-          top: 60, // Adjust the position to match your design
-          child: Container(
-            width: screenSize.width * 0.8, // Width is 80% of the screen width
-            child: TextField(
-              controller: controller,
-              onChanged: onChanged,
-              style: TextStyle(color: textColor),
-              decoration: InputDecoration(
-                hintText: "Cari Buku",
-                prefixIcon: Icon(Icons.search, color: textColor),
-                fillColor: searchBarColor,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-
 class HomeContent extends StatefulWidget {
   @override
   _HomeContentState createState() => _HomeContentState();
@@ -101,10 +41,23 @@ class _HomeContentState extends State<HomeContent> {
   TextEditingController searchController = TextEditingController();
   bool showAllBooks = false;
 
+  late PageController _controller;
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
+    _controller = PageController(
+      viewportFraction: 0.8,
+      initialPage: 0,
+    );
     futureBooks = fetchBooks();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   List<Book> filterBooks(List<Book> books, String query) {
@@ -135,6 +88,67 @@ class _HomeContentState extends State<HomeContent> {
               },
             ),
           ),
+
+          Expanded(
+            child: FutureBuilder<List<Book>>(
+              future: futureBooks,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Text('No books found');
+                }
+                // Make sure we have more than one book to enable scrolling
+                if (snapshot.data!.length <= 1) {
+                  return Text('Not enough books to scroll');
+                }
+                return Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, top: 15.0),
+                        child: Text(
+                          'Buku Terpopuler',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                    CarouselSlider.builder(
+                      itemCount: min(3, snapshot.data!.length),
+                      itemBuilder: (context, index, realIdx) {
+                        return PopularBookCard(
+                          book: snapshot.data![index],
+                          rank: index + 1,
+                          totalUpvotes: 1604,
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: 200,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1.0,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                      ),
+                    ),
+                    DotsIndicator(
+                      dotsCount: min(3, snapshot.data!.length),
+                      position: _currentIndex.toInt(),
+                      decorator: DotsDecorator(
+                        activeColor: Colors.black,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -144,7 +158,7 @@ class _HomeContentState extends State<HomeContent> {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     'Daftar Buku',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
                   ),
                 ),
                 if (!showAllBooks)
