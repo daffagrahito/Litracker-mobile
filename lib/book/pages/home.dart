@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
@@ -54,7 +55,7 @@ class CustomSearchBar extends StatelessWidget {
           height: 140, // Adjust the height to fit your design
           width: screenSize.width,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(81, 33, 255, 1), // Use your primary color
+            color: Color.fromRGBO(72, 22, 236, 1),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40),
@@ -98,6 +99,7 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   late Future<List<Book>> futureBooks;
   TextEditingController searchController = TextEditingController();
+  bool showAllBooks = false;
 
   @override
   void initState() {
@@ -133,6 +135,30 @@ class _HomeContentState extends State<HomeContent> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    'Daftar Buku',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (!showAllBooks)
+                  TextButton(
+                    child: Text('Show More'),
+                    onPressed: () {
+                      setState(() {
+                        showAllBooks = true;
+                      });
+                    },
+                  ),
+              ],
+            ),
+          ),
           Expanded(
             child: FutureBuilder<List<Book>>(
               future: futureBooks,
@@ -147,26 +173,45 @@ class _HomeContentState extends State<HomeContent> {
 
                 List<Book> filteredBooks = filterBooks(snapshot.data!, searchController.text);
 
+                int bookCount = showAllBooks ? filteredBooks.length : min(6, filteredBooks.length);
+
                 return ListView.builder(
-                  itemCount: filteredBooks.length,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: bookCount,
                   itemBuilder: (context, index) {
                     Book book = filteredBooks[index];
-                    return Card(
-                      margin: EdgeInsets.all(5),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(8),
-                        leading: Image.network(
-                          book.fields.imageUrlL,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                    return Container(
+                      width: 200, // Set the width of the card
+                      child: Card(
+                        margin: EdgeInsets.all(5),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        title: Text(book.fields.title, style: TextStyle(color: textColor)),
-                        subtitle: Text(book.fields.author, style: TextStyle(color: Colors.grey)),
+                        child: Container(
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Image.network(
+                                  book.fields.imageUrlL,
+                                  width: 150,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Text(
+                                insertNewLines(book.fields.title),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: textColor),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Text(book.fields.author, style: TextStyle(color: Colors.grey)),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -178,4 +223,9 @@ class _HomeContentState extends State<HomeContent> {
       ),
     );
   }
+}
+
+String insertNewLines(String text) {
+  int insertAfter = 20;
+  return text.replaceAllMapped(RegExp('.{1,$insertAfter}'), (match) => '${match.group(0)}');
 }
