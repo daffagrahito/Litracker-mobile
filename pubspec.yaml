@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  toast: ^0.1.5
+  toast: 0.3.0
   sliding_up_panel: ^2.0.0+1
 
 

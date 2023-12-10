@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -284,7 +286,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           content: Text(
                             'Selamat datang kembali, $uname!',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'SF-Pro',
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -292,8 +294,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           backgroundColor: Colors.white,
-                          buttonPadding: EdgeInsets.all(16),
-                          contentPadding: EdgeInsets.only(
+                          buttonPadding: const EdgeInsets.all(16),
+                          contentPadding: const EdgeInsets.only(
                             bottom: 40,
                             left: 24,
                             top: 12,
@@ -301,8 +303,8 @@ class _LoginPageState extends State<LoginPage> {
                           actions: [
                             TextButton(
                               style: TextButton.styleFrom(
-                                backgroundColor: Color.fromRGBO(72, 22, 236, 1),
-                                padding: EdgeInsets.symmetric(
+                                backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 20,
                                 ),
@@ -323,9 +325,6 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       );
-
-                      // Show success notification
-                      showSuccessNotification(message);
                     } else {
                       String message = response != null
                           ? response['message']
@@ -371,7 +370,7 @@ class _LoginPageState extends State<LoginPage> {
                       0), // Set minimumSize ke lebar layar
                 ),
                 child: isLoading
-                    ? SizedBox(
+                    ? const SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(

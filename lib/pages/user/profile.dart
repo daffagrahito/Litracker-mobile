@@ -1,13 +1,16 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, use_key_in_widget_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/loginPage.dart';
 import 'package:litracker_mobile/pages/user/upvoteList.dart';
 import 'package:litracker_mobile/pages/user/wishlistList.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Container(
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -270,15 +273,24 @@ class ProfileContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        // Navigate to LoginPage here
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
-                          ),
-                        );
-                        Navigator.pop(context);
+                      onTap: () async {
+                        final response = await request.logout(
+                            "http://localhost:8080/logout-mobile/");
+                        String message = response["message"];
+                        if (response['status']) {
+                          String uname = response["username"];
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("$message Sampai jumpa, $uname."),
+                          ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("$message"),
+                          ));
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
