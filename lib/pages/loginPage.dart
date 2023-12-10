@@ -303,7 +303,8 @@ class _LoginPageState extends State<LoginPage> {
                           actions: [
                             TextButton(
                               style: TextButton.styleFrom(
-                                backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                backgroundColor:
+                                    const Color.fromRGBO(72, 22, 236, 1),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 20,
