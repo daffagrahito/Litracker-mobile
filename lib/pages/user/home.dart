@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/pages/user/allBooks.dart';
 import 'package:litracker_mobile/pages/user/history.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
 import 'dart:convert';
@@ -83,7 +84,7 @@ class _HomeContentState extends State<HomeContent> {
     final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
     final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
     final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-    final kashmirBlue100 = Color.fromRGBO(36, 239, 242, 1);
+    final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
     final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
     final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
     final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
@@ -487,15 +488,23 @@ class _HomeContentState extends State<HomeContent> {
                               child: Container(
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
-                                  child: Text(
-                                    "Lihat Semua",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontFamily: 'SF-Pro',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: jaguar500,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AllBooks()));
+                                    },
+                                    child: Text(
+                                      "Lihat Semua",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: jaguar500,
+                                      ),
                                     ),
                                   ),
                                   onPressed: () {
