@@ -1,16 +1,58 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, use_key_in_widget_constructors, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/loginPage.dart';
 import 'package:litracker_mobile/pages/user/upvoteList.dart';
 import 'package:litracker_mobile/pages/user/wishlistList.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ProfileContent extends StatelessWidget {
+class ProfileContent extends StatefulWidget {
+  @override
+  _ProfileContentState createState() => _ProfileContentState();
+}
+
+class _ProfileContentState extends State<ProfileContent> {
+  int totalVotes = 0;
+  int totalWishlist = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final request = context.read<CookieRequest>();
+    final responseVotes = await http.get(
+      Uri.parse('http://localhost:8080/upvote_book/get_total_votes/'),
+      headers: {'Authorization': 'Bearer ${request.cookies['access_token']}'},
+    );
+
+    final responseWishlist = await http.get(
+      Uri.parse('http://localhost:8080/favorite_book/get_total_wishlist/'),
+      headers: {'Authorization': 'Bearer ${request.cookies['access_token']}'},
+    );
+
+    if (responseVotes.statusCode == 200 && responseWishlist.statusCode == 200) {
+      final Map<String, dynamic> dataVotes = json.decode(responseVotes.body);
+      final Map<String, dynamic> dataWishlist =
+          json.decode(responseWishlist.body);
+
+      setState(() {
+        totalVotes = dataVotes['total_votes'];
+        totalWishlist = dataWishlist['total_wishlist'];
+      });
+    } else {
+      // Handle error
+      print('Error fetching data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+
     return Container(
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -153,9 +195,10 @@ class ProfileContent extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Text(
-                                          "1604",
+                                          totalVotes
+                                              .toString(), // Display total votes here
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: TextStyle(
@@ -225,9 +268,10 @@ class ProfileContent extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Text(
-                                          "1604",
+                                          totalWishlist
+                                              .toString(), // Display total wishlist here
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: TextStyle(
@@ -274,8 +318,8 @@ class ProfileContent extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final response = await request.logout(
-                            "http://localhost:8080/logout-mobile/");
+                        final response = await request
+                            .logout("http://localhost:8080/logout-mobile/");
                         String message = response["message"];
                         if (response['status']) {
                           String uname = response["username"];
@@ -284,7 +328,8 @@ class ProfileContent extends StatelessWidget {
                           ));
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

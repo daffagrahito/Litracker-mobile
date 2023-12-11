@@ -49,10 +49,10 @@ class SplashScreen extends StatelessWidget {
                     text: TextSpan(
                       text: "Litracker",
                       style: TextStyle(
-                        fontFamily: 'SF-Pro',
-                        fontSize: 40,
-                        fontWeight: FontWeight.w900,
-                      ),
+                          fontFamily: 'SF-Pro',
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white),
                     ),
                   ),
                 ],
