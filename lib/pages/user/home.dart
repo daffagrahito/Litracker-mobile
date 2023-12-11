@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/history.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
@@ -46,6 +48,7 @@ class _HomeContentState extends State<HomeContent> {
 
   late PageController _controller;
   int _currentIndex = 0;
+  List<Book>? filteredBooks;
 
   @override
   void initState() {
@@ -129,7 +132,9 @@ class _HomeContentState extends State<HomeContent> {
                               controller: searchController,
                               onChanged: (value) {
                                 setState(() {
-                                  futureBooks = fetchBooks();
+                                  futureBooks.then((books) {
+                                    filteredBooks = filterBooks(books, value);
+                                  });
                                 });
                               },
                               style: TextStyle(
@@ -190,8 +195,7 @@ class _HomeContentState extends State<HomeContent> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width - 188,
-                      child: Flexible(
-                          child: Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -214,7 +218,7 @@ class _HomeContentState extends State<HomeContent> {
                                 color: kashmirBlue400),
                           )
                         ],
-                      )),
+                      ),
                     ),
                     // GestureDetector(
                     //     onTap: () {
@@ -379,224 +383,128 @@ class _HomeContentState extends State<HomeContent> {
             ],
           ),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Mungkin Kamu Tertarik",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: kashmirBlue400)),
+        FutureBuilder<List<Book>>(
+          future: futureBooks,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loading spinner while waiting for data
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}'); // Show error message if there is an error
+            } else {
+              // Determine the number of books to show
+              List<Book> filteredBooks = filterBooks(snapshot.data!, searchController.text);
+
+              int numBooksToShow = showAllBooks ? filteredBooks.length : min(6, filteredBooks.length);
+
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Mungkin Kamu Tertarik",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: kashmirBlue400)),
+                        ),
+                        if (!showAllBooks || snapshot.data!.length > 6)
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              child: Text(
+                                "Lihat Semua",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: jaguar500,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  showAllBooks = true;
+                                });
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    ...filteredBooks.getRange(0, numBooksToShow).map((book) => Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            book.fields.imageUrlL,
+                            width: 50,
+                            height: 60,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Container(
+                              width: MediaQuery.of(context).size.width - 272,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    book.fields.title,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: jaguar950),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    book.fields.author,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: kashmirBlue400,
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
+                              )),
+                          Row(
+                            children: [
+                              Image.asset("assets/home/upvote-blank.png"),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Image.asset("assets/home/wishlist-blank.png"),
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
+                  ],
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Lihat Semua",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: jaguar500)),
-                ),
-              ],
-            ),
-            // LOOP 5X
-            SizedBox(
-              height: 12,
-            ),
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/home/dummy-book.png",
-                    width: 50,
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width - 272,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nama Buku",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: jaguar950),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Penulis",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: kashmirBlue400,
-                              fontFamily: 'SF-Pro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      )),
-                  Row(
-                    children: [
-                      Image.asset("assets/home/upvote-blank.png"),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Image.asset("assets/home/wishlist-blank.png"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/home/dummy-book.png",
-                    width: 50,
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width - 272,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nama Buku",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: jaguar950),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Penulis",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: kashmirBlue400,
-                              fontFamily: 'SF-Pro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      )),
-                  Row(
-                    children: [
-                      Image.asset("assets/home/upvote-blank.png"),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Image.asset("assets/home/wishlist-blank.png"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/home/dummy-book.png",
-                    width: 50,
-                    height: 60,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width - 272,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nama Buku",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: jaguar950),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Penulis",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: kashmirBlue400,
-                              fontFamily: 'SF-Pro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
-                      )),
-                  Row(
-                    children: [
-                      Image.asset("assets/home/upvote-blank.png"),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Image.asset("assets/home/wishlist-blank.png"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]),
+              );
+            }
+          },
         )
       ],
     ));
