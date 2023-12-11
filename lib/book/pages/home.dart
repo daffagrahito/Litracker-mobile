@@ -163,7 +163,7 @@ class _HomeContentState extends State<HomeContent> {
                 ),
                 if (!showAllBooks)
                   TextButton(
-                    child: Text('Show More'),
+                    child: Text('Lihat Semua'),
                     onPressed: () {
                       setState(() {
                         showAllBooks = true;
