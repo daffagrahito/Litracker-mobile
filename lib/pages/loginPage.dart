@@ -78,10 +78,10 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: SvgPicture.asset(
-                    "assets/images/left-arrow-login.svg",
-                    width: 24,
-                    height: 24,
+                  child: Image.asset(
+                    "assets/images/left-arrow-login.png",
+                    width: 28,
+                    height: 28,
                   ),
                 ),
               ),

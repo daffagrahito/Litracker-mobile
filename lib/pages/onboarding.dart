@@ -138,16 +138,28 @@ class _OnBoardingState extends State<OnBoarding> {
                     }
                   },
                   child: Container(
-                    width: 56,
+                    width: currentPage < listKonten.length - 1 ? 56 : 160,
                     height: 56,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color.fromRGBO(31, 105, 255, 1),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: SvgPicture.asset(
-                      'assets/images/arrow-right.svg',
-                    ),
+                    child: currentPage < listKonten.length - 1
+                        ? Image.asset(
+                            'assets/images/arrow-right.png',
+                          )
+                        : Text(
+                            "Mulai Jelajah",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.7,
+                            ),
+                          ),
                   ),
                 ),
               ],

@@ -65,7 +65,6 @@ class Fields {
         imageUrlM: json["image_url_m"],
         imageUrlL: json["image_url_l"],
       );
-
   Map<String, dynamic> toJson() => {
         "isbn": isbn,
         "title": title,
