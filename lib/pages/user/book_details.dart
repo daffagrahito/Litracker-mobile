@@ -63,7 +63,7 @@ class BookDetailPage extends StatelessWidget {
             bottomLeft: Radius.circular(4),
             topRight: Radius.circular(12),
             bottomRight: Radius.circular(12)),
-        child: Image.asset(
+        child: Image.network(
           book.fields.imageUrlL,
           width: 184,
           height: 232,

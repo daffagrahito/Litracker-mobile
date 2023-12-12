@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import '../models/book.dart';
 
-class BookDetailPage extends StatelessWidget {
+class BookDetailsPage extends StatelessWidget {
   final Book book;
 
-  BookDetailPage({required this.book});
+  BookDetailsPage({required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +42,15 @@ class BookDetailPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            width: 100,   // Adjust ini kalo box mau lebih besar
-                            height: 100,  // Adjust ini kalo box mau lebih besar
+                            width: 100, // Adjust ini kalo box mau lebih besar
+                            height: 100, // Adjust ini kalo box mau lebih besar
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(28)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(28)),
                               color: Color.fromRGBO(92, 66, 255, 1),
                             ),
-                            padding: EdgeInsets.all(10),  // Benerin ini juga buat padding imagenya
+                            padding: EdgeInsets.all(
+                                10), // Benerin ini juga buat padding imagenya
                             child: Image.network(
                               book.fields.imageUrlL,
                               height: 15,
@@ -80,9 +82,14 @@ class BookDetailPage extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Author: ',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                         children: <TextSpan>[
-                          TextSpan(text: '${book.fields.author}', style: TextStyle(fontWeight: FontWeight.normal)),
+                          TextSpan(
+                              text: '${book.fields.author}',
+                              style: TextStyle(fontWeight: FontWeight.normal)),
                         ],
                       ),
                     ),
@@ -90,9 +97,14 @@ class BookDetailPage extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'ISBN: ',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                         children: <TextSpan>[
-                          TextSpan(text: '${book.fields.isbn}', style: TextStyle(fontWeight: FontWeight.normal)),
+                          TextSpan(
+                              text: '${book.fields.isbn}',
+                              style: TextStyle(fontWeight: FontWeight.normal)),
                         ],
                       ),
                     ),
@@ -100,9 +112,14 @@ class BookDetailPage extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Published Year: ',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                         children: <TextSpan>[
-                          TextSpan(text: '${book.fields.publishedYear}', style: TextStyle(fontWeight: FontWeight.normal)),
+                          TextSpan(
+                              text: '${book.fields.publishedYear}',
+                              style: TextStyle(fontWeight: FontWeight.normal)),
                         ],
                       ),
                     ),
@@ -110,9 +127,14 @@ class BookDetailPage extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Publisher: ',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                         children: <TextSpan>[
-                          TextSpan(text: '${book.fields.publisher}', style: TextStyle(fontWeight: FontWeight.normal)),
+                          TextSpan(
+                              text: '${book.fields.publisher}',
+                              style: TextStyle(fontWeight: FontWeight.normal)),
                         ],
                       ),
                     ),

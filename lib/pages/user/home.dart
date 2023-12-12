@@ -1,18 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/book/pages/book_details.dart';
 import 'package:litracker_mobile/pages/user/allBooks.dart';
-import 'package:litracker_mobile/pages/user/history.dart';
-import 'package:litracker_mobile/pages/user/navigate.dart';
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
-import 'package:litracker_mobile/book/widgets/search_bar.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
+import 'package:litracker_mobile/pages/user/book_details.dart';
 import 'package:litracker_mobile/pages/user/popularBookCard.dart';
 
 Future<List<Book>> fetchBooks() async {
@@ -285,8 +279,7 @@ class _HomeContentState extends State<HomeContent>
             Visibility(
               visible: searchController.text.isEmpty,
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.4 -
-                    20, // Sesuaikan tinggi sesuai kebutuhan
+                height: 340,
                 child: PageView(
                   controller: _pageController,
                   onPageChanged: (int page) {
