@@ -10,10 +10,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
-import 'package:litracker_mobile/book/widgets/popular_book_card.dart';
 import 'package:litracker_mobile/book/widgets/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:litracker_mobile/pages/user/popularBookCard.dart';
 
 Future<List<Book>> fetchBooks() async {
   var url = Uri.parse('http://localhost:8080/api/book');
@@ -43,13 +43,16 @@ class HomeContent extends StatefulWidget {
   State<HomeContent> createState() => _HomeContentState();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class _HomeContentState extends State<HomeContent>
+    with TickerProviderStateMixin {
   late Future<List<Book>> futureBooks;
   TextEditingController searchController = TextEditingController();
   bool showAllBooks = false;
 
   late PageController _controller;
   int _currentIndex = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentPage = 0;
   List<Book>? filteredBooks;
 
   @override
@@ -78,17 +81,18 @@ class _HomeContentState extends State<HomeContent> {
     }).toList();
   }
 
+  final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
+  final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
+  final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
+  final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
+  final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
+  final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
+  final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
+  final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
+
   @override
   Widget build(BuildContext context) {
     final jaguar400 = Color.fromRGBO(110, 101, 255, 1);
-    final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
-    final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
-    final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
-    final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-    final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
-    final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
-    final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
-    final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
 
     return Container(
         child: Column(
@@ -281,166 +285,25 @@ class _HomeContentState extends State<HomeContent> {
             Visibility(
               visible: searchController.text.isEmpty,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
-                child: Column(
+                height: MediaQuery.of(context).size.height * 0.4 -
+                    20, // Sesuaikan tinggi sesuai kebutuhan
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      _currentPage = page;
+                    });
+                  },
                   children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Buku Terpopuler",
-                          style: TextStyle(
-                              fontFamily: 'SF-Pro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: kashmirBlue400)),
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          color: Colors.white),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 12),
-                                      decoration: BoxDecoration(
-                                          color: jaguar500,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16))),
-                                      child: Row(
-                                        children: [
-                                          Image.asset("assets/home/king.png"),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            "1",
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 24,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    height: 24,
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 184,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Nama Buku",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'SF-Pro',
-                                              fontWeight: FontWeight.w600,
-                                              color: jaguar950),
-                                        ),
-                                        Text(
-                                          "Nama penulis",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'SF-Pro',
-                                              fontWeight: FontWeight.w400,
-                                              color: kashmirBlue400),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                child: Image.asset(
-                                  "assets/home/dummy-book.png",
-                                  width: 72,
-                                  height: 100,
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                color: kashmirBlue50,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(24))),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/home/upvote.png",
-                                  width: 48,
-                                  height: 48,
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 200,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "1604",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontFamily: 'SF-Pro',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            letterSpacing: -0.8,
-                                            color: jaguar950),
-                                      ),
-                                      Text(
-                                        "Total Upvote",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontFamily: 'SF-Pro',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w300,
-                                            color: kashmirBlue400),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    PopularBookCard(),
+                    PopularBookCard(),
+                    PopularBookCard(),
                   ],
                 ),
               ),
             ),
+            SizedBox(height: 10), // Spasi antara PageView dan Indicator
+            _buildIndicator(),
           ],
         ),
         Container(
@@ -538,85 +401,87 @@ class _HomeContentState extends State<HomeContent> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => BookDetailPage(book: book),
+                                    builder: (context) =>
+                                        BookDetailPage(book: book),
                                   ),
                                 );
                               },
                               child: Container(
-                              padding: EdgeInsets.all(12),
-                              margin: EdgeInsets.only(bottom: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          8.0), // Sesuaikan nilai sesuai kebutuhan Anda
-                                      child: Image.network(
-                                        book.fields.imageUrlL.replaceFirst(
-                                            "http://", "https://"),
-                                        width: 50,
-                                        height: 60,
-                                        fit: BoxFit.cover,
+                                padding: EdgeInsets.all(12),
+                                margin: EdgeInsets.only(bottom: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            8.0), // Sesuaikan nilai sesuai kebutuhan Anda
+                                        child: Image.network(
+                                          book.fields.imageUrlL.replaceFirst(
+                                              "http://", "https://"),
+                                          width: 50,
+                                          height: 60,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          272,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            book.fields.title,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: jaguar950),
-                                          ),
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            book.fields.author,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              color: kashmirBlue400,
-                                              fontFamily: 'SF-Pro',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
+                                    SizedBox(
+                                      width: 12,
+                                    ),
+                                    Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                272,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              book.fields.title,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  fontFamily: 'SF-Pro',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: jaguar950),
                                             ),
-                                          )
-                                        ],
-                                      )),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                          "assets/home/upvote-blank.png"),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Image.asset(
-                                          "assets/home/wishlist-blank.png"),
-                                    ],
-                                  )
-                                ],
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              book.fields.author,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                color: kashmirBlue400,
+                                                fontFamily: 'SF-Pro',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                            "assets/home/upvote-blank.png"),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Image.asset(
+                                            "assets/home/wishlist-blank.png"),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
                     ],
                   ),
                 );
@@ -626,5 +491,29 @@ class _HomeContentState extends State<HomeContent> {
         )
       ],
     ));
+  }
+
+  Widget _buildIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List<Widget>.generate(3, (int index) {
+        return Column(
+          children: [
+            Container(
+              width: 8.0,
+              height: 8.0,
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _currentPage == index ? jaguar500 : kashmirBlue300,
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            )
+          ],
+        );
+      }),
+    );
   }
 }
