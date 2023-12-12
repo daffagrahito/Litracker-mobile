@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/models/book.dart';
+import 'package:litracker_mobile/book/pages/book_details.dart';
 
 Future<List<Book>> fetchBooks() async {
   var url = Uri.parse('http://localhost:8080/api/book');
@@ -247,7 +250,17 @@ class _AllBooks extends State<AllBooks> {
                               height: 12,
                             ),
                             ...filteredBooks.getRange(0, numBooksToShow).map(
-                                  (book) => Container(
+                                  (book) => GestureDetector(
+                              onTap: () {
+                                // Navigate to the detail page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(book: book),
+                                  ),
+                                );
+                              },
+                              child: Container(
                                     padding: EdgeInsets.all(12),
                                     margin: EdgeInsets.only(bottom: 8),
                                     decoration: BoxDecoration(
@@ -327,6 +340,7 @@ class _AllBooks extends State<AllBooks> {
                                     ),
                                   ),
                                 ),
+                              ),
                           ],
                         ),
                       );
