@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/book/pages/book_details.dart';
 import 'package:litracker_mobile/pages/user/allBooks.dart';
 import 'package:litracker_mobile/pages/user/history.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
@@ -531,7 +532,17 @@ class _HomeContentState extends State<HomeContent> {
                         height: 12,
                       ),
                       ...filteredBooks.getRange(0, numBooksToShow).map(
-                            (book) => Container(
+                            (book) => GestureDetector(
+                              onTap: () {
+                                // Navigate to the detail page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(book: book),
+                                  ),
+                                );
+                              },
+                              child: Container(
                               padding: EdgeInsets.all(12),
                               margin: EdgeInsets.only(bottom: 8),
                               decoration: BoxDecoration(
@@ -605,6 +616,7 @@ class _HomeContentState extends State<HomeContent> {
                               ),
                             ),
                           ),
+                        ),
                     ],
                   ),
                 );
