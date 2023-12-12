@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/models/book.dart';
-import 'package:litracker_mobile/book/pages/book_details.dart';
+import 'package:litracker_mobile/pages/user/book_details.dart';
 
 Future<List<Book>> fetchBooks() async {
   var url = Uri.parse('http://localhost:8080/api/book');
@@ -251,96 +251,98 @@ class _AllBooks extends State<AllBooks> {
                             ),
                             ...filteredBooks.getRange(0, numBooksToShow).map(
                                   (book) => GestureDetector(
-                              onTap: () {
-                                // Navigate to the detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookDetailPage(book: book),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    margin: EdgeInsets.only(bottom: 8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                8.0), // Sesuaikan nilai sesuai kebutuhan Anda
-                                            child: Image.network(
-                                              book.fields.imageUrlL
-                                                  .replaceFirst(
-                                                      "http://", "https://"),
-                                              width: 50,
-                                              height: 60,
-                                              fit: BoxFit.cover,
+                                    onTap: () {
+                                      // Navigate to the detail page
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookDetailPage(book: book),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      margin: EdgeInsets.only(bottom: 8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  8.0), // Sesuaikan nilai sesuai kebutuhan Anda
+                                              child: Image.network(
+                                                book.fields.imageUrlL
+                                                    .replaceFirst(
+                                                        "http://", "https://"),
+                                                width: 50,
+                                                height: 60,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 12,
-                                        ),
-                                        Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                272,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  book.fields.title,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      fontFamily: 'SF-Pro',
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: jaguar950),
-                                                ),
-                                                SizedBox(
-                                                  height: 4,
-                                                ),
-                                                Text(
-                                                  book.fields.author,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    color: kashmirBlue400,
-                                                    fontFamily: 'SF-Pro',
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
+                                          SizedBox(
+                                            width: 12,
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  272,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    book.fields.title,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        fontFamily: 'SF-Pro',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: jaguar950),
                                                   ),
-                                                )
-                                              ],
-                                            )),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                                "assets/home/upvote-blank.png"),
-                                            SizedBox(
-                                              width: 8,
-                                            ),
-                                            Image.asset(
-                                                "assets/home/wishlist-blank.png"),
-                                          ],
-                                        )
-                                      ],
+                                                  SizedBox(
+                                                    height: 4,
+                                                  ),
+                                                  Text(
+                                                    book.fields.author,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                      color: kashmirBlue400,
+                                                      fontFamily: 'SF-Pro',
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  )
+                                                ],
+                                              )),
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/home/upvote-blank.png"),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Image.asset(
+                                                  "assets/home/wishlist-blank.png"),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
                           ],
                         ),
                       );
