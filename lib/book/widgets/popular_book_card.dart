@@ -16,7 +16,7 @@ class PopularBookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -28,15 +28,15 @@ class PopularBookCard extends StatelessWidget {
                 child: Text(rank.toString()),
               ),
               title: Text(book.fields.title),
-              subtitle: Text('Buku dibaca'),
+              subtitle: const Text('Buku dibaca'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text('${totalUpvotes.toString()} Total upvote'),
-                SizedBox(width: 8),
-                Icon(Icons.arrow_upward_sharp, color: Colors.blue),
-                SizedBox(width: 16),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_upward_sharp, color: Colors.blue),
+                const SizedBox(width: 16),
               ],
             ),
           ],
