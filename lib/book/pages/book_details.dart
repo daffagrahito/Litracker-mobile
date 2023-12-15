@@ -1,24 +1,12 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
 import '../models/book.dart';
 
 class BookDetailPage extends StatelessWidget {
   final Book book;
-
-  final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-  final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
-  final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
-  final kashmirBlue500 = Color.fromRGBO(101, 122, 146, 1);
-  final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
-  final kashmirBlue950 = Color.fromRGBO(34, 39, 47, 1);
-  final jaguar100 = Color.fromRGBO(217, 221, 255, 1);
-  final jaguar400 = Color.fromRGBO(110, 101, 255, 1);
-  final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
-  final jaguar600 = Color.fromRGBO(81, 33, 255, 1);
-  final jaguar700 = Color.fromRGBO(72, 22, 236, 1);
-  final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
 
   // Paling atas untuk upvote
   Widget totalUpvoteStyle() {
@@ -65,7 +53,8 @@ class BookDetailPage extends StatelessWidget {
             topRight: Radius.circular(12),
             bottomRight: Radius.circular(12)),
         child: Image.network(
-          book.fields.imageUrlL,
+          book.fields.imageUrlL.replaceFirst(
+              "http://images.amazon.com/", "https://m.media-amazon.com/"),
           width: 184,
           height: 232,
           fit: BoxFit.cover,

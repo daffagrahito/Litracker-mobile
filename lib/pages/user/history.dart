@@ -21,7 +21,7 @@ class HistoryContent extends StatelessWidget {
           ),
           content: Text(
             message,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'SF-Pro',
               fontWeight: FontWeight.w400,
               fontSize: 14,
@@ -31,9 +31,9 @@ class HistoryContent extends StatelessWidget {
           actions: [
             TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Color.fromRGBO(8, 4, 22, 1),
+                foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
                 backgroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 20,
                 ),
@@ -53,8 +53,8 @@ class HistoryContent extends StatelessWidget {
             ),
             TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Color.fromRGBO(72, 22, 236, 1),
-                padding: EdgeInsets.symmetric(
+                backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 20,
                 ),
@@ -79,7 +79,7 @@ class HistoryContent extends StatelessWidget {
   }
 
   void showSuccessNotification(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Berhasil disimpan"),
       duration: Duration(seconds: 2),
     ));
@@ -94,7 +94,7 @@ class HistoryContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -127,10 +127,10 @@ class HistoryContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.topLeft,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
@@ -138,14 +138,14 @@ class HistoryContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 12),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.only(right: 12),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 12),
+                        decoration: const BoxDecoration(
                           color: Color.fromRGBO(80, 166, 255, 1),
                           borderRadius: BorderRadius.all(Radius.circular(16)),
                         ),
-                        child: Text(
+                        child: const Text(
                           "60",
                           style: TextStyle(
                             color: Colors.white,
@@ -157,7 +157,7 @@ class HistoryContent extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width - 240,
-                        child: Flexible(
+                        child: const Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -214,7 +214,7 @@ class HistoryContent extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
-                                              color: Color.fromRGBO(
+                                              color: const Color.fromRGBO(
                                                   246, 247, 249, 1),
                                             ),
                                             child: TextFormField(
@@ -222,7 +222,7 @@ class HistoryContent extends StatelessWidget {
                                                   TextInputType.number,
                                               decoration: InputDecoration(
                                                 labelText: 'Nomor Halaman',
-                                                labelStyle: TextStyle(
+                                                labelStyle: const TextStyle(
                                                   fontFamily: 'SF-Pro',
                                                   fontWeight: FontWeight.w600,
                                                   color: Color.fromRGBO(
@@ -230,7 +230,7 @@ class HistoryContent extends StatelessWidget {
                                                 ),
                                                 enabledBorder:
                                                     OutlineInputBorder(
-                                                  borderSide: BorderSide(
+                                                  borderSide: const BorderSide(
                                                     color: Colors.transparent,
                                                   ),
                                                   borderRadius:
@@ -239,7 +239,7 @@ class HistoryContent extends StatelessWidget {
                                                 ),
                                                 focusedBorder:
                                                     OutlineInputBorder(
-                                                  borderSide: BorderSide(
+                                                  borderSide: const BorderSide(
                                                     color: Color.fromRGBO(
                                                         92,
                                                         66,
@@ -251,13 +251,13 @@ class HistoryContent extends StatelessWidget {
                                                           12.0),
                                                 ),
                                                 contentPadding:
-                                                    EdgeInsets.symmetric(
+                                                    const EdgeInsets.symmetric(
                                                         horizontal: 16,
                                                         vertical: 12),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 16,
                                           )
                                         ],
@@ -267,9 +267,9 @@ class HistoryContent extends StatelessWidget {
                                       TextButton(
                                         style: TextButton.styleFrom(
                                           foregroundColor:
-                                              Color.fromRGBO(8, 4, 22, 1),
+                                              const Color.fromRGBO(8, 4, 22, 1),
                                           backgroundColor: Colors.white,
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                             horizontal: 24,
                                             vertical: 20,
                                           ),
@@ -289,9 +289,9 @@ class HistoryContent extends StatelessWidget {
                                       ),
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromRGBO(72, 22, 236, 1),
-                                          padding: EdgeInsets.symmetric(
+                                          backgroundColor: const Color.fromRGBO(
+                                              72, 22, 236, 1),
+                                          padding: const EdgeInsets.symmetric(
                                             horizontal: 24,
                                             vertical: 20,
                                           ),
@@ -324,7 +324,7 @@ class HistoryContent extends StatelessWidget {
                               width: 32,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           GestureDetector(
@@ -359,7 +359,7 @@ class HistoryContent extends StatelessWidget {
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       home: Scaffold(
         body: HistoryContent(),
       ),
