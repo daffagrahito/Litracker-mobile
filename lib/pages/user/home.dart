@@ -44,7 +44,7 @@ class _HomeContentState extends State<HomeContent>
   bool showAllBooks = false;
 
   late PageController _controller;
-  int _currentIndex = 0;
+  //int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   List<Book>? filteredBooks;
@@ -287,7 +287,7 @@ class _HomeContentState extends State<HomeContent>
                       _currentPage = page;
                     });
                   },
-                  children: [
+                  children: const [
                     PopularBookCard(),
                     PopularBookCard(),
                     PopularBookCard(),
