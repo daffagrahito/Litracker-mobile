@@ -1,16 +1,40 @@
-// ignore_for_file: file_names, unused_import
+// ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/admin/home.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
+import 'package:litracker_mobile/pages/user/models/user.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
-class AdminLoginPage extends StatelessWidget {
-  const AdminLoginPage({Key? key}) : super(key: key);
+class AdminLoginPage extends StatefulWidget {
+  const AdminLoginPage({Key? key});
+
+  @override
+  _AdminLoginPageState createState() => _AdminLoginPageState();
+}
+
+class _AdminLoginPageState extends State<AdminLoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+  bool showError =
+      false; // Add this variable to track whether to show the error
+
+  void showSuccessNotification(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -77,6 +101,7 @@ class AdminLoginPage extends StatelessWidget {
                 height: 40,
               ),
               TextField(
+                controller: _usernameController,
                 obscureText: false,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -128,6 +153,7 @@ class AdminLoginPage extends StatelessWidget {
                 height: 20,
               ),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 style: const TextStyle(
                   fontFamily: 'SF-Pro',
@@ -179,10 +205,126 @@ class AdminLoginPage extends StatelessWidget {
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const AdminHome()),
-                  );
+                onPressed: () async {
+                  String username = _usernameController.text;
+                  String password = _passwordController.text;
+
+                  try {
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    final response = await request
+                        .login("http://localhost:8080/admin-login/", {
+                      'username': username,
+                      'password': password,
+                    });
+
+                    if (request.loggedIn) {
+                      //String message = response['message'];
+                      String uname = response['username'];
+                      int id = response['id'];
+                      loggedInAdmin = Admin(username: uname, id: id);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AdminHome()),
+                      );
+
+                      // Hide the loading indicator
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      // Show modal
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text(
+                            'Login Berhasil',
+                            style: TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -1,
+                              fontSize: 24,
+                              color: Color.fromRGBO(8, 4, 22, 1),
+                            ),
+                          ),
+                          content: Text(
+                            'Selamat datang kembali, $uname!',
+                            style: const TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Color.fromRGBO(88, 107, 132, 1),
+                            ),
+                          ),
+                          backgroundColor: Colors.white,
+                          buttonPadding: const EdgeInsets.all(16),
+                          contentPadding: const EdgeInsets.only(
+                            bottom: 40,
+                            left: 24,
+                            top: 12,
+                          ),
+                          actions: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(72, 22, 236, 1),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 20,
+                                ),
+                              ),
+                              child: const Text(
+                                'OK',
+                                style: TextStyle(
+                                  fontFamily: 'SF-Pro',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      String message = response != null
+                          ? response['message']
+                          : 'Login failed';
+
+                      // Hide the loading indicator
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      // Show error and trigger the error border
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(content: Text("$message")));
+                      setState(() {
+                        showError = true;
+                      });
+                    }
+                  } catch (e) {
+                    // Hide the loading indicator
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    // Show error and trigger the error border
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                          SnackBar(content: Text("An error occurred: $e")));
+                    setState(() {
+                      showError = true;
+                    });
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
@@ -194,18 +336,19 @@ class AdminLoginPage extends StatelessWidget {
                   minimumSize: Size(MediaQuery.of(context).size.width,
                       0), // Set minimumSize ke lebar layar
                 ),
-                child: const Text(
-                  'Masuk Akun',
-                  style: TextStyle(
-                    fontFamily: 'SF-Pro',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text(
+                        'Masuk Akun',
+                        style: TextStyle(color: Colors.white),
+                      ),
               ),
             ],
           ),

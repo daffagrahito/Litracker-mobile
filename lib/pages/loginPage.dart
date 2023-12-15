@@ -2,9 +2,10 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/adminLoginPage.dart';
 import 'package:litracker_mobile/pages/registPage.dart';
+import 'package:litracker_mobile/pages/user/models/user.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -29,15 +30,6 @@ class LoginPage extends StatefulWidget {
 
   @override
   _LoginPageState createState() => _LoginPageState();
-}
-
-User? loggedInUser;
-
-class User {
-  final String username;
-  final int id;
-
-  User(this.username, this.id);
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -255,10 +247,10 @@ class _LoginPageState extends State<LoginPage> {
                     });
 
                     if (request.loggedIn) {
-                      String message = response['message'];
+                      //String message = response['message'];
                       String uname = response['username'];
                       int id = response['id'];
-                      loggedInUser = User(uname, id);
+                      loggedInUser = User(username: uname, id: id);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/loginPage.dart';
+import 'package:litracker_mobile/pages/user/models/user.dart';
 import 'package:litracker_mobile/pages/user/upvoteList.dart';
 import 'package:litracker_mobile/pages/user/wishlistList.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
