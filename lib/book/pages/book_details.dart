@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
 import '../models/book.dart';
 
 class BookDetailPage extends StatelessWidget {
@@ -355,7 +356,19 @@ class BookDetailPage extends StatelessWidget {
                     SizedBox(
                       width: 24,
                     ),
-                    readingHistory(MediaQuery.of(context).size.width - 152)
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LastPageForm()),
+                          );
+                        },
+                        child: readingHistory(
+                            MediaQuery.of(context).size.width - 196)),
+                    SizedBox(
+                      width: 24,
+                    ),
                   ],
                 ),
               ),
