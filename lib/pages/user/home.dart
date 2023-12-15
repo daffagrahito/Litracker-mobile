@@ -1,34 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/pages/user/allBooks.dart';
-import 'dart:convert';
+import 'package:litracker_mobile/book/pages/allBooks.dart';
 import 'dart:math';
-import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
-import 'package:litracker_mobile/pages/user/book_details.dart';
-import 'package:litracker_mobile/pages/user/popularBookCard.dart';
-
-Future<List<Book>> fetchBooks() async {
-  var url = Uri.parse('http://localhost:8080/api/book');
-  var response = await http.get(
-    url,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  );
-
-  var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-  List<Book> books = [];
-  for (var d in data) {
-    if (d != null) {
-      Book book = Book.fromJson(d);
-      books.add(book);
-    }
-  }
-  return books;
-}
+import 'package:litracker_mobile/book/pages/book_details.dart';
+import 'package:litracker_mobile/book/utils/books_utils.dart';
+import 'package:litracker_mobile/book/widgets/popularBookCard.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -64,25 +43,6 @@ class _HomeContentState extends State<HomeContent>
     _controller.dispose();
     super.dispose();
   }
-
-  List<Book> filterBooks(List<Book> books, String query) {
-    return books.where((book) {
-      final title = book.fields.title.toLowerCase();
-      final author = book.fields.author.toLowerCase();
-      final searchLower = query.toLowerCase();
-
-      return title.contains(searchLower) || author.contains(searchLower);
-    }).toList();
-  }
-
-  final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
-  final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
-  final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
-  final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-  final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
-  final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
-  final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
-  final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +197,7 @@ class _HomeContentState extends State<HomeContent>
                         width: MediaQuery.of(context).size.width - 188,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: const [
                             Text(
                               "60",
                               style: TextStyle(

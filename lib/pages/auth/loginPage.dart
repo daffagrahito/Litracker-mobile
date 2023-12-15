@@ -3,9 +3,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
-import 'package:litracker_mobile/pages/adminLoginPage.dart';
-import 'package:litracker_mobile/pages/registPage.dart';
-import 'package:litracker_mobile/pages/user/models/user.dart';
+import 'package:litracker_mobile/pages/auth/adminLoginPage.dart';
+import 'package:litracker_mobile/pages/auth/registPage.dart';
+import 'package:litracker_mobile/data/models/user.dart';
 import 'package:litracker_mobile/pages/user/navigate.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';

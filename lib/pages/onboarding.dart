@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/data/onboardingData.dart';
-import 'package:litracker_mobile/pages/loginPage.dart';
+import 'package:litracker_mobile/pages/auth/loginPage.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -142,14 +142,14 @@ class _OnBoardingState extends State<OnBoarding> {
                     height: 56,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(31, 105, 255, 1),
+                      color: const Color.fromRGBO(31, 105, 255, 1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: currentPage < listKonten.length - 1
                         ? Image.asset(
                             'assets/images/arrow-right.png',
                           )
-                        : Text(
+                        : const Text(
                             "Mulai Jelajah",
                             textAlign: TextAlign.center,
                             style: TextStyle(

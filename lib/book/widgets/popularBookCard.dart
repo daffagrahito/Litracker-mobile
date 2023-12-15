@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 class PopularBookCard extends StatelessWidget {
   const PopularBookCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final jaguar400 = Color.fromRGBO(110, 101, 255, 1);
-    final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
-    final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
-    final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
-    final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-    final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
-    final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
-    final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
-    final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 40),
       child: Column(
         children: [
           Container(
@@ -27,12 +19,12 @@ class PopularBookCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: kashmirBlue400)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(12)),
                 color: Colors.white),
             child: Column(
@@ -43,19 +35,19 @@ class PopularBookCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 12),
                             decoration: BoxDecoration(
                                 color: jaguar500,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16))),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(16))),
                             child: Row(
                               children: [
                                 Image.asset("assets/home/king.png"),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
-                                Text(
+                                const Text(
                                   "1",
                                   style: TextStyle(
                                       fontFamily: 'SF-Pro',
@@ -65,7 +57,7 @@ class PopularBookCard extends StatelessWidget {
                                 )
                               ],
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 24,
                         ),
                         Container(
@@ -102,7 +94,7 @@ class PopularBookCard extends StatelessWidget {
                       ],
                     ),
                     ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
                       child: Image.asset(
                         "assets/home/dummy-book.png",
                         width: 72,
@@ -111,14 +103,15 @@ class PopularBookCard extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                       color: kashmirBlue50,
-                      borderRadius: BorderRadius.all(Radius.circular(24))),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(24))),
                   child: Row(
                     children: [
                       Image.asset(
@@ -126,7 +119,7 @@ class PopularBookCard extends StatelessWidget {
                         width: 48,
                         height: 48,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Container(

@@ -1,32 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/models/book.dart';
-import 'package:litracker_mobile/pages/user/book_details.dart';
-
-Future<List<Book>> fetchBooks() async {
-  var url = Uri.parse('http://localhost:8080/api/book');
-  var response = await http.get(
-    url,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  );
-
-  var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-  List<Book> books = [];
-  for (var d in data) {
-    if (d != null) {
-      Book book = Book.fromJson(d);
-      books.add(book);
-    }
-  }
-  return books;
-}
+import 'package:litracker_mobile/book/pages/book_details.dart';
+import 'package:litracker_mobile/book/utils/books_utils.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 class AllBooks extends StatefulWidget {
   const AllBooks({super.key});
@@ -41,7 +19,7 @@ class _AllBooks extends State<AllBooks> {
   bool showAllBooks = false;
 
   late PageController _controller;
-  int _currentIndex = 0;
+  //int _currentIndex = 0;
   List<Book>? filteredBooks;
 
   @override
@@ -60,28 +38,8 @@ class _AllBooks extends State<AllBooks> {
     super.dispose();
   }
 
-  List<Book> filterBooks(List<Book> books, String query) {
-    return books.where((book) {
-      final title = book.fields.title.toLowerCase();
-      final author = book.fields.author.toLowerCase();
-      final searchLower = query.toLowerCase();
-
-      return title.contains(searchLower) || author.contains(searchLower);
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final jaguar400 = Color.fromRGBO(110, 101, 255, 1);
-    final jaguar500 = Color.fromRGBO(92, 66, 255, 1);
-    final jaguar950 = Color.fromRGBO(8, 4, 22, 1);
-    final ribbon400 = Color.fromRGBO(80, 166, 255, 1);
-    final kashmirBlue50 = Color.fromRGBO(246, 247, 249, 1);
-    final kashmirBlue100 = Color.fromRGBO(236, 239, 242, 1);
-    final kashmirBlue300 = Color.fromRGBO(176, 187, 201, 1);
-    final kashmirBlue400 = Color.fromRGBO(132, 151, 172, 1);
-    final kashmirBlue600 = Color.fromRGBO(88, 107, 132, 1);
-
     return Scaffold(
       backgroundColor: kashmirBlue50,
       body: SingleChildScrollView(

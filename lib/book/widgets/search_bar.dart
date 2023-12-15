@@ -27,7 +27,7 @@ class CustomSearchBar extends StatelessWidget {
         Container(
           height: 140, // Adjust the height to fit your design
           width: screenSize.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color.fromRGBO(72, 22, 236, 1),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
@@ -43,17 +43,17 @@ class CustomSearchBar extends StatelessWidget {
             child: TextField(
               controller: controller,
               onChanged: onChanged,
-              style: TextStyle(color: textColor),
+              style: const TextStyle(color: textColor),
               decoration: InputDecoration(
                 hintText: "Cari Buku",
-                prefixIcon: Icon(Icons.search, color: textColor),
+                prefixIcon: const Icon(Icons.search, color: textColor),
                 fillColor: searchBarColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
               ),
             ),
           ),
