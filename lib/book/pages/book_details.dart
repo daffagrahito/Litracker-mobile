@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
@@ -20,7 +21,26 @@ class BookDetailPage extends StatefulWidget {
 
 class _BookDetailPageState extends State<BookDetailPage> {
   bool isVoted = false;
-  int total = 0;
+  int totalUpvotedBookbyUser = 0;
+
+  Future<int> fetchTotalUsersVote() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get(
+        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+
+    return responseUsersVote['total_users_upvote'];
+  }
+
+  Future<bool> fetchHasUserUpvoted() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get(
+        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+
+    return responseUsersVote['isUpvote'];
+  }
+
   // Paling atas untuk upvote
   Widget totalUpvoteStyle() {
     return Container(
@@ -44,7 +64,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             width: 8,
           ),
           Text(
-            "$total upvote buku ini",
+            "$totalUpvotedBookbyUser upvote buku ini",
             style: TextStyle(
                 fontFamily: 'SF-Pro',
                 letterSpacing: -0.7,
@@ -206,7 +226,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
+    // fetchTotalUsersVote();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -228,7 +248,20 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              totalUpvoteStyle(),
+                              FutureBuilder<int>(
+                                future: fetchTotalUsersVote(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    totalUpvotedBookbyUser = snapshot.data!;
+                                    return totalUpvoteStyle();
+                                  }
+                                },
+                              ),
                               SizedBox(
                                 height: 24,
                               ),
@@ -276,41 +309,61 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                       width: 12,
                                     ),
                                     GestureDetector(
-                                      // Inside the onTap method for upvote
-                                      // Inside the onTap method for upvote
-                                      onTap: () async {
-                                        final response = await request.post(
-                                            "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
-                                            {});
+                                        // Inside the onTap method for upvote
+                                        // Inside the onTap method for upvote
+                                        onTap: () async {
+                                          final requestToggleUpvote =
+                                              Provider.of<CookieRequest>(
+                                                  context,
+                                                  listen: false);
+                                          final response =
+                                              await requestToggleUpvote.post(
+                                                  "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
+                                                  {});
 
-                                        // Check if the book is upvoted or unvoted
+                                          // Check if the book is upvoted or unvoted
 
-                                        String message = response['message'];
-                                        int total_votes =
-                                            response['total_votes'];
-                                        if (message == 'Upvoted' ||
-                                            message == 'Unvoted') {
-                                          setState(() {
-                                            if (message == 'Upvoted') {
-                                              isVoted = true;
-                                              total = total_votes;
-                                            } else {
-                                              isVoted = false;
-                                              total = total_votes;
-                                            }
-                                          });
-                                        }
-                                      },
-
-                                      child: Container(
-                                          child: Image.asset(
-                                        isVoted
-                                            ? "assets/home/upvote_fill.png"
-                                            : "assets/home/upvote_blank.png",
-                                        width: 36,
-                                        height: 36,
-                                      )),
-                                    )
+                                          String message = response['message'];
+                                          // int total_votes =
+                                          //     response['total_votes'];
+                                          if (message == 'Upvoted' ||
+                                              message == 'Unvoted') {
+                                            setState(() {
+                                              if (message == 'Upvoted') {
+                                                // isVoted = true;
+                                                // totalUpvotedBookbyUser =
+                                                //     total_votes;
+                                                fetchTotalUsersVote();
+                                              } else {
+                                                // isVoted = false;
+                                                fetchTotalUsersVote();
+                                              }
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          child: FutureBuilder<bool>(
+                                            future: fetchHasUserUpvoted(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                    'Error: ${snapshot.error}');
+                                              } else {
+                                                isVoted = snapshot.data!;
+                                                return Image.asset(
+                                                  isVoted
+                                                      ? "assets/home/upvote_fill.png"
+                                                      : "assets/home/upvote_blank.png",
+                                                  width: 36,
+                                                  height: 36,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ))
                                   ],
                                 ),
                               ],
