@@ -8,6 +8,8 @@ import 'package:litracker_mobile/book/pages/book_details.dart';
 import 'package:litracker_mobile/book/utils/books_utils.dart';
 import 'package:litracker_mobile/book/widgets/popularBookCard.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -28,6 +30,41 @@ class _HomeContentState extends State<HomeContent>
   int _currentPage = 0;
   List<Book>? filteredBooks;
 
+  bool isVoted = false;
+  int totalUpvotedBookbyUser = 0;
+  Future<void> _refreshData() async {
+    setState(() {
+      futureBooks = fetchBooks(); // Refresh the book list
+      _shuffleBooks(); // Shuffle the book list
+    });
+  }
+
+  void _shuffleBooks() {
+    futureBooks = futureBooks.then((books) {
+      List<Book> shuffledBooks = List.from(books);
+      shuffledBooks.shuffle();
+      return shuffledBooks;
+    });
+  }
+
+  Future<int> fetchTotalUsersVote(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+
+    return responseUsersVote['total_users_upvote'];
+  }
+
+  Future<bool> fetchHasUserUpvoted(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+
+    return responseUsersVote['isUpvote'];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,19 +72,12 @@ class _HomeContentState extends State<HomeContent>
       viewportFraction: 0.8,
       initialPage: 0,
     );
-    futureBooks = fetchBooks();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  Future<void> _refreshData() async {
-    setState(() {
-      futureBooks = fetchBooks();
-    });
   }
 
   @override
@@ -281,7 +311,6 @@ class _HomeContentState extends State<HomeContent>
                     return Text(
                         'Error: ${snapshot.error}'); // Show error message if there is an error
                   } else {
-                    // Determine the number of books to show
                     List<Book> filteredBooks =
                         filterBooks(snapshot.data!, searchController.text);
 
@@ -343,7 +372,7 @@ class _HomeContentState extends State<HomeContent>
                                             fontFamily: 'SF-Pro',
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: jaguar500,
+                                            color: jaguar400,
                                           ),
                                         ),
                                       ),
@@ -356,6 +385,38 @@ class _HomeContentState extends State<HomeContent>
                                   ),
                                 ),
                             ],
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16))),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 76,
+                              margin: EdgeInsets.symmetric(horizontal: 12),
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              decoration: BoxDecoration(
+                                  color: jaguar600,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16))),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _refreshData();
+                                  });
+                                },
+                                child: Text(
+                                  "Segarkan",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
                           SizedBox(
                             height: 12,
@@ -439,8 +500,74 @@ class _HomeContentState extends State<HomeContent>
                                             )),
                                         Row(
                                           children: [
-                                            Image.asset(
-                                                "assets/home/upvote-blank.png"),
+                                            GestureDetector(
+                                                // Inside the onTap method for upvote
+                                                // Inside the onTap method for upvote
+                                                onTap: () async {
+                                                  final requestToggleUpvote =
+                                                      Provider.of<
+                                                              CookieRequest>(
+                                                          context,
+                                                          listen: false);
+                                                  final response =
+                                                      await requestToggleUpvote
+                                                          .post(
+                                                              "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/",
+                                                              {});
+
+                                                  // Check if the book is upvoted or unvoted
+
+                                                  String message =
+                                                      response['message'];
+                                                  // int total_votes =
+                                                  //     response['total_votes'];
+                                                  if (message == 'Upvoted' ||
+                                                      message == 'Unvoted') {
+                                                    setState(() {
+                                                      if (message ==
+                                                          'Upvoted') {
+                                                        // isVoted = true;
+                                                        // totalUpvotedBookbyUser =
+                                                        //     total_votes;
+                                                        fetchTotalUsersVote(
+                                                            book.pk);
+                                                      } else {
+                                                        // isVoted = false;
+                                                        fetchTotalUsersVote(
+                                                            book.pk);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  child: FutureBuilder<bool>(
+                                                    future: fetchHasUserUpvoted(
+                                                        book.pk),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Text(
+                                                            'Error: ${snapshot.error}');
+                                                      } else {
+                                                        isVoted =
+                                                            snapshot.data!;
+                                                        return Image.asset(
+                                                          isVoted
+                                                              ? "assets/home/upvote_fill.png"
+                                                              : "assets/home/upvote_blank.png",
+                                                          width: 36,
+                                                          height: 36,
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                )),
                                             SizedBox(
                                               width: 8,
                                             ),
@@ -453,6 +580,9 @@ class _HomeContentState extends State<HomeContent>
                                   ),
                                 ),
                               ),
+                          SizedBox(
+                            height: 48,
+                          ),
                         ],
                       ),
                     );
