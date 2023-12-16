@@ -247,11 +247,10 @@ class _HomeContentState extends State<HomeContent>
                       _currentPage = page;
                     });
                   },
-                  children: const [
-                    PopularBookCard(),
-                    PopularBookCard(),
-                    PopularBookCard(),
-                  ],
+                  children: List.generate(
+                    10, // or the total number of indices you have
+                    (index) => PopularBookCard(index: index),
+                  ),
                 ),
               ),
             ),
@@ -450,7 +449,7 @@ class _HomeContentState extends State<HomeContent>
   Widget _buildIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List<Widget>.generate(3, (int index) {
+      children: List<Widget>.generate(10, (int index) {
         return Column(
           children: [
             Container(

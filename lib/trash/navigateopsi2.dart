@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/home.dart';
+import 'package:litracker_mobile/pages/user/profile.dart';
 import '../pages/user/history.dart'; // Import your HistoryContent class
-import '../pages/user/profile.dart';
 import '../pages/user/review.dart';
 
 class NavigateUser2 extends StatefulWidget {
