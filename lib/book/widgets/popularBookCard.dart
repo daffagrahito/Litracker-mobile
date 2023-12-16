@@ -165,19 +165,24 @@ class _PopularBookCardState extends State<PopularBookCard> {
             ),
             Container(
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(4),
-                    topRight: Radius.circular(12),
-                    bottomLeft: Radius.circular(4),
-                    bottomRight: Radius.circular(12)),
-                child: Image.network(
-                  book['image_url_l'].replaceFirst("http://images.amazon.com/",
-                      "https://m.media-amazon.com/"),
-                  width: 72,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(12),
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(12)),
+                  child: Image.network(
+                    book['image_url_l'].replaceFirst(
+                        "http://images.amazon.com/",
+                        "https://m.media-amazon.com/"),
+                    width: 72,
+                    height: 100,
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                          "assets/home/dummy-book.png"); // Replace with your default image
+                    },
+                  )),
             )
           ],
         ),
