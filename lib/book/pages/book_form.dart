@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/book/utils/books_utils.dart';
 import 'package:litracker_mobile/pages/admin/admin_home.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -147,8 +148,8 @@ class _BookFormPageState extends State<BookFormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: "Penulis",
-                      labelText: "Penulis",
+                      hintText: "Publisher",
+                      labelText: "Publisher",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -196,8 +197,7 @@ class _BookFormPageState extends State<BookFormPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.indigo),
+                        backgroundColor: MaterialStateProperty.all(Colors.indigo),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -217,14 +217,11 @@ class _BookFormPageState extends State<BookFormPage> {
                           if (response['status'] == 'success') {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AdminHome()),
+                              MaterialPageRoute(builder: (context) => const AdminHome()),
                             );
-                            showDialogWithText(
-                                context, "Buku berhasil ditambahkan");
+                            showDialogWithText(context, "Buku berhasil ditambahkan");
                           } else {
-                            showDialogWithText(context,
-                                "Terdapat kesalahan silahkan coba lagi!");
+                            showDialogWithText(context, "Terdapat kesalahan silahkan coba lagi!");
                           }
                         }
                       },
@@ -240,52 +237,4 @@ class _BookFormPageState extends State<BookFormPage> {
           ),
         ));
   }
-}
-
-void showDialogWithText(BuildContext context, String dialogText) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text(
-        dialogText,
-        style: const TextStyle(
-          fontFamily: 'SF-Pro',
-          fontWeight: FontWeight.w700,
-          letterSpacing: -1,
-          fontSize: 16,
-          color: Color.fromRGBO(8, 4, 22, 1),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      buttonPadding: const EdgeInsets.all(16),
-      contentPadding: const EdgeInsets.only(
-        bottom: 40,
-        left: 24,
-        top: 12,
-      ),
-      actions: [
-        TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 20,
-            ),
-          ),
-          child: const Text(
-            'OK',
-            style: TextStyle(
-              fontFamily: 'SF-Pro',
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    ),
-  );
 }
