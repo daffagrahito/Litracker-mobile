@@ -36,7 +36,6 @@ class PopularBookCard extends StatelessWidget {
                 Text('${totalUpvotes.toString()} Total upvote'),
                 const SizedBox(width: 8),
                 const Icon(Icons.arrow_upward_sharp, color: Colors.blue),
-                const SizedBox(width: 16),
               ],
             ),
           ],

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/pages/user/detailReview.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -130,6 +131,32 @@ class _BookDetailPageState extends State<BookDetailPage> {
     ));
   }
 
+  // Star
+  Widget rating() {
+    return Row(
+      children: [
+        Image.asset(
+          "assets/review/rating.png",
+          width: 20,
+          height: 20,
+        ),
+        SizedBox(
+          width: 12,
+        ),
+        Container(
+          child: Text(
+            "4.5/5",
+            style: TextStyle(
+                fontFamily: 'SF-Pro',
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: jaguar950),
+          ),
+        )
+      ],
+    );
+  }
+
   // Judul buku
   Widget titleBook() {
     return Container(
@@ -202,6 +229,17 @@ class _BookDetailPageState extends State<BookDetailPage> {
     return Container(
       child: Image.asset(
         "assets/home/back.png",
+        width: 48,
+        height: 48,
+      ),
+    );
+  }
+
+  // Back to Home
+  Widget seeReviews() {
+    return Container(
+      child: Image.asset(
+        "assets/home/seereviews.png",
         width: 48,
         height: 48,
       ),
@@ -380,6 +418,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                             padding: EdgeInsets.symmetric(horizontal: 40),
                             child: Column(
                               children: [
+                                rating(),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 titleBook(),
                                 SizedBox(
                                   height: 8,
@@ -559,7 +601,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
                           );
                         },
                         child: readingHistory(
-                            MediaQuery.of(context).size.width - 160)),
+                            MediaQuery.of(context).size.width - 196)),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailReview(bookID: widget.book.pk)));
+                        },
+                        child: seeReviews()),
+
                     SizedBox(
                       width: 12,
                     ),
