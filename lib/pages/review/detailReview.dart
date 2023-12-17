@@ -1,14 +1,20 @@
+// File location: ..lib/pages/user/detailReview.dart
+// ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:litracker_mobile/book/models/book.dart';
+import 'package:litracker_mobile/data/models/user.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailReview extends StatefulWidget {
   final int bookID;
+  final Book bookReviewed;
 
-  const DetailReview({Key? key, required this.bookID}) : super(key: key);
+  const DetailReview({Key? key, required this.bookID, required this.bookReviewed}) : super(key: key);
 
   @override
   _DetailReviewState createState() => _DetailReviewState();
@@ -16,31 +22,41 @@ class DetailReview extends StatefulWidget {
 
 class _DetailReviewState extends State<DetailReview> {
   Future<List<Map<String, dynamic>>> fetchGetBookReviews() async {
-    var url = Uri.parse(
-        'http://localhost:8080/review_book/get_book_reviews/${widget.bookID}');
-    var responseDetailReview = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-    var data = jsonDecode(utf8.decode(responseDetailReview.bodyBytes));
+    try {
+      var url = Uri.parse('http://localhost:8080/review_book/get_book_reviews/${widget.bookID}/');
+      var responseDetailReview = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+      );
 
-    if (data['reviews'].isNotEmpty) {
-      List<Map<String, dynamic>> reviewsList = [];
-      for (var reviewData in data['reviews']) {
-        reviewsList.add({
-          'username': reviewData['username'],
-          'comment': reviewData['comment'],
-          'timestamp': reviewData['timestamp'],
-          'rating': reviewData['rating'],
-        });
+      if (responseDetailReview.statusCode == 200) {
+        var data = jsonDecode(utf8.decode(responseDetailReview.bodyBytes));
+
+        if (data['reviews'].isNotEmpty) {
+          List<Map<String, dynamic>> reviewsList = [];
+          for (var reviewData in data['reviews']) {
+            reviewsList.add({
+              'username': reviewData['username'],
+              'comment': reviewData['comment'],
+              'timestamp': reviewData['timestamp'],
+              'rating': reviewData['rating'],
+            });
+          }
+          return reviewsList;
+        } else {
+          return [];
+        }
+      } else {
+        throw Exception('Failed to load reviews');
       }
-      return reviewsList;
-    } else {
+    } catch (e) {
+      print(e.toString());
       return [];
     }
   }
 
   bool _isDeleting = false;
+  final String username = loggedInUser!.username;
 
   // Function to simulate review deletion with delay
   Future<void> _deleteReview(BuildContext context) async {
@@ -50,7 +66,7 @@ class _DetailReviewState extends State<DetailReview> {
     });
 
     // Simulate a loading delay
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Hide loading indicator
     setState(() {
@@ -59,7 +75,7 @@ class _DetailReviewState extends State<DetailReview> {
 
     // Show success notification
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Review deleted successfully!'),
         duration: Duration(seconds: 2),
       ),
@@ -74,15 +90,14 @@ class _DetailReviewState extends State<DetailReview> {
         minHeight: 164,
         color: const Color.fromRGBO(72, 22, 236, 1),
         maxHeight: MediaQuery.of(context).size.height * 0.93,
-        borderRadius:
-            const BorderRadius.vertical(top: const Radius.circular(40)),
+        borderRadius: const BorderRadius.vertical(top: const Radius.circular(40)),
         body: SingleChildScrollView(
           child: Container(
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  decoration: const BoxDecoration(
                     color: Color.fromRGBO(81, 33, 255, 1),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(40),
@@ -92,7 +107,7 @@ class _DetailReviewState extends State<DetailReview> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       GestureDetector(
@@ -110,43 +125,42 @@ class _DetailReviewState extends State<DetailReview> {
                             Container(
                               width: 100,
                               height: 100,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(28)),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(28)),
                                 color: Color.fromRGBO(92, 66, 255, 1),
                               ),
-                              child: Image.asset(
-                                "assets/review/dummy-book.png",
+                              padding: const EdgeInsets.all(10), // Benerin ini juga buat padding imagenya
+                              child: Image.network(
+                                widget.bookReviewed.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
                                 height: 60,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 24,
                             ),
                             Text(
-                              "Nama Buku",
+                              widget.bookReviewed.fields.title,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: 12,
                                 horizontal: 20,
                               ),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
                                 color: Color.fromRGBO(80, 166, 255, 1),
                               ),
-                              child: Text(
+                              child: const Text(
                                 "60 Ulasan",
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
@@ -159,7 +173,7 @@ class _DetailReviewState extends State<DetailReview> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 44,
                       ),
                     ],
@@ -167,9 +181,9 @@ class _DetailReviewState extends State<DetailReview> {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    children: const [
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: const Column(
+                    children: [
                       SizedBox(
                         height: 40,
                       ),
@@ -187,65 +201,135 @@ class _DetailReviewState extends State<DetailReview> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(32)),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                            "assets/review/profile-reviewing-other.png"),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width - 80 - 88,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: fetchGetBookReviews(),
+                  builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          var review = snapshot.data![index];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(32)),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset("assets/review/profile-reviewing-other.png"),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width - 80 - 88,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12,
+                                      horizontal: 12,
+                                    ),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20),
+                                        bottomRight: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            review['username'],
+                                            style: const TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: kashmirBlue600,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            review['comment'],
+                                            style: const TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/review/rating.png",
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Container(
+                                                  child: Text(
+                                                    review['rating'].toString() + "/5", // replace "4.5/5" with rating
+                                                    style: const TextStyle(
+                                                        fontFamily: 'SF-Pro', fontWeight: FontWeight.w600, fontSize: 14, color: kashmirBlue600),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/review/lastupdate.png",
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Container(
+                                                  child: Text(
+                                                    review['timestamp'], // replace "20 detik yang lalu" with timestamp
+                                                    style: const TextStyle(
+                                                        fontFamily: 'SF-Pro', fontWeight: FontWeight.w300, fontSize: 12, color: kashmirBlue600),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "popo",
-                                style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(132, 151, 172, 1),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                                "Bukunya keren",
-                                style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
+                const SizedBox(
+                  height: 192,
+                )
               ],
             ),
           ),
@@ -254,7 +338,7 @@ class _DetailReviewState extends State<DetailReview> {
           return SingleChildScrollView(
             controller: controller,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 children: [
                   Center(
@@ -281,15 +365,83 @@ class _DetailReviewState extends State<DetailReview> {
                           Image.asset("assets/review/upvote-blank.png"),
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 20,
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(92, 66, 255, 1),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 20,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromRGBO(92, 66, 255, 1),
-                        ),
+                        onPressed: () async {
+                          TextEditingController reviewController = TextEditingController();
+                          String rating = '1';
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return AlertDialog(
+                                    title: const Text('Berikan review kamu'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        TextField(
+                                          controller: reviewController,
+                                          decoration: const InputDecoration(hintText: "Berikan reviewmu disini"),
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            const Text('Rating: '),
+                                            DropdownButton<String>(
+                                              value: rating,
+                                              items: <String>['1', '2', '3', '4', '5'].map((String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  rating = newValue!;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Submit'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop({'review': reviewController.text.toString(), 'rating': rating});
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ).then((value) async {
+                            if (value != null) {
+                              var response = await http.post(
+                                Uri.parse('http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
+                                body: {'username': username, 'comment': value['review'], 'rating': value['rating']},
+                              );
+
+                              if (response.statusCode == 200) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Review berhasil diposting!')),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Terdapat kesalahan. silahkan coba lagi.')),
+                                );
+                              }
+                            }
+                          });
+                        },
                         child: const Text(
                           "Tambah Ulasan",
                           style: TextStyle(
@@ -343,34 +495,54 @@ class _DetailReviewState extends State<DetailReview> {
                               ),
                             ),
                             child: Container(
-                              width:
-                                  MediaQuery.of(context).size.width - 80 - 60,
+                              width: MediaQuery.of(context).size.width - 80 - 60,
                               padding: const EdgeInsets.only(
-                                top: 4,
-                                bottom: 4,
-                                left: 20,
-                                right: 4,
+                                top: 12,
+                                bottom: 12,
+                                left: 12,
+                                right: 12,
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Flexible(
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "ramzieistripopo",
-                                          style: TextStyle(
-                                            fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.7),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/review/rating.png",
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            const SizedBox(
+                                              width: 12,
+                                            ),
+                                            Container(
+                                              child: const Text(
+                                                "4.5/5",
+                                                style: TextStyle(
+                                                    fontFamily: 'SF-Pro',
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                    color: Color.fromARGB(225, 255, 255, 255)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 16),
+                                          child: const Text(
+                                            "ramzieistripopo",
+                                            style: TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              color: Color.fromRGBO(255, 255, 255, 0.7),
+                                            ),
                                           ),
                                         ),
                                         const Text(
@@ -380,6 +552,27 @@ class _DetailReviewState extends State<DetailReview> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.only(top: 16),
+                                          child: Row(
+                                            children: [
+                                              Image.asset("assets/review/lastupdate-indark.png"),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Container(
+                                                child: const Text(
+                                                  "20 detik yang lalu",
+                                                  style: TextStyle(
+                                                      fontFamily: 'SF-Pro',
+                                                      fontWeight: FontWeight.w300,
+                                                      fontSize: 12,
+                                                      color: Color.fromARGB(172, 255, 255, 255)),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -402,28 +595,24 @@ class _DetailReviewState extends State<DetailReview> {
                                                 fontWeight: FontWeight.w700,
                                                 letterSpacing: -1,
                                                 fontSize: 24,
-                                                color:
-                                                    Color.fromRGBO(8, 4, 22, 1),
+                                                color: Color.fromRGBO(8, 4, 22, 1),
                                               ),
                                             ),
-                                            content: Text(
+                                            content: const Text(
                                               'Apa kamu yakin ingin menghapus ulasan ini?',
                                               style: TextStyle(
                                                 fontFamily: 'SF-Pro',
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14,
-                                                color: Color.fromRGBO(
-                                                    88, 107, 132, 1),
+                                                color: Color.fromRGBO(88, 107, 132, 1),
                                               ),
                                             ),
                                             actions: [
                                               TextButton(
                                                 style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                      Color.fromRGBO(
-                                                          8, 4, 22, 1),
+                                                  foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
                                                   backgroundColor: Colors.white,
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                     horizontal: 24,
                                                     vertical: 20,
                                                   ),
@@ -434,8 +623,7 @@ class _DetailReviewState extends State<DetailReview> {
                                                     fontFamily: 'SF-Pro',
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 14,
-                                                    color: Color.fromRGBO(
-                                                        8, 4, 22, 1),
+                                                    color: Color.fromRGBO(8, 4, 22, 1),
                                                   ),
                                                 ),
                                                 onPressed: () {
@@ -444,19 +632,15 @@ class _DetailReviewState extends State<DetailReview> {
                                               ),
                                               TextButton(
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          72, 22, 236, 1),
-                                                  padding: EdgeInsets.symmetric(
+                                                  backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                                  padding: const EdgeInsets.symmetric(
                                                     horizontal: 24,
                                                     vertical: 20,
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                  _deleteReview(
-                                                      context); // Function to handle review deletion
+                                                  Navigator.of(context).pop(); // Close the dialog
+                                                  _deleteReview(context); // Function to handle review deletion
                                                 },
                                                 child: const Text(
                                                   'Ya, hapus',
@@ -473,16 +657,13 @@ class _DetailReviewState extends State<DetailReview> {
                                         },
                                       );
                                     },
-                                    child: Image.asset(
-                                        "assets/review/trash-blue.png"),
+                                    child: Image.asset("assets/review/trash-blue.png"),
                                   ),
                                   if (_isDeleting)
-                                    Padding(
+                                    const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.white),
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                       ),
                                     ),
                                 ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/pages/user/detailReview.dart';
+import 'package:litracker_mobile/pages/review/detailReview.dart';
 
 class ReviewContent extends StatefulWidget {
   @override
@@ -16,13 +16,13 @@ class _ReviewContentState extends State<ReviewContent> {
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Container(
-          color: Color.fromRGBO(246, 247, 249, 1),
+          color: const Color.fromRGBO(246, 247, 249, 1),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 40.0, right: 40, left: 40),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.only(top: 40.0, right: 40, left: 40),
+                child: Text(
                   "Ulasan Buku",
                   style: TextStyle(
                     fontFamily: 'SF-Pro',
@@ -33,8 +33,7 @@ class _ReviewContentState extends State<ReviewContent> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                 child: Row(
                   children: [
                     Expanded(
@@ -85,7 +84,7 @@ class _ReviewContentState extends State<ReviewContent> {
                   children: [
                     TabBar(
                       isScrollable: true,
-                      labelPadding: EdgeInsets.only(right: 12),
+                      labelPadding: const EdgeInsets.only(right: 12),
                       tabs: [
                         _buildTab("Semua Ulasan", 0),
                         _buildTab("Ulasan Saya", 1),
@@ -95,31 +94,28 @@ class _ReviewContentState extends State<ReviewContent> {
                           _selectedTabIndex = index;
                         });
                       },
-                      indicator: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 0.0, color: Colors.transparent)),
+                      indicator: const BoxDecoration(
+                        border: Border(bottom: BorderSide(width: 0.0, color: Colors.transparent)),
                       ),
                       indicatorWeight: 0.0,
                       indicatorColor: Colors.transparent,
                       labelColor: Colors.white,
-                      unselectedLabelColor:
-                          const Color.fromRGBO(101, 122, 146, 1),
+                      unselectedLabelColor: const Color.fromRGBO(101, 122, 146, 1),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Material(
-                            color: Color.fromRGBO(246, 247, 249, 1),
+                            color: const Color.fromRGBO(246, 247, 249, 1),
                             child: SingleChildScrollView(
                               // Wrap with SingleChildScrollView
                               child: Container(
                                 padding: const EdgeInsets.only(top: 24),
-                                color: Color.fromRGBO(246, 247, 249, 1),
+                                color: const Color.fromRGBO(246, 247, 249, 1),
                                 child: Column(
                                   children: [
                                     // Content for the "Semua Ulasan" tab
@@ -130,12 +126,12 @@ class _ReviewContentState extends State<ReviewContent> {
                             ),
                           ),
                           Material(
-                            color: Color.fromRGBO(246, 247, 249, 1),
+                            color: const Color.fromRGBO(246, 247, 249, 1),
                             child: SingleChildScrollView(
                               // Wrap with SingleChildScrollView
                               child: Container(
                                 padding: const EdgeInsets.only(top: 24),
-                                color: Color.fromRGBO(246, 247, 249, 1),
+                                color: const Color.fromRGBO(246, 247, 249, 1),
                                 child: Column(
                                   children: [
                                     // Content for the "Semua Ulasan" tab
@@ -167,9 +163,7 @@ class _ReviewContentState extends State<ReviewContent> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: _selectedTabIndex == index
-                  ? const Color.fromRGBO(81, 23, 255, 1)
-                  : Colors.white,
+              color: _selectedTabIndex == index ? const Color.fromRGBO(81, 23, 255, 1) : Colors.white,
               // border: Border.all(
               //     color: _selectedTabIndex == index
               //         ? Colors.transparent
@@ -180,9 +174,7 @@ class _ReviewContentState extends State<ReviewContent> {
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: _selectedTabIndex == index
-                    ? Colors.white
-                    : const Color.fromRGBO(101, 122, 146, 1),
+                color: _selectedTabIndex == index ? Colors.white : const Color.fromRGBO(101, 122, 146, 1),
               ),
             ),
           ),
@@ -196,7 +188,7 @@ class _ReviewContentState extends State<ReviewContent> {
 
   Widget _buildReviewContent() {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
@@ -222,11 +214,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 16,
-                          letterSpacing: -0.7,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(8, 4, 22, 1)),
+                          fontFamily: 'SF-Pro', fontSize: 16, letterSpacing: -0.7, fontWeight: FontWeight.w700, color: Color.fromRGBO(8, 4, 22, 1)),
                     ),
                     SizedBox(
                       height: 4,
@@ -359,8 +347,8 @@ class _ReviewContentState extends State<ReviewContent> {
                       const SizedBox(
                         width: 4,
                       ),
-                      Expanded(
-                        child: const Column(
+                      const Expanded(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -404,15 +392,10 @@ class _ReviewContentState extends State<ReviewContent> {
             children: [
               const Text(
                 "67 ulasan",
-                style: TextStyle(
-                    fontFamily: 'SF-Pro',
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: Color.fromRGBO(132, 151, 172, 1)),
+                style: TextStyle(fontFamily: 'SF-Pro', fontSize: 10, fontWeight: FontWeight.w500, color: Color.fromRGBO(132, 151, 172, 1)),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: const Color.fromRGBO(81, 33, 255, 1),
