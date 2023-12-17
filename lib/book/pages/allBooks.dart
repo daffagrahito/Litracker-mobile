@@ -265,9 +265,9 @@ class _AllBooks extends State<AllBooks> {
                                                     bottomLeft:
                                                         Radius.circular(4),
                                                     topRight:
-                                                        Radius.circular(12),
+                                                        Radius.circular(6),
                                                     bottomRight:
-                                                        Radius.circular(12)),
+                                                        Radius.circular(6)),
                                                 child: Image.network(
                                                   book.fields.imageUrlL.replaceFirst(
                                                       "http://images.amazon.com/",
