@@ -1,3 +1,5 @@
+// File location: ..lib/pages/user/review.dart
+
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -420,10 +422,10 @@ class _ReviewContentState extends State<ReviewContent> {
                   color: const Color.fromRGBO(81, 33, 255, 1),
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const DetailReview()));
-                  },
+                  // onTap: () {
+                  //   Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => const DetailReview()));
+                  // },
                   child: Image.asset(
                     "assets/review/right-arrow.png",
                   ),

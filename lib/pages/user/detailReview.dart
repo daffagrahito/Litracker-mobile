@@ -1,14 +1,46 @@
+// File location: ..lib/pages/user/detailReview.dart
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailReview extends StatefulWidget {
-  const DetailReview({Key? key}) : super(key: key);
+  final int bookID;
+
+  const DetailReview({Key? key, required this.bookID}) : super(key: key);
 
   @override
   _DetailReviewState createState() => _DetailReviewState();
 }
 
 class _DetailReviewState extends State<DetailReview> {
+  Future<List<Map<String, dynamic>>> fetchGetBookReviews() async {
+    var url = Uri.parse(
+        'http://localhost:8080/review_book/get_book_reviews/${widget.bookID}');
+    var responseDetailReview = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+    var data = jsonDecode(utf8.decode(responseDetailReview.bodyBytes));
+
+    if (data['reviews'].isNotEmpty) {
+      List<Map<String, dynamic>> reviewsList = [];
+      for (var reviewData in data['reviews']) {
+        reviewsList.add({
+          'username': reviewData['username'],
+          'comment': reviewData['comment'],
+          'timestamp': reviewData['timestamp'],
+          'rating': reviewData['rating'],
+        });
+      }
+      return reviewsList;
+    } else {
+      return [];
+    }
+  }
+
   bool _isDeleting = false;
 
   // Function to simulate review deletion with delay
@@ -174,7 +206,7 @@ class _DetailReviewState extends State<DetailReview> {
                         Container(
                           width: MediaQuery.of(context).size.width - 80 - 88,
                           padding: EdgeInsets.symmetric(
-                            vertical: 4,
+                            vertical: 12,
                             horizontal: 12,
                           ),
                           decoration: BoxDecoration(
@@ -187,18 +219,43 @@ class _DetailReviewState extends State<DetailReview> {
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "popo",
-                                style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(132, 151, 172, 1),
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/review/rating.png",
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      "4.5/5",
+                                      style: TextStyle(
+                                          fontFamily: 'SF-Pro',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                          color: kashmirBlue600),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text(
+                                  "popo",
+                                  style: TextStyle(
+                                    fontFamily: 'SF-Pro',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: kashmirBlue600,
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                height: 12,
+                                height: 8,
                               ),
                               Text(
                                 "Bukunya keren",
@@ -208,6 +265,31 @@ class _DetailReviewState extends State<DetailReview> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/review/lastupdate.png",
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      "20 detik yang lalu",
+                                      style: TextStyle(
+                                          fontFamily: 'SF-Pro',
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 12,
+                                          color: kashmirBlue600),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -215,6 +297,9 @@ class _DetailReviewState extends State<DetailReview> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 192,
+                )
               ],
             ),
           ),
@@ -315,10 +400,10 @@ class _DetailReviewState extends State<DetailReview> {
                               width:
                                   MediaQuery.of(context).size.width - 80 - 60,
                               padding: const EdgeInsets.only(
-                                top: 4,
-                                bottom: 4,
-                                left: 20,
-                                right: 4,
+                                top: 12,
+                                bottom: 12,
+                                left: 12,
+                                right: 12,
                               ),
                               child: Row(
                                 mainAxisAlignment:
@@ -326,20 +411,46 @@ class _DetailReviewState extends State<DetailReview> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Flexible(
-                                    child: const Column(
+                                    child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "ramzieistripopo",
-                                          style: TextStyle(
-                                            fontFamily: 'SF-Pro',
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.7),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/review/rating.png",
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 12,
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                "4.5/5",
+                                                style: TextStyle(
+                                                    fontFamily: 'SF-Pro',
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                    color: Color.fromARGB(
+                                                        225, 255, 255, 255)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(
+                                            "ramzieistripopo",
+                                            style: TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.7),
+                                            ),
                                           ),
                                         ),
                                         const Text(
@@ -349,6 +460,30 @@ class _DetailReviewState extends State<DetailReview> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/review/lastupdate-indark.png"),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  "20 detik yang lalu",
+                                                  style: TextStyle(
+                                                      fontFamily: 'SF-Pro',
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 12,
+                                                      color: Color.fromARGB(
+                                                          172, 255, 255, 255)),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
