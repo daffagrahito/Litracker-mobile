@@ -568,8 +568,8 @@ class _HomeContentState extends State<HomeContent>
                                                           isVoted
                                                               ? "assets/home/upvote_fill.png"
                                                               : "assets/home/upvote_blank.png",
-                                                          width: 36,
-                                                          height: 36,
+                                                          width: 40,
+                                                          height: 40,
                                                         );
                                                       }
                                                     },
@@ -579,7 +579,10 @@ class _HomeContentState extends State<HomeContent>
                                               width: 8,
                                             ),
                                             Image.asset(
-                                                "assets/home/wishlist-blank.png"),
+                                              "assets/home/wishlist-blank.png",
+                                              width: 40,
+                                              height: 40,
+                                            ),
                                           ],
                                         )
                                       ],
