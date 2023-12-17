@@ -224,9 +224,10 @@ class HistoryContent extends StatelessWidget {
                                                 labelText: 'Nomor Halaman',
                                                 labelStyle: const TextStyle(
                                                   fontFamily: 'SF-Pro',
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight: FontWeight.w700,
+                                                  letterSpacing: -0.8,
                                                   color: Color.fromRGBO(
-                                                      132, 151, 172, 1),
+                                                      51, 59, 68, 1),
                                                 ),
                                                 enabledBorder:
                                                     OutlineInputBorder(
@@ -241,8 +242,8 @@ class HistoryContent extends StatelessWidget {
                                                     OutlineInputBorder(
                                                   borderSide: const BorderSide(
                                                     color: Color.fromRGBO(
-                                                        92,
-                                                        66,
+                                                        208,
+                                                        201,
                                                         255,
                                                         1), // Change to your desired blue color
                                                   ),

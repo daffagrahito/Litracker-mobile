@@ -41,6 +41,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
     return responseUsersVote['isUpvote'];
   }
 
+  void showSuccessNotification(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Berhasil disimpan"),
+      duration: Duration(seconds: 2),
+    ));
+  }
+
   // Paling atas untuk upvote
   Widget totalUpvoteStyle() {
     return Container(
@@ -207,8 +214,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
   // Has read book -> input number of page
   Widget readingHistory(theWidth) {
     return Container(
-      width: theWidth,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      width: theWidth + 20,
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       decoration: BoxDecoration(
           color: jaguar400,
           borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -404,7 +411,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               left: 0,
               child: Container(
                 padding:
-                    EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 40),
+                    EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 20),
                 decoration: BoxDecoration(
                     color: jaguar700,
                     borderRadius: BorderRadius.only(
@@ -412,6 +419,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       topRight: Radius.circular(40),
                     )),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                         onTap: () {
@@ -419,20 +427,144 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         },
                         child: backtoHome()),
                     SizedBox(
-                      width: 24,
+                      width: 12,
                     ),
+                    // GestureDetector(
+                    //     onTap: () {
+                    //       // Navigator.push(
+                    //       //   context,
+                    //       //   MaterialPageRoute(
+                    //       //       builder: (context) => LastPageForm()),
+                    //       // );
+
+                    //     },
                     GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LastPageForm()),
+                        onTap: () async {
+                          bool? result = await showDialog<bool?>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'Atur Nomor Halaman',
+                                  style: TextStyle(
+                                    fontFamily: 'SF-Pro',
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -1,
+                                    fontSize: 24,
+                                    color: Color.fromRGBO(8, 4, 22, 1),
+                                  ),
+                                ),
+                                content: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          color: const Color.fromRGBO(
+                                              246, 247, 249, 1),
+                                        ),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            labelText: 'Nomor Halaman',
+                                            labelStyle: const TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: -0.8,
+                                              color:
+                                                  Color.fromRGBO(51, 59, 68, 1),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: Color.fromRGBO(
+                                                    208,
+                                                    201,
+                                                    255,
+                                                    1), // Change to your desired blue color
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 12),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor:
+                                          const Color.fromRGBO(8, 4, 22, 1),
+                                      backgroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                        vertical: 20,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Kembali',
+                                      style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: Color.fromRGBO(8, 4, 22, 1),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false);
+                                    },
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          const Color.fromRGBO(72, 22, 236, 1),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                        vertical: 20,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(true);
+                                      showSuccessNotification(context);
+                                    },
+                                    child: const Text(
+                                      'Simpan',
+                                      style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
                         child: readingHistory(
-                            MediaQuery.of(context).size.width - 196)),
+                            MediaQuery.of(context).size.width - 160)),
                     SizedBox(
-                      width: 24,
+                      width: 12,
                     ),
                   ],
                 ),
