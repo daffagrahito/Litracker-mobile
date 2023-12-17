@@ -256,26 +256,16 @@ class _AllBooks extends State<AllBooks> {
                                                   topLeft: Radius.circular(4),
                                                   bottomLeft:
                                                       Radius.circular(4),
-                                                  topRight: Radius.circular(12),
+                                                  topRight: Radius.circular(6),
                                                   bottomRight:
-                                                      Radius.circular(12)),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(4),
-                                                    bottomLeft:
-                                                        Radius.circular(4),
-                                                    topRight:
-                                                        Radius.circular(6),
-                                                    bottomRight:
-                                                        Radius.circular(6)),
-                                                child: Image.network(
-                                                  book.fields.imageUrlL.replaceFirst(
-                                                      "http://images.amazon.com/",
-                                                      "https://m.media-amazon.com/"),
-                                                  width: 50,
-                                                  height: 60,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                                      Radius.circular(6)),
+                                              child: Image.network(
+                                                book.fields.imageUrlL.replaceFirst(
+                                                    "http://images.amazon.com/",
+                                                    "https://m.media-amazon.com/"),
+                                                width: 50,
+                                                height: 60,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
