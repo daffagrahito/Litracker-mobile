@@ -8,6 +8,8 @@ import 'package:litracker_mobile/book/pages/book_details.dart';
 import 'package:litracker_mobile/book/utils/books_utils.dart';
 import 'package:litracker_mobile/book/widgets/popularBookCard.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -18,7 +20,7 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent>
     with TickerProviderStateMixin {
-  late Future<List<Book>> futureBooks;
+  late Future<List<Book>> futureBooks = fetchBooks();
   TextEditingController searchController = TextEditingController();
   bool showAllBooks = false;
 
@@ -28,6 +30,41 @@ class _HomeContentState extends State<HomeContent>
   int _currentPage = 0;
   List<Book>? filteredBooks;
 
+  bool isVoted = false;
+  int totalUpvotedBookbyUser = 0;
+  Future<void> _refreshData() async {
+    setState(() {
+      futureBooks = fetchBooks(); // Refresh the book list
+      _shuffleBooks(); // Shuffle the book list
+    });
+  }
+
+  void _shuffleBooks() {
+    futureBooks = futureBooks.then((books) {
+      List<Book> shuffledBooks = List.from(books);
+      shuffledBooks.shuffle();
+      return shuffledBooks;
+    });
+  }
+
+  Future<int> fetchTotalUsersVote(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+
+    return responseUsersVote['total_users_upvote'];
+  }
+
+  Future<bool> fetchHasUserUpvoted(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+
+    return responseUsersVote['isUpvote'];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +72,7 @@ class _HomeContentState extends State<HomeContent>
       viewportFraction: 0.8,
       initialPage: 0,
     );
-    futureBooks = fetchBooks();
+    futureBooks = fetchBooks(); // Initialize futureBooks here
   }
 
   @override
@@ -48,409 +85,528 @@ class _HomeContentState extends State<HomeContent>
   Widget build(BuildContext context) {
     final jaguar400 = Color.fromRGBO(110, 101, 255, 1);
 
-    return Container(
-        child: Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
-            ),
-            color: jaguar500,
-          ),
-          padding: EdgeInsets.all(40),
-          child: Column(
-            children: [
-              Row(
+    return RefreshIndicator(
+      onRefresh: _refreshData,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Container(
+            child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
+                color: jaguar500,
+              ),
+              padding: EdgeInsets.all(40),
+              child: Column(
                 children: [
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: searchController.text.isEmpty,
+                        child: Image.asset(
+                          "assets/home/profile-picture.png",
+                          width: 44,
+                          height: 44,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Visibility(
+                        visible: searchController.text.isEmpty,
+                        child: SizedBox(
+                          width: 16,
+                        ),
+                      ),
+                      Container(
+                          height: 44,
+                          width: MediaQuery.of(context).size.width - 140,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: jaguar400,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          child: Row(
+                            children: [
+                              Image.asset("assets/home/search-icon.png"),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Flexible(
+                                child: TextField(
+                                  controller: searchController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      futureBooks.then((books) {
+                                        filteredBooks =
+                                            filterBooks(books, value);
+                                      });
+                                    });
+                                  },
+                                  style: TextStyle(
+                                    fontFamily: "SF-Pro",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.white,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: "Cari Buku",
+                                    hintStyle: TextStyle(
+                                      fontFamily: "SF-Pro",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.white,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
+                      Visibility(
+                        visible: searchController.text.isNotEmpty,
+                        child: SizedBox(
+                          width: 16,
+                        ),
+                      ),
+                      Visibility(
+                        visible: searchController.text.isNotEmpty,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              searchController.clear(); // Clear the search text
+                            });
+                          },
+                          child: Image.asset(
+                            "assets/home/close-search.png",
+                            width: 44,
+                            height: 44,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Visibility(
                     visible: searchController.text.isEmpty,
-                    child: Image.asset(
-                      "assets/home/profile-picture.png",
-                      width: 44,
-                      height: 44,
-                      fit: BoxFit.contain,
+                    child: SizedBox(
+                      height: 20,
+                    ),
+                  ),
+                  Visibility(
+                    visible: searchController.text.isEmpty,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Progresmu",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'SF-Pro',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
                   Visibility(
                     visible: searchController.text.isEmpty,
                     child: SizedBox(
-                      width: 16,
+                      height: 20,
                     ),
                   ),
-                  Container(
-                      height: 44,
-                      width: MediaQuery.of(context).size.width - 140,
+                  Visibility(
+                    visible: searchController.text.isEmpty,
+                    child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                       decoration: BoxDecoration(
-                          color: jaguar400,
-                          borderRadius: BorderRadius.all(Radius.circular(16))),
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          color: Colors.white),
                       child: Row(
                         children: [
-                          Image.asset("assets/home/search-icon.png"),
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                color: ribbon400,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16))),
+                            child: Image.asset("assets/home/book-icon.png"),
+                          ),
                           SizedBox(
                             width: 12,
                           ),
-                          Flexible(
-                            child: TextField(
-                              controller: searchController,
-                              onChanged: (value) {
-                                setState(() {
-                                  futureBooks.then((books) {
-                                    filteredBooks = filterBooks(books, value);
-                                  });
-                                });
-                              },
-                              style: TextStyle(
-                                fontFamily: "SF-Pro",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: "Cari Buku",
-                                hintStyle: TextStyle(
-                                  fontFamily: "SF-Pro",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.white,
+                          Container(
+                            width: MediaQuery.of(context).size.width - 188,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "60",
+                                  style: TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                      color: jaguar950),
                                 ),
-                                border: InputBorder.none,
-                              ),
+                                Text(
+                                  "Buku dibaca",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: -0.5,
+                                      color: kashmirBlue400),
+                                )
+                              ],
                             ),
-                          )
+                          ),
+                          // GestureDetector(
+                          //     onTap: () {
+                          //       Navigator.of(context).push(MaterialPageRoute(
+                          //           builder: (context) => const ));
+                          //       Navigator.of(context).pop();
+                          //     },
+                          //     child: Image.asset("assets/home/right-arrow.png"))
                         ],
-                      )),
-                  Visibility(
-                    visible: searchController.text.isNotEmpty,
-                    child: SizedBox(
-                      width: 16,
-                    ),
-                  ),
-                  Visibility(
-                    visible: searchController.text.isNotEmpty,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          searchController.clear(); // Clear the search text
-                        });
-                      },
-                      child: Image.asset(
-                        "assets/home/close-search.png",
-                        width: 44,
-                        height: 44,
-                        fit: BoxFit.contain,
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
-              Visibility(
-                visible: searchController.text.isEmpty,
-                child: SizedBox(
-                  height: 20,
-                ),
-              ),
-              Visibility(
-                visible: searchController.text.isEmpty,
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Progresmu",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'SF-Pro',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: searchController.text.isEmpty,
-                child: SizedBox(
-                  height: 20,
-                ),
-              ),
-              Visibility(
-                visible: searchController.text.isEmpty,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      color: Colors.white),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                            color: ribbon400,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16))),
-                        child: Image.asset("assets/home/book-icon.png"),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 188,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "60",
-                              style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  color: jaguar950),
-                            ),
-                            Text(
-                              "Buku dibaca",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: -0.5,
-                                  color: kashmirBlue400),
-                            )
-                          ],
-                        ),
-                      ),
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.of(context).push(MaterialPageRoute(
-                      //           builder: (context) => const ));
-                      //       Navigator.of(context).pop();
-                      //     },
-                      //     child: Image.asset("assets/home/right-arrow.png"))
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Visibility(
-              visible: searchController.text.isEmpty,
-              child: Container(
-                height: 340,
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _currentPage = page;
-                    });
-                  },
-                  children: const [
-                    PopularBookCard(),
-                    PopularBookCard(),
-                    PopularBookCard(),
-                  ],
-                ),
-              ),
             ),
-            SizedBox(height: 10), // Spasi antara PageView dan Indicator
-            _buildIndicator(),
-          ],
-        ),
-        Container(
-          child: FutureBuilder<List<Book>>(
-            future: futureBooks,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(); // Show loading spinner while waiting for data
-              } else if (snapshot.hasError) {
-                return Text(
-                    'Error: ${snapshot.error}'); // Show error message if there is an error
-              } else {
-                // Determine the number of books to show
-                List<Book> filteredBooks =
-                    filterBooks(snapshot.data!, searchController.text);
+            Column(
+              children: [
+                Visibility(
+                  visible: searchController.text.isEmpty,
+                  child: Container(
+                    height: 340,
+                    child: PageView(
+                      controller: _pageController,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      children: List.generate(
+                        10, // or the total number of indices you have
+                        (index) => PopularBookCard(index: index),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10), // Spasi antara PageView dan Indicator
 
-                int numBooksToShow = showAllBooks
-                    ? filteredBooks.length
-                    : (searchController.text.isEmpty
-                        ? min(5, filteredBooks.length)
-                        : filteredBooks.length);
+                Visibility(
+                    visible: searchController.text.isEmpty,
+                    child: _buildIndicator()),
+              ],
+            ),
+            Container(
+              child: FutureBuilder<List<Book>>(
+                future: futureBooks,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // Show loading spinner while waiting for data
+                  } else if (snapshot.hasError) {
+                    return Text(
+                        'Error: ${snapshot.error}'); // Show error message if there is an error
+                  } else {
+                    List<Book> filteredBooks =
+                        filterBooks(snapshot.data!, searchController.text);
 
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    int numBooksToShow = showAllBooks
+                        ? filteredBooks.length
+                        : (searchController.text.isEmpty
+                            ? min(5, filteredBooks.length)
+                            : filteredBooks.length);
+
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+                      child: Column(
                         children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Visibility(
-                              child: searchController.text.isEmpty
-                                  ? Text("Mungkin Kamu Tertarik",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontFamily: 'SF-Pro',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: kashmirBlue400))
-                                  : Text(
-                                      "Hasil Pencarian: ${filteredBooks.length} buku",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontFamily: 'SF-Pro',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: kashmirBlue400)),
-                            ),
-                          ),
-                          if (!showAllBooks || snapshot.data!.length > 6)
-                            Visibility(
-                              visible: searchController.text.isEmpty,
-                              child: Container(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
                                 alignment: Alignment.centerLeft,
-                                child: TextButton(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AllBooks()));
-                                    },
-                                    child: Text(
-                                      "Lihat Semua",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: jaguar500,
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      showAllBooks = true;
-                                    });
-                                  },
+                                child: Visibility(
+                                  child: searchController.text.isEmpty
+                                      ? Text("Mungkin Kamu Tertarik",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: kashmirBlue400))
+                                      : Text(
+                                          "Hasil Pencarian: ${filteredBooks.length} buku",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontFamily: 'SF-Pro',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: kashmirBlue400)),
                                 ),
                               ),
-                            ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      ...filteredBooks.getRange(0, numBooksToShow).map(
-                            (book) => GestureDetector(
-                              onTap: () {
-                                // Navigate to the detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        BookDetailPage(book: book),
+                              if (!showAllBooks || snapshot.data!.length > 6)
+                                Visibility(
+                                  visible: searchController.text.isEmpty,
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: TextButton(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const AllBooks()));
+                                        },
+                                        child: Text(
+                                          "Lihat Semua",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            fontFamily: 'SF-Pro',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: jaguar400,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          showAllBooks = true;
+                                        });
+                                      },
+                                    ),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(12),
-                                margin: EdgeInsets.only(bottom: 8),
-                                decoration: BoxDecoration(
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Visibility(
+                            visible: searchController.text.isEmpty,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            8.0), // Sesuaikan nilai sesuai kebutuhan Anda
-                                        child: Image.network(
-                                          book.fields.imageUrlL.replaceFirst(
-                                              "http://images.amazon.com/",
-                                              "https://m.media-amazon.com/"),
-                                          width: 50,
-                                          height: 60,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 12,
-                                    ),
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                272,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              book.fields.title,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontFamily: 'SF-Pro',
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: jaguar950),
-                                            ),
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                            Text(
-                                              book.fields.author,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                color: kashmirBlue400,
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                            "assets/home/upvote-blank.png"),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Image.asset(
-                                            "assets/home/wishlist-blank.png"),
-                                      ],
-                                    )
-                                  ],
+                                      BorderRadius.all(Radius.circular(16))),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 76,
+                                margin: EdgeInsets.symmetric(horizontal: 12),
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                decoration: BoxDecoration(
+                                    color: jaguar600,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(16))),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _refreshData();
+                                    });
+                                  },
+                                  child: Text(
+                                    "Segarkan",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-        )
-      ],
-    ));
+                          SizedBox(
+                            height: 12,
+                          ),
+                          ...filteredBooks.getRange(0, numBooksToShow).map(
+                                (book) => GestureDetector(
+                                  onTap: () {
+                                    // Navigate to the detail page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BookDetailPage(book: book),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                8.0), // Sesuaikan nilai sesuai kebutuhan Anda
+                                            child: Image.network(
+                                              book.fields.imageUrlL.replaceFirst(
+                                                  "http://images.amazon.com/",
+                                                  "https://m.media-amazon.com/"),
+                                              width: 50,
+                                              height: 60,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 12,
+                                        ),
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                272,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  book.fields.title,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      fontFamily: 'SF-Pro',
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: jaguar950),
+                                                ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  book.fields.author,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    color: kashmirBlue400,
+                                                    fontFamily: 'SF-Pro',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                )
+                                              ],
+                                            )),
+                                        Row(
+                                          children: [
+                                            GestureDetector(
+                                                // Inside the onTap method for upvote
+                                                // Inside the onTap method for upvote
+                                                onTap: () async {
+                                                  final requestToggleUpvote =
+                                                      Provider.of<
+                                                              CookieRequest>(
+                                                          context,
+                                                          listen: false);
+                                                  final response =
+                                                      await requestToggleUpvote
+                                                          .post(
+                                                              "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/",
+                                                              {});
+
+                                                  // Check if the book is upvoted or unvoted
+
+                                                  String message =
+                                                      response['message'];
+                                                  // int total_votes =
+                                                  //     response['total_votes'];
+                                                  if (message == 'Upvoted' ||
+                                                      message == 'Unvoted') {
+                                                    setState(() {
+                                                      if (message ==
+                                                          'Upvoted') {
+                                                        // isVoted = true;
+                                                        // totalUpvotedBookbyUser =
+                                                        //     total_votes;
+                                                        fetchTotalUsersVote(
+                                                            book.pk);
+                                                      } else {
+                                                        // isVoted = false;
+                                                        fetchTotalUsersVote(
+                                                            book.pk);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  child: FutureBuilder<bool>(
+                                                    future: fetchHasUserUpvoted(
+                                                        book.pk),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Text(
+                                                            'Error: ${snapshot.error}');
+                                                      } else {
+                                                        isVoted =
+                                                            snapshot.data!;
+                                                        return Image.asset(
+                                                          isVoted
+                                                              ? "assets/home/upvote_fill.png"
+                                                              : "assets/home/upvote_blank.png",
+                                                          width: 36,
+                                                          height: 36,
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                )),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Image.asset(
+                                                "assets/home/wishlist-blank.png"),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          SizedBox(
+                            height: 48,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
+            )
+          ],
+        )),
+      ),
+    );
   }
 
   Widget _buildIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List<Widget>.generate(3, (int index) {
+      children: List<Widget>.generate(10, (int index) {
         return Column(
           children: [
             Container(

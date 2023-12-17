@@ -16,45 +16,29 @@ class ProfileContent extends StatefulWidget {
 }
 
 class _ProfileContentState extends State<ProfileContent> {
-  int totalVotes = 0;
-  int totalWishlist = 0;
-
+  int totalUpvotedBooks = 0;
   @override
   void initState() {
     super.initState();
-    fetchUserData();
   }
 
   Future<void> fetchUserData() async {
-    final request = context.read<CookieRequest>();
-    final responseVotes = await http.get(
-      Uri.parse('http://localhost:8080/upvote_book/get_total_votes/'),
-      headers: {'Authorization': 'Bearer ${request.cookies['access_token']}'},
-    );
+    final request = context.watch<CookieRequest>();
+    final responseVotes = await request
+        .get('http://localhost:8080/upvote_book/get_upvoted_books/');
 
-    final responseWishlist = await http.get(
-      Uri.parse('http://localhost:8080/favorite_book/get_total_wishlist/'),
-      headers: {'Authorization': 'Bearer ${request.cookies['access_token']}'},
-    );
+    int total_votes = responseVotes['total_upvoted_books'];
 
-    if (responseVotes.statusCode == 200 && responseWishlist.statusCode == 200) {
-      final Map<String, dynamic> dataVotes = json.decode(responseVotes.body);
-      final Map<String, dynamic> dataWishlist =
-          json.decode(responseWishlist.body);
-
-      setState(() {
-        totalVotes = dataVotes['total_votes'];
-        totalWishlist = dataWishlist['total_wishlist'];
-      });
-    } else {
-      // Handle error
-      print('Error fetching data');
-    }
+    setState(() {
+      totalUpvotedBooks = total_votes;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+
+    fetchUserData();
 
     return Container(
       child: Stack(
@@ -201,8 +185,7 @@ class _ProfileContentState extends State<ProfileContent> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          totalVotes
-                                              .toString(), // Display total votes here
+                                          "$totalUpvotedBooks", // Display total votes here
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: const TextStyle(
@@ -274,8 +257,7 @@ class _ProfileContentState extends State<ProfileContent> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          totalWishlist
-                                              .toString(), // Display total wishlist here
+                                          "", // Display total wishlist here
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: const TextStyle(
