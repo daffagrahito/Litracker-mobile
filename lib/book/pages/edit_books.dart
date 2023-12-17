@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/models/book.dart';
 import 'package:litracker_mobile/book/utils/books_utils.dart';
@@ -18,7 +20,7 @@ class EditBooksPage extends StatefulWidget {
 class _EditBooksState extends State<EditBooksPage> {
   late Future<List<Book>> futureBooks;
   TextEditingController searchController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   late PageController _controller;
   //int _currentIndex = 0;
   List<Book>? filteredBooks;
@@ -251,8 +253,6 @@ class _EditBooksState extends State<EditBooksPage> {
                                                 TextEditingController publishedYearController =
                                                     TextEditingController(text: book.fields.publishedYear.toString());
                                                 TextEditingController publisherController = TextEditingController(text: book.fields.publisher);
-                                                TextEditingController imageUrlSController = TextEditingController(text: book.fields.imageUrlS);
-                                                TextEditingController imageUrlMController = TextEditingController(text: book.fields.imageUrlM);
                                                 TextEditingController imageUrlLController = TextEditingController(text: book.fields.imageUrlL);
 
                                                 await showDialog<bool>(
@@ -269,7 +269,8 @@ class _EditBooksState extends State<EditBooksPage> {
                                                           color: Color.fromRGBO(8, 4, 22, 1),
                                                         ),
                                                       ),
-                                                      content: Container(
+                                                      content: Form(
+                                                        key: _formKey,
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.stretch,
                                                           mainAxisSize: MainAxisSize.min,
@@ -277,11 +278,9 @@ class _EditBooksState extends State<EditBooksPage> {
                                                             buildTextField(isbnController, 'ISBN'),
                                                             buildTextField(titleController, 'Title'),
                                                             buildTextField(authorController, 'Author'),
-                                                            buildTextField(publishedYearController, 'Published Year'),
+                                                            buildTextField(publishedYearController, 'Published Year', isInteger: true),
                                                             buildTextField(publisherController, 'Publisher'),
-                                                            buildTextField(imageUrlSController, 'Small Image URL'),
-                                                            buildTextField(imageUrlMController, 'Medium Image URL'),
-                                                            buildTextField(imageUrlLController, 'Large Image URL'),
+                                                            buildTextField(imageUrlLController, 'URL Cover Buku'),
                                                           ],
                                                         ),
                                                       ),
@@ -311,38 +310,46 @@ class _EditBooksState extends State<EditBooksPage> {
                                                             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                                                           ),
                                                           onPressed: () async {
-                                                            // Create a new book object with the updated data
-                                                            Book updatedBook = Book(
-                                                              model: book.model, // Keep the existing model
-                                                              pk: book.pk, // Keep the existing primary key
-                                                              fields: Fields(
-                                                                isbn: isbnController.text, // Update with the new ISBN
-                                                                title: titleController.text, // Update with the new title
-                                                                author: authorController.text, // Update with the new author
-                                                                publishedYear:
-                                                                    int.parse(publishedYearController.text), // Update with the new published year
-                                                                publisher: publisherController.text, // Update with the new publisher
-                                                                imageUrlS: imageUrlSController.text, // Update with the new small image URL
-                                                                imageUrlM: imageUrlMController.text, // Update with the new medium image URL
-                                                                imageUrlL: imageUrlLController.text, // Update with the new large image URL
-                                                              ),
-                                                            );
+                                                            if (_formKey.currentState!.validate()) {
+                                                              final String isbn = isbnController.text;
+                                                              final String title = titleController.text;
+                                                              final String author = authorController.text;
+                                                              final String publishedYear = publishedYearController.text;
+                                                              final String publisher = publisherController.text;
+                                                              final String imageUrlL = imageUrlLController.text;
 
-                                                            try {
-                                                              // Call the editBook function and await the result
-                                                              await editBook(book.pk, updatedBook);
-                                                              // Show a success message
-                                                              showDialogWithText(context, 'Buku berhasil diperbarui.');
-                                                              // Refresh the widget
-                                                              setState(() {
-                                                                futureBooks = fetchBooks(); // Re-fetch the books
-                                                              });
-                                                              // Close the dialog
+                                                              final response = await request.postJson(
+                                                                "http://localhost:8080/home/api/book/edit/${book.pk}/",
+                                                                jsonEncode(
+                                                                  <String, dynamic>{
+                                                                    'isbn': isbn,
+                                                                    'title': title,
+                                                                    'author': author,
+                                                                    'published_year': publishedYear,
+                                                                    'publisher': publisher,
+                                                                    'image_url_l': imageUrlL,
+                                                                  },
+                                                                ),
+                                                              );
+
+                                                              String dialogText;
+                                                              if (response['status'] == 'success') {
+                                                                dialogText = "Buku berhasil diubah!";
+                                                              } else {
+                                                                dialogText = "Terdapat kesalahan, silahkan coba lagi.";
+                                                              }
+
+                                                              setState(
+                                                                () {
+                                                                  futureBooks = fetchBooks(); // Re-fetch the books
+                                                                },
+                                                              );
+
+                                                              // Close the first dialog
                                                               Navigator.of(context).pop(true);
-                                                            } catch (e) {
-                                                              // Show an error message
-                                                              print(e);
-                                                              showDialogWithText(context, 'Gagal memperbarui buku.');
+
+                                                              // Show the second dialog
+                                                              showDialogWithText(context, dialogText);
                                                             }
                                                           },
                                                           child: const Text(

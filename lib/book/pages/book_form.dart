@@ -31,12 +31,18 @@ class _BookFormPageState extends State<BookFormPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(
-          title: const Center(
-            child: Text(
-              'Form Add Book',
+          title: const Text(
+            'Tambah Buku',
+            style: TextStyle(
+              fontFamily: 'SF-Pro',
+              fontWeight: FontWeight.w700,
+              letterSpacing: -1,
+              fontSize: 24,
+              color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.indigo,
+          centerTitle: true,
+          backgroundColor: Color.fromRGBO(72, 22, 236, 1),
           foregroundColor: Colors.white,
         ),
         body: Form(
@@ -195,9 +201,10 @@ class _BookFormPageState extends State<BookFormPage> {
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(72, 22, 236, 1),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -227,7 +234,12 @@ class _BookFormPageState extends State<BookFormPage> {
                       },
                       child: const Text(
                         "Save",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

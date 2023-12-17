@@ -5,7 +5,7 @@ import 'package:litracker_mobile/book/models/book.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Book>> fetchBooks() async {
-  var url = Uri.parse('http://localhost:8080/home/api/book');
+  var url = Uri.parse('http://localhost:8080/home/api/book/');
   var response = await http.get(
     url,
     headers: {
@@ -83,26 +83,6 @@ void showDialogWithText(BuildContext context, String dialogText) {
   );
 }
 
-Future<Book> editBook(int pk, Book book) async {
-  var url = Uri.parse('http://localhost:8080/home/api/book/edit/$pk/');
-  var response = await http.put(
-    url,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: jsonEncode(book.toJson()),
-  );
-  print(book.toJson());
-
-  if (response.statusCode == 200) {
-    print('Response body: ${response.body}');
-    print(Book.fromJson(jsonDecode(response.body)));
-    return Book.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to update book.');
-  }
-}
-
 Future<void> deleteBook(int pk) async {
   var url = Uri.parse('http://localhost:8080/home/api/book/delete/$pk/');
   var response = await http.delete(url);
@@ -112,7 +92,7 @@ Future<void> deleteBook(int pk) async {
   }
 }
 
-Widget buildTextField(TextEditingController controller, String labelText) {
+Widget buildTextField(TextEditingController controller, String labelText, {bool isInteger = false}) {
   return Column(
     children: <Widget>[
       const SizedBox(height: 10),
@@ -144,6 +124,15 @@ Widget buildTextField(TextEditingController controller, String labelText) {
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Field ini tidak boleh kosong!';
+            }
+            if (isInteger && int.tryParse(value) == null) {
+              return 'Field ini harus berupa angka!';
+            }
+            return null;
+          },
         ),
       ),
       const SizedBox(height: 10), // Add gap antar textfields
