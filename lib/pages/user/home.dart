@@ -20,7 +20,7 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent>
     with TickerProviderStateMixin {
-  late Future<List<Book>> futureBooks;
+  late Future<List<Book>> futureBooks = fetchBooks();
   TextEditingController searchController = TextEditingController();
   bool showAllBooks = false;
 
@@ -72,6 +72,7 @@ class _HomeContentState extends State<HomeContent>
       viewportFraction: 0.8,
       initialPage: 0,
     );
+    futureBooks = fetchBooks(); // Initialize futureBooks here
   }
 
   @override
