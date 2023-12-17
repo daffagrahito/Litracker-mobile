@@ -82,12 +82,8 @@ class _AllBooks extends State<AllBooks> {
                         Container(
                             height: 44,
                             width: MediaQuery.of(context).size.width - 140,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: jaguar400,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16))),
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                            decoration: BoxDecoration(color: jaguar400, borderRadius: BorderRadius.all(Radius.circular(16))),
                             child: Row(
                               children: [
                                 Image.asset("assets/home/search-icon.png"),
@@ -100,8 +96,7 @@ class _AllBooks extends State<AllBooks> {
                                     onChanged: (value) {
                                       setState(() {
                                         futureBooks.then((books) {
-                                          filteredBooks =
-                                              filterBooks(books, value);
+                                          filteredBooks = filterBooks(books, value);
                                         });
                                       });
                                     },
@@ -136,8 +131,7 @@ class _AllBooks extends State<AllBooks> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                searchController
-                                    .clear(); // Clear the search text
+                                searchController.clear(); // Clear the search text
                               });
                             },
                             child: Image.asset(
@@ -160,20 +154,15 @@ class _AllBooks extends State<AllBooks> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator(); // Show loading spinner while waiting for data
                     } else if (snapshot.hasError) {
-                      return Text(
-                          'Error: ${snapshot.error}'); // Show error message if there is an error
+                      return Text('Error: ${snapshot.error}'); // Show error message if there is an error
                     } else {
                       // Determine the number of books to show
-                      List<Book> filteredBooks =
-                          filterBooks(snapshot.data!, searchController.text);
+                      List<Book> filteredBooks = filterBooks(snapshot.data!, searchController.text);
 
-                      int numBooksToShow = showAllBooks
-                          ? filteredBooks.length
-                          : filteredBooks.length;
+                      int numBooksToShow = showAllBooks ? filteredBooks.length : filteredBooks.length;
 
                       return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+                        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
                         child: Column(
                           children: [
                             Row(
@@ -186,20 +175,11 @@ class _AllBooks extends State<AllBooks> {
                                         ? Text("Semua Buku",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: kashmirBlue400))
-                                        : Text(
-                                            "Hasil Pencarian: ${filteredBooks.length} buku",
+                                            style: TextStyle(fontFamily: 'SF-Pro', fontSize: 14, fontWeight: FontWeight.w500, color: kashmirBlue400))
+                                        : Text("Hasil Pencarian: ${filteredBooks.length} buku",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: kashmirBlue400)),
+                                            style: TextStyle(fontFamily: 'SF-Pro', fontSize: 14, fontWeight: FontWeight.w500, color: kashmirBlue400)),
                                   ),
                                 ),
                               ],
@@ -214,8 +194,7 @@ class _AllBooks extends State<AllBooks> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookDetailPage(book: book),
+                                          builder: (context) => BookDetailPage(book: book),
                                         ),
                                       );
                                     },
@@ -224,19 +203,15 @@ class _AllBooks extends State<AllBooks> {
                                       margin: EdgeInsets.only(bottom: 8),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
+                                        borderRadius: BorderRadius.all(Radius.circular(12)),
                                       ),
                                       child: Row(
                                         children: [
                                           Container(
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                  8.0), // Sesuaikan nilai sesuai kebutuhan Anda
+                                              borderRadius: BorderRadius.circular(8.0), // Sesuaikan nilai sesuai kebutuhan Anda
                                               child: Image.network(
-                                                book.fields.imageUrlL.replaceFirst(
-                                                    "http://images.amazon.com/",
-                                                    "https://m.media-amazon.com/"),
+                                                book.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
                                                 width: 50,
                                                 height: 60,
                                                 fit: BoxFit.cover,
@@ -247,53 +222,40 @@ class _AllBooks extends State<AllBooks> {
                                             width: 12,
                                           ),
                                           Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  272,
+                                              width: MediaQuery.of(context).size.width - 272,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     book.fields.title,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                     maxLines: 1,
-                                                    style: TextStyle(
-                                                        fontFamily: 'SF-Pro',
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: jaguar950),
+                                                    style:
+                                                        TextStyle(fontFamily: 'SF-Pro', fontSize: 16, fontWeight: FontWeight.w600, color: jaguar950),
                                                   ),
                                                   SizedBox(
                                                     height: 4,
                                                   ),
                                                   Text(
                                                     book.fields.author,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       color: kashmirBlue400,
                                                       fontFamily: 'SF-Pro',
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                      fontWeight: FontWeight.w400,
                                                     ),
                                                   )
                                                 ],
                                               )),
                                           Row(
                                             children: [
-                                              Image.asset(
-                                                  "assets/home/upvote-blank.png"),
+                                              Image.asset("assets/home/upvote-blank.png"),
                                               SizedBox(
                                                 width: 8,
                                               ),
-                                              Image.asset(
-                                                  "assets/home/wishlist-blank.png"),
+                                              Image.asset("assets/home/wishlist-blank.png"),
                                             ],
                                           )
                                         ],
