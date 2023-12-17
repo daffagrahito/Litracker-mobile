@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/pages/book_form.dart';
+import 'package:litracker_mobile/book/pages/edit_books.dart';
 import 'package:litracker_mobile/pages/auth/loginPage.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -20,7 +21,7 @@ class AdminHome extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Admin Homepage",
               style: TextStyle(
                 color: Colors.white,
@@ -28,9 +29,7 @@ class AdminHome extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(
-                height:
-                    40), // Add some space between the header and the buttons
+            const SizedBox(height: 40), // Add some space between the header and the buttons
             buildButton(
               context,
               "Tambah Buku",
@@ -48,10 +47,24 @@ class AdminHome extends StatelessWidget {
             const SizedBox(height: 20), // Add some space between the buttons
             buildButton(
               context,
+              "Edit Buku",
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EditBooksPage(),
+                  ),
+                );
+              },
+              color: Colors.white,
+              textColor: Colors.black,
+            ),
+            const SizedBox(height: 20), // Add some space between the buttons
+            buildButton(
+              context,
               "Logout",
               () async {
-                final response = await request
-                    .logout("http://localhost:8080/logout-mobile/");
+                final response = await request.logout("http://localhost:8080/logout-mobile/");
                 String message = response["message"];
                 if (response['status']) {
                   String uname = response["username"];
@@ -90,7 +103,7 @@ class AdminHome extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: TextButton(
         onPressed: onPressed,

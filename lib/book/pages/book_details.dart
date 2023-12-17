@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
@@ -24,19 +21,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
   int totalUpvotedBookbyUser = 0;
 
   Future<int> fetchTotalUsersVote() async {
-    final requestTotalUsers =
-        Provider.of<CookieRequest>(context, listen: false);
-    final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+    final requestTotalUsers = Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get('http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
 
     return responseUsersVote['total_users_upvote'];
   }
 
   Future<bool> fetchHasUserUpvoted() async {
-    final requestTotalUsers =
-        Provider.of<CookieRequest>(context, listen: false);
-    final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+    final requestTotalUsers = Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get('http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -65,11 +58,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
           Text(
             "$totalUpvotedBookbyUser upvote buku ini",
-            style: TextStyle(
-                fontFamily: 'SF-Pro',
-                letterSpacing: -0.7,
-                fontSize: 12,
-                fontWeight: FontWeight.w700),
+            style: TextStyle(fontFamily: 'SF-Pro', letterSpacing: -0.7, fontSize: 12, fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -81,13 +70,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
     return Container(
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(4),
-            bottomLeft: Radius.circular(4),
-            topRight: Radius.circular(12),
-            bottomRight: Radius.circular(12)),
+            topLeft: Radius.circular(4), bottomLeft: Radius.circular(4), topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
         child: Image.network(
-          widget.book.fields.imageUrlL.replaceFirst(
-              "http://images.amazon.com/", "https://m.media-amazon.com/"),
+          widget.book.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
           width: 184,
           height: 232,
           fit: BoxFit.cover,
@@ -107,11 +92,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
       child: Text(
         widget.book.fields.publishedYear.toString(),
         textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'SF-Pro',
-            fontSize: 12,
-            fontWeight: FontWeight.w900,
-            color: Colors.white),
+        style: TextStyle(fontFamily: 'SF-Pro', fontSize: 12, fontWeight: FontWeight.w900, color: Colors.white),
       ),
     );
   }
@@ -132,11 +113,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
       alignment: Alignment.centerLeft,
       child: Text(
         widget.book.fields.title,
-        style: TextStyle(
-            fontFamily: 'SF-Pro',
-            fontWeight: FontWeight.w900,
-            fontSize: 32,
-            color: jaguar950),
+        style: TextStyle(fontFamily: 'SF-Pro', fontWeight: FontWeight.w900, fontSize: 32, color: jaguar950),
       ),
     );
   }
@@ -147,11 +124,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
       alignment: Alignment.centerLeft,
       child: Text(
         widget.book.fields.author,
-        style: TextStyle(
-            fontFamily: 'SF-Pro',
-            fontWeight: FontWeight.w700,
-            color: kashmirBlue500,
-            fontSize: 16),
+        style: TextStyle(fontFamily: 'SF-Pro', fontWeight: FontWeight.w700, color: kashmirBlue500, fontSize: 16),
       ),
     );
   }
@@ -160,19 +133,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
   Widget ISBN_ofBook() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      decoration: BoxDecoration(
-          color: kashmirBlue50,
-          borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: BoxDecoration(color: kashmirBlue50, borderRadius: BorderRadius.all(Radius.circular(12))),
       child: Row(
         children: [
           Container(
             child: Text(
               "ISBN",
-              style: TextStyle(
-                  fontFamily: 'SF-Pro',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: kashmirBlue600),
+              style: TextStyle(fontFamily: 'SF-Pro', fontSize: 12, fontWeight: FontWeight.w700, color: kashmirBlue600),
             ),
           ),
           SizedBox(
@@ -181,11 +148,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
           Container(
             child: Text(
               widget.book.fields.isbn,
-              style: TextStyle(
-                  fontFamily: 'SF-Pro',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
-                  color: kashmirBlue950),
+              style: TextStyle(fontFamily: 'SF-Pro', fontSize: 12, fontWeight: FontWeight.w900, color: kashmirBlue950),
             ),
           ),
         ],
@@ -209,17 +172,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
     return Container(
       width: theWidth,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-          color: jaguar400,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      decoration: BoxDecoration(color: jaguar400, borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Text(
         "Tandai Sedang Dibaca",
         textAlign: TextAlign.center,
-        style: TextStyle(
-            fontFamily: 'SF-Pro',
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            color: Colors.white),
+        style: TextStyle(fontFamily: 'SF-Pro', fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white),
       ),
     );
   }
@@ -245,31 +202,28 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         padding: EdgeInsets.only(
                           top: 60,
                         ),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FutureBuilder<int>(
-                                future: fetchTotalUsersVote(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    totalUpvotedBookbyUser = snapshot.data!;
-                                    return totalUpvoteStyle();
-                                  }
-                                },
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              imageBookStyle(),
-                              SizedBox(
-                                height: 20,
-                              )
-                            ]),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          FutureBuilder<int>(
+                            future: fetchTotalUsersVote(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                totalUpvotedBookbyUser = snapshot.data!;
+                                return totalUpvoteStyle();
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          imageBookStyle(),
+                          SizedBox(
+                            height: 20,
+                          )
+                        ]),
                       ),
                     ),
                     Container(
@@ -279,10 +233,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         height: 20,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40))),
+                            color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                       ),
                     ),
                     // BG White -> Informasi Buku
@@ -312,22 +263,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                         // Inside the onTap method for upvote
                                         // Inside the onTap method for upvote
                                         onTap: () async {
-                                          final requestToggleUpvote =
-                                              Provider.of<CookieRequest>(
-                                                  context,
-                                                  listen: false);
-                                          final response =
-                                              await requestToggleUpvote.post(
-                                                  "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
-                                                  {});
+                                          final requestToggleUpvote = Provider.of<CookieRequest>(context, listen: false);
+                                          final response = await requestToggleUpvote
+                                              .post("http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.book.pk}/", {});
 
                                           // Check if the book is upvoted or unvoted
 
                                           String message = response['message'];
                                           // int total_votes =
                                           //     response['total_votes'];
-                                          if (message == 'Upvoted' ||
-                                              message == 'Unvoted') {
+                                          if (message == 'Upvoted' || message == 'Unvoted') {
                                             setState(() {
                                               if (message == 'Upvoted') {
                                                 // isVoted = true;
@@ -345,18 +290,14 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                           child: FutureBuilder<bool>(
                                             future: fetchHasUserUpvoted(),
                                             builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
+                                              if (snapshot.connectionState == ConnectionState.waiting) {
                                                 return CircularProgressIndicator();
                                               } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error: ${snapshot.error}');
+                                                return Text('Error: ${snapshot.error}');
                                               } else {
                                                 isVoted = snapshot.data!;
                                                 return Image.asset(
-                                                  isVoted
-                                                      ? "assets/home/upvote_fill.png"
-                                                      : "assets/home/upvote_blank.png",
+                                                  isVoted ? "assets/home/upvote_fill.png" : "assets/home/upvote_blank.png",
                                                   width: 36,
                                                   height: 36,
                                                 );
@@ -403,8 +344,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
               right: 0,
               left: 0,
               child: Container(
-                padding:
-                    EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 40),
+                padding: EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 40),
                 decoration: BoxDecoration(
                     color: jaguar700,
                     borderRadius: BorderRadius.only(
@@ -425,12 +365,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => LastPageForm()),
+                            MaterialPageRoute(builder: (context) => LastPageForm()),
                           );
                         },
-                        child: readingHistory(
-                            MediaQuery.of(context).size.width - 196)),
+                        child: readingHistory(MediaQuery.of(context).size.width - 196)),
                     SizedBox(
                       width: 24,
                     ),
