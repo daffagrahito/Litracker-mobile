@@ -299,7 +299,10 @@ class _HomeContentState extends State<HomeContent>
                   ),
                 ),
                 SizedBox(height: 10), // Spasi antara PageView dan Indicator
-                _buildIndicator(),
+
+                Visibility(
+                    visible: searchController.text.isEmpty,
+                    child: _buildIndicator()),
               ],
             ),
             Container(
@@ -388,33 +391,36 @@ class _HomeContentState extends State<HomeContent>
                             ],
                           ),
                           SizedBox(height: 20),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16))),
+                          Visibility(
+                            visible: searchController.text.isEmpty,
                             child: Container(
-                              width: MediaQuery.of(context).size.width - 76,
-                              margin: EdgeInsets.symmetric(horizontal: 12),
-                              padding: EdgeInsets.symmetric(vertical: 16),
+                              padding: EdgeInsets.symmetric(vertical: 12),
                               decoration: BoxDecoration(
-                                  color: jaguar600,
+                                  color: Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(16))),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _refreshData();
-                                  });
-                                },
-                                child: Text(
-                                  "Segarkan",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'SF-Pro',
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 76,
+                                margin: EdgeInsets.symmetric(horizontal: 12),
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                decoration: BoxDecoration(
+                                    color: jaguar600,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(16))),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _refreshData();
+                                    });
+                                  },
+                                  child: Text(
+                                    "Segarkan",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
