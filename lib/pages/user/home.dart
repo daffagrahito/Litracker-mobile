@@ -413,13 +413,26 @@ class _HomeContentState extends State<HomeContent>
                                       _refreshData();
                                     });
                                   },
-                                  child: Text(
-                                    "Segarkan",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        "assets/home/refresh.png",
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        "Segarkan",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontFamily: 'SF-Pro',
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -452,8 +465,15 @@ class _HomeContentState extends State<HomeContent>
                                       children: [
                                         Container(
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                8.0), // Sesuaikan nilai sesuai kebutuhan Anda
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft: Radius.circular(4),
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomLeft:
+                                                        Radius.circular(4),
+                                                    bottomRight:
+                                                        Radius.circular(6)),
                                             child: Image.network(
                                               book.fields.imageUrlL.replaceFirst(
                                                   "http://images.amazon.com/",
