@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/pages/review/detailReview.dart';
+import 'package:litracker_mobile/review/detailReview.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
