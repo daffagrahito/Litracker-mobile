@@ -16,8 +16,7 @@ class TopBook {
   });
 
   factory TopBook.fromJson(Map<String, dynamic> json) => TopBook(
-        topBooks: List<TopBookElement>.from(
-            json["top_books"].map((x) => TopBookElement.fromJson(x))),
+        topBooks: List<TopBookElement>.from(json["top_books"].map((x) => TopBookElement.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

@@ -12,7 +12,7 @@ class _UpVoteListState extends State<UpVoteList> {
 
   void showSuccessNotification() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Berhasil membatalkan upvote!'),
       ),
     );
@@ -29,7 +29,7 @@ class _UpVoteListState extends State<UpVoteList> {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
@@ -45,10 +45,10 @@ class _UpVoteListState extends State<UpVoteList> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  Text(
+                  const Text(
                     "Buku Terupvote",
                     style: TextStyle(
                       fontFamily: 'SF-Pro',
@@ -65,11 +65,11 @@ class _UpVoteListState extends State<UpVoteList> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -85,12 +85,12 @@ class _UpVoteListState extends State<UpVoteList> {
                           width: 52,
                           height: 64,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 12,
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width - 220,
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -121,13 +121,13 @@ class _UpVoteListState extends State<UpVoteList> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(246, 247, 249, 1),
+                        color: const Color.fromRGBO(246, 247, 249, 1),
                         borderRadius: BorderRadius.circular(28),
                       ),
                       child: Row(
@@ -137,10 +137,10 @@ class _UpVoteListState extends State<UpVoteList> {
                             child: Row(
                               children: [
                                 Image.asset("assets/upvote/upvote-36.png"),
-                                SizedBox(
+                                const SizedBox(
                                   width: 4,
                                 ),
-                                Text(
+                                const Text(
                                   "1604",
                                   style: TextStyle(
                                     fontFamily: 'SF-Pro',
@@ -168,7 +168,7 @@ class _UpVoteListState extends State<UpVoteList> {
                                       color: Color.fromRGBO(8, 4, 22, 1),
                                     ),
                                   ),
-                                  content: Text(
+                                  content: const Text(
                                     'Tekan OK untuk melanjutkan',
                                     style: TextStyle(
                                       fontFamily: 'SF-Pro',
@@ -178,8 +178,8 @@ class _UpVoteListState extends State<UpVoteList> {
                                     ),
                                   ),
                                   backgroundColor: Colors.white,
-                                  buttonPadding: EdgeInsets.all(16),
-                                  contentPadding: EdgeInsets.only(
+                                  buttonPadding: const EdgeInsets.all(16),
+                                  contentPadding: const EdgeInsets.only(
                                     bottom: 40,
                                     left: 24,
                                     top: 12,
@@ -187,10 +187,9 @@ class _UpVoteListState extends State<UpVoteList> {
                                   actions: [
                                     TextButton(
                                       style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            Color.fromRGBO(8, 4, 22, 1),
+                                        foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
                                         backgroundColor: Colors.white,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                           horizontal: 24,
                                           vertical: 20,
                                         ),
@@ -211,15 +210,14 @@ class _UpVoteListState extends State<UpVoteList> {
                                     TextButton(
                                       style: TextButton.styleFrom(
                                         foregroundColor: Colors.white,
-                                        backgroundColor:
-                                            Color.fromRGBO(72, 22, 236, 1),
-                                        padding: EdgeInsets.symmetric(
+                                        backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                        padding: const EdgeInsets.symmetric(
                                           horizontal: 24,
                                           vertical: 20,
                                         ),
                                       ),
                                       child: isLoading
-                                          ? CircularProgressIndicator(
+                                          ? const CircularProgressIndicator(
                                               color: Colors.white,
                                             )
                                           : const Text('OK'),
@@ -232,7 +230,7 @@ class _UpVoteListState extends State<UpVoteList> {
 
                                         // Simulate loading
                                         await Future.delayed(
-                                          Duration(seconds: 2),
+                                          const Duration(seconds: 2),
                                         );
 
                                         setState(() {
@@ -249,16 +247,14 @@ class _UpVoteListState extends State<UpVoteList> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isLoading
-                                    ? Colors.grey
-                                    : Color.fromRGBO(81, 33, 255, 1),
+                                color: isLoading ? Colors.grey : const Color.fromRGBO(81, 33, 255, 1),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               height: 36,
                               width: 88,
                               alignment: Alignment.center,
                               child: isLoading
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
@@ -266,7 +262,7 @@ class _UpVoteListState extends State<UpVoteList> {
                                         color: Colors.white,
                                       ),
                                     )
-                                  : Text(
+                                  : const Text(
                                       "Batalkan",
                                       style: TextStyle(
                                         fontFamily: 'SF-Pro',

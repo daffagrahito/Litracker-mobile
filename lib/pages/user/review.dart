@@ -3,7 +3,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/pages/review/detailReview.dart';
+import 'package:litracker_mobile/review/detailReview.dart';
 
 class ReviewContent extends StatefulWidget {
   @override

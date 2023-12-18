@@ -3,7 +3,7 @@ import 'package:litracker_mobile/pages/user/home.dart';
 import 'history.dart'; // Import your HistoryContent class
 
 import 'profile.dart';
-import 'review.dart';
+import 'package:litracker_mobile/review/review_book.dart';
 
 class NavigateUser extends StatefulWidget {
   const NavigateUser({Key? key}) : super(key: key);
@@ -71,21 +71,16 @@ class _NavigateUserState extends State<NavigateUser> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildNavItem(0, 'Beranda', 'assets/navbar/home-secondary.png',
-              'assets/navbar/home-primary.png'),
-          _buildNavItem(1, 'Ulas', 'assets/navbar/review-secondary.png',
-              'assets/navbar/review-primary.png'),
-          _buildNavItem(2, 'Riwayat', 'assets/navbar/history-secondary.png',
-              'assets/navbar/history-primary.png'),
-          _buildNavItem(3, 'Profil', 'assets/navbar/profile-secondary.png',
-              'assets/navbar/profile-primary.png'),
+          _buildNavItem(0, 'Beranda', 'assets/navbar/home-secondary.png', 'assets/navbar/home-primary.png'),
+          _buildNavItem(1, 'Ulas', 'assets/navbar/review-secondary.png', 'assets/navbar/review-primary.png'),
+          _buildNavItem(2, 'Riwayat', 'assets/navbar/history-secondary.png', 'assets/navbar/history-primary.png'),
+          _buildNavItem(3, 'Profil', 'assets/navbar/profile-secondary.png', 'assets/navbar/profile-primary.png'),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(
-      int index, String label, String imagePath, String activeImagePath) {
+  Widget _buildNavItem(int index, String label, String imagePath, String activeImagePath) {
     bool isSelected = index == _currentIndex;
 
     return InkWell(
