@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'package:litracker_mobile/pages/user/navigate.dart';
-import 'package:litracker_mobile/reading_history/models/last_page.dart';
+
+import 'package:litracker_mobile/reading_history/utils/reading_history_utils.dart';
 
 class HistoryContent extends StatefulWidget {
   const HistoryContent({Key? key}) : super(key: key);
@@ -13,33 +12,11 @@ class HistoryContent extends StatefulWidget {
 }
 
 class _HistoryContentState extends State<HistoryContent> {
-  Future<List<Product>> fetchHistory() async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-    var url = Uri.parse('http://localhost:8080/reading_history/fetch_history/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    // melakukan konversi data json menjadi object Product
-    List<Product> list_product = [];
-    for (var d in data) {
-      if (d != null) {
-        list_product.add(Product.fromJson(d));
-      }
-    }
-
-    return list_product;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Product'),
+          title: const Text('Reading History'),
         ),
         drawer: const NavigateUser(),
         body: FutureBuilder(
@@ -53,8 +30,7 @@ class _HistoryContentState extends State<HistoryContent> {
                     children: [
                       Text(
                         "Tidak ada data reading history.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                        style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -63,8 +39,7 @@ class _HistoryContentState extends State<HistoryContent> {
                   return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (_, index) => Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -80,8 +55,7 @@ class _HistoryContentState extends State<HistoryContent> {
                                 const SizedBox(height: 10),
                                 Text("${snapshot.data![index].fields.price}"),
                                 const SizedBox(height: 10),
-                                Text(
-                                    "${snapshot.data![index].fields.description}")
+                                Text("${snapshot.data![index].fields.description}")
                               ],
                             ),
                           ));

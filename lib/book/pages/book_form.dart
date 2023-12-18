@@ -142,8 +142,8 @@ class _BookFormPageState extends State<BookFormPage> {
                       if (value == null || value.isEmpty) {
                         return "Tahun buku dirilis tidak boleh kosong!";
                       }
-                      if (int.tryParse(value) == null) {
-                        return "Tahun buku dirilis harus berupa angka!";
+                      if (int.tryParse(value) == null || int.tryParse(value)! < 0) {
+                        return "Tahun buku dirilis harus berupa angka positif!";
                       }
                       return null;
                     },

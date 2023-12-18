@@ -29,7 +29,7 @@ class HistoryContent extends StatelessWidget {
                   height: 28,
                 ),
                 Text(
-                  "Halaman Tersimpan",
+                  "Daftar Riwayat Bacaanmu",
                   style: TextStyle(
                     color: Color.fromRGBO(88, 107, 132, 1),
                     fontFamily: 'SF-Pro',
@@ -58,8 +58,7 @@ class HistoryContent extends StatelessWidget {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(right: 12),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(80, 166, 255, 1),
                           borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -74,10 +73,10 @@ class HistoryContent extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 240,
-                        child: const Flexible(
-                          child: Column(
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 240,
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -125,55 +124,37 @@ class HistoryContent extends StatelessWidget {
                                     ),
                                     content: Container(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Container(
                                             decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              color: const Color.fromRGBO(
-                                                  246, 247, 249, 1),
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              color: const Color.fromRGBO(246, 247, 249, 1),
                                             ),
                                             child: TextFormField(
-                                              keyboardType:
-                                                  TextInputType.number,
+                                              keyboardType: TextInputType.number,
                                               decoration: InputDecoration(
                                                 labelText: 'Nomor Halaman',
                                                 labelStyle: const TextStyle(
                                                   fontFamily: 'SF-Pro',
                                                   fontWeight: FontWeight.w700,
                                                   letterSpacing: -0.8,
-                                                  color: Color.fromRGBO(
-                                                      51, 59, 68, 1),
+                                                  color: Color.fromRGBO(51, 59, 68, 1),
                                                 ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
+                                                enabledBorder: OutlineInputBorder(
                                                   borderSide: const BorderSide(
                                                     color: Colors.transparent,
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
+                                                  borderRadius: BorderRadius.circular(12.0),
                                                 ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
+                                                focusedBorder: OutlineInputBorder(
                                                   borderSide: const BorderSide(
-                                                    color: Color.fromRGBO(
-                                                        208,
-                                                        201,
-                                                        255,
-                                                        1), // Change to your desired blue color
+                                                    color: Color.fromRGBO(208, 201, 255, 1), // Change to your desired blue color
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
+                                                  borderRadius: BorderRadius.circular(12.0),
                                                 ),
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 16,
-                                                        vertical: 12),
+                                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                               ),
                                             ),
                                           ),
@@ -186,8 +167,7 @@ class HistoryContent extends StatelessWidget {
                                     actions: [
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          foregroundColor:
-                                              const Color.fromRGBO(8, 4, 22, 1),
+                                          foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
                                           backgroundColor: Colors.white,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 24,
@@ -209,8 +189,7 @@ class HistoryContent extends StatelessWidget {
                                       ),
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          backgroundColor: const Color.fromRGBO(
-                                              72, 22, 236, 1),
+                                          backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 24,
                                             vertical: 20,

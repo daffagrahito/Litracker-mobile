@@ -25,6 +25,21 @@ Future<List<Book>> fetchBooks() async {
   return books;
 }
 
+Future<Book> fetchBook(int bookId) async {
+  var url = Uri.parse('http://localhost:8080/home/api/book/$bookId');
+  var response = await http.get(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  );
+
+  var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+  Book book = Book.fromJson(data);
+  return book;
+}
+
 List<Book> filterBooks(List<Book> books, String query) {
   return books.where((book) {
     final title = book.fields.title.toLowerCase();
@@ -128,7 +143,7 @@ Widget buildTextField(TextEditingController controller, String labelText, {bool 
             if (value == null || value.isEmpty) {
               return 'Field ini tidak boleh kosong!';
             }
-            if (isInteger && int.tryParse(value) == null) {
+            if (isInteger && int.tryParse(value) == null || int.tryParse(value)! < 0) {
               return 'Field ini harus berupa angka!';
             }
             return null;
