@@ -21,7 +21,7 @@ class DetailReview extends StatefulWidget {
 }
 
 class _DetailReviewState extends State<DetailReview> {
-  Future<List<Map<String, dynamic>>> fetchGetBookReviews() async {
+  Future<Map<String, dynamic>> fetchGetBookReviews() async {
     try {
       var url = Uri.parse('http://localhost:8080/review_book/get_book_reviews/${widget.bookID}/');
       var responseDetailReview = await http.get(
@@ -36,480 +36,221 @@ class _DetailReviewState extends State<DetailReview> {
           List<Map<String, dynamic>> reviewsList = [];
           for (var reviewData in data['reviews']) {
             reviewsList.add({
+              'id': reviewData['id'],
               'username': reviewData['username'],
               'comment': reviewData['comment'],
               'timestamp': reviewData['timestamp'],
               'rating': reviewData['rating'],
             });
           }
-          return reviewsList;
+          return {'reviews': reviewsList, 'reviews_count': data['reviews_count']};
         } else {
-          return [];
+          return {'reviews': <Map<String, dynamic>>[], 'reviews_count': 0};
         }
       } else {
         throw Exception('Failed to load reviews');
       }
     } catch (e) {
       print(e.toString());
-      return [];
+      return {'reviews': [], 'reviews_count': 0};
     }
   }
 
-  bool _isDeleting = false;
-  final String username = loggedInUser!.username;
-
-  // Function to simulate review deletion with delay
-  Future<void> _deleteReview(BuildContext context) async {
-    // Show loading indicator
-    setState(() {
-      _isDeleting = true;
-    });
-
-    // Simulate a loading delay
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Hide loading indicator
-    setState(() {
-      _isDeleting = false;
-    });
-
-    // Show success notification
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Review deleted successfully!'),
-        duration: Duration(seconds: 2),
-      ),
+  Future<void> deleteReview(int reviewId) async {
+    final response = await http.delete(
+      Uri.parse('http://localhost:8080/review_book/delete_book_reviews/$reviewId/'),
     );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete review');
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
-      body: SlidingUpPanel(
-        minHeight: 164,
-        color: const Color.fromRGBO(72, 22, 236, 1),
-        maxHeight: MediaQuery.of(context).size.height * 0.93,
-        borderRadius: const BorderRadius.vertical(top: const Radius.circular(40)),
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(81, 33, 255, 1),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset(
-                          "assets/review/back.png",
-                          width: 32,
-                        ),
-                      ),
-                      Center(
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(28)),
-                                color: Color.fromRGBO(92, 66, 255, 1),
-                              ),
-                              padding: const EdgeInsets.all(10), // Benerin ini juga buat padding imagenya
-                              child: Image.network(
-                                widget.bookReviewed.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
-                                height: 60,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            Text(
-                              widget.bookReviewed.fields.title,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 20,
-                              ),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
-                                color: Color.fromRGBO(80, 166, 255, 1),
-                              ),
-                              child: const Text(
-                                "60 Ulasan",
-                                style: TextStyle(
-                                  fontFamily: 'SF-Pro',
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 44,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: const Column(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Text(
-                        "Semua Ulasan",
-                        style: TextStyle(
-                          fontFamily: 'SF-Pro',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-                FutureBuilder<List<Map<String, dynamic>>>(
-                  future: fetchGetBookReviews(),
-                  builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          var review = snapshot.data![index];
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(32)),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset("assets/review/profile-reviewing-other.png"),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width - 80 - 88,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 12,
-                                      horizontal: 12,
-                                    ),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            review['username'],
-                                            style: const TextStyle(
-                                              fontFamily: 'SF-Pro',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: kashmirBlue600,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            review['comment'],
-                                            style: const TextStyle(
-                                              fontFamily: 'SF-Pro',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/review/rating.png",
-                                                  width: 20,
-                                                  height: 20,
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                    review['rating'].toString() + "/5", // replace "4.5/5" with rating
-                                                    style: const TextStyle(
-                                                        fontFamily: 'SF-Pro', fontWeight: FontWeight.w600, fontSize: 14, color: kashmirBlue600),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/review/lastupdate.png",
-                                                  width: 20,
-                                                  height: 20,
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Container(
-                                                  child: Text(
-                                                    review['timestamp'], // replace "20 detik yang lalu" with timestamp
-                                                    style: const TextStyle(
-                                                        fontFamily: 'SF-Pro', fontWeight: FontWeight.w300, fontSize: 12, color: kashmirBlue600),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 192,
-                )
-              ],
-            ),
-          ),
-        ),
-        panelBuilder: (controller) {
-          return SingleChildScrollView(
-            controller: controller,
-            child: Container(
+  Widget buildBody(int amountUlasan) {
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(81, 33, 255, 1),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
+              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Image.asset(
+                      "assets/review/back.png",
+                      width: 32,
+                    ),
+                  ),
                   Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      height: 8,
-                      width: 72,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(28)),
+                            color: Color.fromRGBO(92, 66, 255, 1),
+                          ),
+                          padding: const EdgeInsets.all(10), // Benerin ini juga buat padding imagenya
+                          child: Image.network(
+                            widget.bookReviewed.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
+                            height: 60,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          widget.bookReviewed.fields.title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'SF-Pro',
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 20,
+                          ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            color: Color.fromRGBO(80, 166, 255, 1),
+                          ),
+                          child: Text(
+                            "$amountUlasan Ulasan",
+                            style: const TextStyle(
+                              fontFamily: 'SF-Pro',
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(
-                    height: 28,
+                    height: 44,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset("assets/review/heart-fill.png"),
-                          const SizedBox(),
-                          Image.asset("assets/review/upvote-blank.png"),
-                        ],
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(92, 66, 255, 1),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 20,
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: const Column(
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Text(
+                    "Semua Ulasan",
+                    style: TextStyle(
+                      fontFamily: 'SF-Pro',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+            FutureBuilder<Map<String, dynamic>>(
+              future: fetchGetBookReviews(),
+              builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<Map<String, dynamic>> reviews = snapshot.data!['reviews'];
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: reviews.length,
+                    itemBuilder: (context, index) {
+                      var review = reviews[index];
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(32)),
                           ),
-                        ),
-                        onPressed: () async {
-                          TextEditingController reviewController = TextEditingController();
-                          String rating = '1';
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return StatefulBuilder(
-                                builder: (context, setState) {
-                                  return AlertDialog(
-                                    title: const Text('Berikan review kamu'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        TextField(
-                                          controller: reviewController,
-                                          decoration: const InputDecoration(hintText: "Berikan reviewmu disini"),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset("assets/review/profile-reviewing-other.png"),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 80 - 88,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 12,
+                                ),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        review['username'],
+                                        style: const TextStyle(
+                                          fontFamily: 'SF-Pro',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: kashmirBlue600,
                                         ),
-                                        Row(
-                                          children: <Widget>[
-                                            const Text('Rating: '),
-                                            DropdownButton<String>(
-                                              value: rating,
-                                              items: <String>['1', '2', '3', '4', '5'].map((String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  rating = newValue!;
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Submit'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop({'review': reviewController.text.toString(), 'rating': rating});
-                                        },
                                       ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ).then((value) async {
-                            if (value != null) {
-                              var response = await http.post(
-                                Uri.parse('http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
-                                body: {'username': username, 'comment': value['review'], 'rating': value['rating']},
-                              );
-
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Review berhasil diposting!')),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Terdapat kesalahan. silahkan coba lagi.')),
-                                );
-                              }
-                            }
-                          });
-                        },
-                        child: const Text(
-                          "Tambah Ulasan",
-                          style: TextStyle(
-                            fontFamily: 'SF-Pro',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: const Text(
-                          "Ulasan Saya",
-                          style: TextStyle(
-                            fontFamily: 'SF-Pro',
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/review/profile-reviewing.png",
-                            alignment: Alignment.topLeft,
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: Color.fromRGBO(40, 129, 255, 1),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 80 - 60,
-                              padding: const EdgeInsets.only(
-                                top: 12,
-                                bottom: 12,
-                                left: 12,
-                                right: 12,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        review['comment'],
+                                        style: const TextStyle(
+                                          fontFamily: 'SF-Pro',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Column(
                                       children: [
                                         Row(
                                           children: [
@@ -522,164 +263,458 @@ class _DetailReviewState extends State<DetailReview> {
                                               width: 12,
                                             ),
                                             Container(
-                                              child: const Text(
-                                                "4.5/5",
-                                                style: TextStyle(
-                                                    fontFamily: 'SF-Pro',
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 12,
-                                                    color: Color.fromARGB(225, 255, 255, 255)),
+                                              child: Text(
+                                                review['rating'].toString() + "/5", // replace "4.5/5" with rating
+                                                style: const TextStyle(
+                                                    fontFamily: 'SF-Pro', fontWeight: FontWeight.w600, fontSize: 14, color: kashmirBlue600),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                          padding: const EdgeInsets.only(top: 16),
-                                          child: const Text(
-                                            "ramzieistripopo",
-                                            style: TextStyle(
-                                              fontFamily: 'SF-Pro',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14,
-                                              color: Color.fromRGBO(255, 255, 255, 0.7),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/review/lastupdate.png",
+                                              width: 20,
+                                              height: 20,
                                             ),
-                                          ),
-                                        ),
-                                        const Text(
-                                          "Bukunya bagus lorem ipsum sir dolot amit",
-                                          style: TextStyle(
-                                            fontFamily: 'SF-Pro',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.only(top: 16),
-                                          child: Row(
-                                            children: [
-                                              Image.asset("assets/review/lastupdate-indark.png"),
-                                              const SizedBox(
-                                                width: 8,
+                                            const SizedBox(
+                                              width: 12,
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                review['timestamp'], // replace "20 detik yang lalu" with timestamp
+                                                style: const TextStyle(
+                                                    fontFamily: 'SF-Pro', fontWeight: FontWeight.w300, fontSize: 12, color: kashmirBlue600),
                                               ),
-                                              Container(
-                                                child: const Text(
-                                                  "20 detik yang lalu",
-                                                  style: TextStyle(
-                                                      fontFamily: 'SF-Pro',
-                                                      fontWeight: FontWeight.w300,
-                                                      fontSize: 12,
-                                                      color: Color.fromARGB(172, 255, 255, 255)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      // Show confirmation dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                              'Hapus Ulasan',
-                                              style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontWeight: FontWeight.w700,
-                                                letterSpacing: -1,
-                                                fontSize: 24,
-                                                color: Color.fromRGBO(8, 4, 22, 1),
-                                              ),
-                                            ),
-                                            content: const Text(
-                                              'Apa kamu yakin ingin menghapus ulasan ini?',
-                                              style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: Color.fromRGBO(88, 107, 132, 1),
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
-                                                  backgroundColor: Colors.white,
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 24,
-                                                    vertical: 20,
-                                                  ),
-                                                ),
-                                                child: const Text(
-                                                  'Batal',
-                                                  style: TextStyle(
-                                                    fontFamily: 'SF-Pro',
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
-                                                    color: Color.fromRGBO(8, 4, 22, 1),
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                              TextButton(
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 24,
-                                                    vertical: 20,
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(); // Close the dialog
-                                                  _deleteReview(context); // Function to handle review deletion
-                                                },
-                                                child: const Text(
-                                                  'Ya, hapus',
-                                                  style: TextStyle(
-                                                    fontFamily: 'SF-Pro',
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Image.asset("assets/review/trash-blue.png"),
-                                  ),
-                                  if (_isDeleting)
-                                    const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                      ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+            const SizedBox(
+              height: 192,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  late int amountUlasan = 0; // local variable untuk banyak ulasan yang ada di buku ini
+  final String username = loggedInUser!.username;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchGetBookReviews().then((result) {
+      setState(() {
+        amountUlasan = result['reviews_count'];
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
+      body: SlidingUpPanel(
+          minHeight: 164,
+          color: const Color.fromRGBO(72, 22, 236, 1),
+          maxHeight: MediaQuery.of(context).size.height * 0.93,
+          borderRadius: const BorderRadius.vertical(top: const Radius.circular(40)),
+          body: buildBody(amountUlasan),
+          panelBuilder: (controller) {
+            return SingleChildScrollView(
+              controller: controller,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        height: 8,
+                        width: 72,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset("assets/review/heart-fill.png"),
+                            const SizedBox(),
+                            Image.asset("assets/review/upvote-blank.png"),
+                          ],
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color.fromRGBO(92, 66, 255, 1),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 20,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                          onPressed: () async {
+                            TextEditingController reviewController = TextEditingController();
+                            String rating = '1';
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return AlertDialog(
+                                      title: const Text('Berikan review kamu'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          TextField(
+                                            controller: reviewController,
+                                            decoration: const InputDecoration(hintText: "Berikan reviewmu disini"),
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              const Text('Rating: '),
+                                              DropdownButton<String>(
+                                                value: rating,
+                                                items: <String>['1', '2', '3', '4', '5'].map((String value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    rating = newValue!;
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Submit'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop({'review': reviewController.text.toString(), 'rating': rating});
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ).then((value) async {
+                              if (value != null) {
+                                var response = await http.post(
+                                  Uri.parse('http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
+                                  body: {'username': username, 'comment': value['review'], 'rating': value['rating']},
+                                );
+
+                                if (response.statusCode == 200) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Ulasan berhasil diposting!')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Terdapat kesalahan. silahkan coba lagi.')),
+                                  );
+                                }
+                                fetchGetBookReviews().then((result) {
+                                  setState(() {
+                                    amountUlasan = result['reviews_count'];
+                                  });
+                                });
+                              }
+                            });
+                          },
+                          child: const Text(
+                            "Tambah Ulasan",
+                            style: TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: const Text(
+                            "Ulasan Saya",
+                            style: TextStyle(
+                              fontFamily: 'SF-Pro',
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        FutureBuilder<Map<String, dynamic>>(
+                          future: fetchGetBookReviews(),
+                          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              List<Map<String, dynamic>> reviews = snapshot.data!['reviews'];
+                              // Filter the reviews to only include those posted by the current user
+                              reviews = reviews.where((review) => review['username'] == username).toList();
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: reviews.length,
+                                itemBuilder: (context, index) {
+                                  var review = reviews[index];
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        "assets/review/profile-reviewing.png",
+                                        alignment: Alignment.topLeft,
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Color.fromRGBO(40, 129, 255, 1),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width - 80 - 60,
+                                          padding: const EdgeInsets.only(
+                                            top: 12,
+                                            bottom: 12,
+                                            left: 12,
+                                            right: 12,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/review/rating.png",
+                                                          width: 20,
+                                                          height: 20,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 12,
+                                                        ),
+                                                        Container(
+                                                          child: Text(
+                                                            review['rating'].toString() + "/5",
+                                                            style: const TextStyle(
+                                                                fontFamily: 'SF-Pro',
+                                                                fontWeight: FontWeight.w600,
+                                                                fontSize: 12,
+                                                                color: Color.fromARGB(225, 255, 255, 255)),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      padding: const EdgeInsets.only(top: 16),
+                                                      child: Text(
+                                                        review['username'],
+                                                        style: const TextStyle(
+                                                          fontFamily: 'SF-Pro',
+                                                          fontWeight: FontWeight.w400,
+                                                          fontSize: 14,
+                                                          color: Color.fromRGBO(255, 255, 255, 0.7),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      review['comment'],
+                                                      style: const TextStyle(
+                                                        fontFamily: 'SF-Pro',
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding: const EdgeInsets.only(top: 16),
+                                                      child: Row(
+                                                        children: [
+                                                          Image.asset("assets/review/lastupdate-indark.png"),
+                                                          const SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Container(
+                                                            child: Text(
+                                                              review['timestamp'],
+                                                              style: const TextStyle(
+                                                                  fontFamily: 'SF-Pro',
+                                                                  fontWeight: FontWeight.w300,
+                                                                  fontSize: 12,
+                                                                  color: Color.fromARGB(172, 255, 255, 255)),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 12,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                          'Hapus Ulasan',
+                                                          style: TextStyle(
+                                                            fontFamily: 'SF-Pro',
+                                                            fontWeight: FontWeight.w700,
+                                                            letterSpacing: -1,
+                                                            fontSize: 24,
+                                                            color: Color.fromRGBO(8, 4, 22, 1),
+                                                          ),
+                                                        ),
+                                                        content: const Text(
+                                                          'Apa kamu yakin ingin menghapus ulasan ini?',
+                                                          style: TextStyle(
+                                                            fontFamily: 'SF-Pro',
+                                                            fontWeight: FontWeight.w400,
+                                                            fontSize: 14,
+                                                            color: Color.fromRGBO(88, 107, 132, 1),
+                                                          ),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            style: TextButton.styleFrom(
+                                                              foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
+                                                              backgroundColor: Colors.white,
+                                                              padding: const EdgeInsets.symmetric(
+                                                                horizontal: 24,
+                                                                vertical: 20,
+                                                              ),
+                                                            ),
+                                                            child: const Text(
+                                                              'Batal',
+                                                              style: TextStyle(
+                                                                fontFamily: 'SF-Pro',
+                                                                fontWeight: FontWeight.w600,
+                                                                fontSize: 14,
+                                                                color: Color.fromRGBO(8, 4, 22, 1),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          TextButton(
+                                                            style: TextButton.styleFrom(
+                                                              backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                                              padding: const EdgeInsets.symmetric(
+                                                                horizontal: 24,
+                                                                vertical: 20,
+                                                              ),
+                                                            ),
+                                                            onPressed: () async {
+                                                              if (review['id'] != null) {
+                                                                await deleteReview(review['id']); // Delete the review
+                                                                // Refresh the page
+                                                              } else {
+                                                                print('Review ID is null');
+                                                              }
+                                                              fetchGetBookReviews().then((result) {
+                                                                setState(() {
+                                                                  amountUlasan = result['reviews_count'];
+                                                                });
+                                                              });
+                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                const SnackBar(content: Text('Ulasan berhasil dihapus!')),
+                                                              );
+                                                              Navigator.of(context).pop(); // Close the dialog
+                                                            },
+                                                            child: const Text(
+                                                              'Ya, hapus',
+                                                              style: TextStyle(
+                                                                fontFamily: 'SF-Pro',
+                                                                fontWeight: FontWeight.w600,
+                                                                fontSize: 14,
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Image.asset("assets/review/trash-blue.png"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                separatorBuilder: (context, irndex) {
+                                  return const SizedBox(height: 10);
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            );
+          }),
     );
   }
 }

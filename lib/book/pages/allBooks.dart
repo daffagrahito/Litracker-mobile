@@ -26,19 +26,15 @@ class _AllBooks extends State<AllBooks> {
   bool isVoted = false;
 
   Future<int> fetchTotalUsersVote(bookID) async {
-    final requestTotalUsers =
-        Provider.of<CookieRequest>(context, listen: false);
-    final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+    final requestTotalUsers = Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['total_users_upvote'];
   }
 
   Future<bool> fetchHasUserUpvoted(bookID) async {
-    final requestTotalUsers =
-        Provider.of<CookieRequest>(context, listen: false);
-    final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+    final requestTotalUsers = Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -103,12 +99,8 @@ class _AllBooks extends State<AllBooks> {
                         Container(
                             height: 44,
                             width: MediaQuery.of(context).size.width - 140,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: jaguar400,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16))),
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                            decoration: BoxDecoration(color: jaguar400, borderRadius: BorderRadius.all(Radius.circular(16))),
                             child: Row(
                               children: [
                                 Image.asset("assets/home/search-icon.png"),
@@ -121,8 +113,7 @@ class _AllBooks extends State<AllBooks> {
                                     onChanged: (value) {
                                       setState(() {
                                         futureBooks.then((books) {
-                                          filteredBooks =
-                                              filterBooks(books, value);
+                                          filteredBooks = filterBooks(books, value);
                                         });
                                       });
                                     },
@@ -157,8 +148,7 @@ class _AllBooks extends State<AllBooks> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                searchController
-                                    .clear(); // Clear the search text
+                                searchController.clear(); // Clear the search text
                               });
                             },
                             child: Image.asset(
@@ -181,20 +171,15 @@ class _AllBooks extends State<AllBooks> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator(); // Show loading spinner while waiting for data
                     } else if (snapshot.hasError) {
-                      return Text(
-                          'Error: ${snapshot.error}'); // Show error message if there is an error
+                      return Text('Error: ${snapshot.error}'); // Show error message if there is an error
                     } else {
                       // Determine the number of books to show
-                      List<Book> filteredBooks =
-                          filterBooks(snapshot.data!, searchController.text);
+                      List<Book> filteredBooks = filterBooks(snapshot.data!, searchController.text);
 
-                      int numBooksToShow = showAllBooks
-                          ? filteredBooks.length
-                          : filteredBooks.length;
+                      int numBooksToShow = showAllBooks ? filteredBooks.length : filteredBooks.length;
 
                       return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+                        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 40),
                         child: Column(
                           children: [
                             Row(
@@ -207,20 +192,11 @@ class _AllBooks extends State<AllBooks> {
                                         ? Text("Semua Buku",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: kashmirBlue400))
-                                        : Text(
-                                            "Hasil Pencarian: ${filteredBooks.length} buku",
+                                            style: TextStyle(fontFamily: 'SF-Pro', fontSize: 14, fontWeight: FontWeight.w500, color: kashmirBlue400))
+                                        : Text("Hasil Pencarian: ${filteredBooks.length} buku",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SF-Pro',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: kashmirBlue400)),
+                                            style: TextStyle(fontFamily: 'SF-Pro', fontSize: 14, fontWeight: FontWeight.w500, color: kashmirBlue400)),
                                   ),
                                 ),
                               ],
@@ -235,8 +211,7 @@ class _AllBooks extends State<AllBooks> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookDetailPage(book: book),
+                                          builder: (context) => BookDetailPage(book: book),
                                         ),
                                       );
                                     },
@@ -245,8 +220,7 @@ class _AllBooks extends State<AllBooks> {
                                       margin: EdgeInsets.only(bottom: 8),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
+                                        borderRadius: BorderRadius.all(Radius.circular(12)),
                                       ),
                                       child: Row(
                                         children: [
@@ -254,15 +228,11 @@ class _AllBooks extends State<AllBooks> {
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(4),
-                                                  bottomLeft:
-                                                      Radius.circular(4),
+                                                  bottomLeft: Radius.circular(4),
                                                   topRight: Radius.circular(6),
-                                                  bottomRight:
-                                                      Radius.circular(6)),
+                                                  bottomRight: Radius.circular(6)),
                                               child: Image.network(
-                                                book.fields.imageUrlL.replaceFirst(
-                                                    "http://images.amazon.com/",
-                                                    "https://m.media-amazon.com/"),
+                                                book.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
                                                 width: 50,
                                                 height: 60,
                                                 fit: BoxFit.cover,
@@ -273,40 +243,29 @@ class _AllBooks extends State<AllBooks> {
                                             width: 12,
                                           ),
                                           Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  272,
+                                              width: MediaQuery.of(context).size.width - 272,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     book.fields.title,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                     maxLines: 1,
-                                                    style: TextStyle(
-                                                        fontFamily: 'SF-Pro',
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: jaguar950),
+                                                    style:
+                                                        TextStyle(fontFamily: 'SF-Pro', fontSize: 16, fontWeight: FontWeight.w600, color: jaguar950),
                                                   ),
                                                   SizedBox(
                                                     height: 4,
                                                   ),
                                                   Text(
                                                     book.fields.author,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                     style: TextStyle(
                                                       color: kashmirBlue400,
                                                       fontFamily: 'SF-Pro',
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                      fontWeight: FontWeight.w400,
                                                     ),
                                                   )
                                                 ],
@@ -317,64 +276,41 @@ class _AllBooks extends State<AllBooks> {
                                                   // Inside the onTap method for upvote
                                                   // Inside the onTap method for upvote
                                                   onTap: () async {
-                                                    final requestToggleUpvote =
-                                                        Provider.of<
-                                                                CookieRequest>(
-                                                            context,
-                                                            listen: false);
-                                                    final response =
-                                                        await requestToggleUpvote
-                                                            .post(
-                                                                "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/",
-                                                                {});
+                                                    final requestToggleUpvote = Provider.of<CookieRequest>(context, listen: false);
+                                                    final response = await requestToggleUpvote
+                                                        .post("http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/", {});
 
                                                     // Check if the book is upvoted or unvoted
 
-                                                    String message =
-                                                        response['message'];
+                                                    String message = response['message'];
                                                     // int total_votes =
                                                     //     response['total_votes'];
-                                                    if (message == 'Upvoted' ||
-                                                        message == 'Unvoted') {
+                                                    if (message == 'Upvoted' || message == 'Unvoted') {
                                                       setState(() {
-                                                        if (message ==
-                                                            'Upvoted') {
+                                                        if (message == 'Upvoted') {
                                                           // isVoted = true;
                                                           // totalUpvotedBookbyUser =
                                                           //     total_votes;
-                                                          fetchTotalUsersVote(
-                                                              book.pk);
+                                                          fetchTotalUsersVote(book.pk);
                                                         } else {
                                                           // isVoted = false;
-                                                          fetchTotalUsersVote(
-                                                              book.pk);
+                                                          fetchTotalUsersVote(book.pk);
                                                         }
                                                       });
                                                     }
                                                   },
                                                   child: Container(
                                                     child: FutureBuilder<bool>(
-                                                      future:
-                                                          fetchHasUserUpvoted(
-                                                              book.pk),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
+                                                      future: fetchHasUserUpvoted(book.pk),
+                                                      builder: (context, snapshot) {
+                                                        if (snapshot.connectionState == ConnectionState.waiting) {
                                                           return CircularProgressIndicator();
-                                                        } else if (snapshot
-                                                            .hasError) {
-                                                          return Text(
-                                                              'Error: ${snapshot.error}');
+                                                        } else if (snapshot.hasError) {
+                                                          return Text('Error: ${snapshot.error}');
                                                         } else {
-                                                          isVoted =
-                                                              snapshot.data!;
+                                                          isVoted = snapshot.data!;
                                                           return Image.asset(
-                                                            isVoted
-                                                                ? "assets/home/upvote_fill.png"
-                                                                : "assets/home/upvote_blank.png",
+                                                            isVoted ? "assets/home/upvote_fill.png" : "assets/home/upvote_blank.png",
                                                             width: 40,
                                                             height: 40,
                                                           );
