@@ -1,53 +1,37 @@
 // To parse this JSON data, do
 //
-//     final product = productFromJson(jsonString);
+//     final readingHistory = readingHistoryFromJson(jsonString);
 
 import 'dart:convert';
 
-Product productFromJson(String str) => Product.fromJson(json.decode(str));
+List<ReadingHistory> readingHistoryFromJson(String str) => List<ReadingHistory>.from(json.decode(str).map((x) => ReadingHistory.fromJson(x)));
 
-String productToJson(Product data) => json.encode(data.toJson());
+String readingHistoryToJson(List<ReadingHistory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Product {
-    List<History> history;
+class ReadingHistory {
+  int user;
+  int book;
+  int lastPage;
+  DateTime dateOpened;
 
-    Product({
-        required this.history,
-    });
+  ReadingHistory({
+    required this.user,
+    required this.book,
+    required this.lastPage,
+    required this.dateOpened,
+  });
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
-        history: List<History>.from(json["history"].map((x) => History.fromJson(x))),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "history": List<dynamic>.from(history.map((x) => x.toJson())),
-    };
-}
-
-class History {
-    int userId;
-    int bookId;
-    int lastPage;
-    DateTime dateOpened;
-
-    History({
-        required this.userId,
-        required this.bookId,
-        required this.lastPage,
-        required this.dateOpened,
-    });
-
-    factory History.fromJson(Map<String, dynamic> json) => History(
-        userId: json["user_id"],
-        bookId: json["book_id"],
+  factory ReadingHistory.fromJson(Map<String, dynamic> json) => ReadingHistory(
+        user: json["user"],
+        book: json["book"],
         lastPage: json["last_page"],
         dateOpened: DateTime.parse(json["date_opened"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
-        "user_id": userId,
-        "book_id": bookId,
+  Map<String, dynamic> toJson() => {
+        "user": user,
+        "book": book,
         "last_page": lastPage,
         "date_opened": dateOpened.toIso8601String(),
-    };
+      };
 }

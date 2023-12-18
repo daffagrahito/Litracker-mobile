@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/home.dart';
 import 'package:litracker_mobile/pages/user/profile.dart';
-import '../pages/user/history.dart'; // Import your HistoryContent class
+import '../reading_history/screens/history.dart'; // Import your HistoryContent class
 import '../pages/user/review.dart';
 
 class NavigateUser2 extends StatefulWidget {
@@ -11,8 +11,7 @@ class NavigateUser2 extends StatefulWidget {
   _NavigateUser2State createState() => _NavigateUser2State();
 }
 
-class _NavigateUser2State extends State<NavigateUser2>
-    with SingleTickerProviderStateMixin {
+class _NavigateUser2State extends State<NavigateUser2> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   int _currentIndex = 0;
 
@@ -74,21 +73,16 @@ class _NavigateUser2State extends State<NavigateUser2>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildNavItem(0, 'Beranda', 'assets/navbar/home-secondary.png',
-              'assets/navbar/home-primary.png'),
-          _buildNavItem(1, 'Ulas', 'assets/navbar/review-secondary.png',
-              'assets/navbar/review-primary.png'),
-          _buildNavItem(2, 'Riwayat', 'assets/navbar/history-secondary.png',
-              'assets/navbar/history-primary.png'),
-          _buildNavItem(3, 'Profil', 'assets/navbar/profile-secondary.png',
-              'assets/navbar/profile-primary.png'),
+          _buildNavItem(0, 'Beranda', 'assets/navbar/home-secondary.png', 'assets/navbar/home-primary.png'),
+          _buildNavItem(1, 'Ulas', 'assets/navbar/review-secondary.png', 'assets/navbar/review-primary.png'),
+          _buildNavItem(2, 'Riwayat', 'assets/navbar/history-secondary.png', 'assets/navbar/history-primary.png'),
+          _buildNavItem(3, 'Profil', 'assets/navbar/profile-secondary.png', 'assets/navbar/profile-primary.png'),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(
-      int index, String label, String imagePath, String activeImagePath) {
+  Widget _buildNavItem(int index, String label, String imagePath, String activeImagePath) {
     bool isSelected = index == _currentIndex;
 
     return InkWell(

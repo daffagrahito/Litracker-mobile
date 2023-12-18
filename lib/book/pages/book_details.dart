@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/data/models/user.dart';
 import 'package:litracker_mobile/review/detailReview.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
-import 'package:litracker_mobile/reading_history/screens/last_page_form.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/book.dart';
@@ -20,6 +22,7 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   bool isVoted = false;
   int totalUpvotedBookbyUser = 0;
+  int _lastPage = 0;
 
   Future<int> fetchTotalUsersVote() async {
     final requestTotalUsers = Provider.of<CookieRequest>(context, listen: false);
@@ -224,7 +227,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // fetchTotalUsersVote();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -407,17 +409,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     SizedBox(
                       width: 12,
                     ),
-                    // GestureDetector(
-                    //     onTap: () {
-                    //       // Navigator.push(
-                    //       //   context,
-                    //       //   MaterialPageRoute(
-                    //       //       builder: (context) => LastPageForm()),
-                    //       // );
-
-                    //     },
                     GestureDetector(
                         onTap: () async {
+                          final _formKey = GlobalKey<FormState>();
+                          final _controller = TextEditingController();
+
                           bool? result = await showDialog<bool?>(
                             context: context,
                             builder: (BuildContext context) {
@@ -432,7 +428,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                     color: Color.fromRGBO(8, 4, 22, 1),
                                   ),
                                 ),
-                                content: Container(
+                                content: Form(
+                                  key: _formKey,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     mainAxisSize: MainAxisSize.min,
@@ -443,7 +440,22 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                           color: const Color.fromRGBO(246, 247, 249, 1),
                                         ),
                                         child: TextFormField(
+                                          controller: _controller,
                                           keyboardType: TextInputType.number,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return "Tahun buku dirilis tidak boleh kosong!";
+                                            }
+                                            if (int.tryParse(value)! < 0 || int.tryParse(value) == null) {
+                                              return "Tahun buku dirilis harus berupa angka!";
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _lastPage = int.parse(value!);
+                                            });
+                                          },
                                           decoration: InputDecoration(
                                             labelText: 'Nomor Halaman',
                                             labelStyle: const TextStyle(
@@ -460,7 +472,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: const BorderSide(
-                                                color: Color.fromRGBO(208, 201, 255, 1), // Change to your desired blue color
+                                                color: Color.fromRGBO(208, 201, 255, 1),
                                               ),
                                               borderRadius: BorderRadius.circular(12.0),
                                             ),
@@ -505,9 +517,25 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                         vertical: 20,
                                       ),
                                     ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop(true);
-                                      showSuccessNotification(context);
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        // Define the URL of the view
+                                        var url = Uri.parse('http://localhost:8080/reading_history/post_reading_history/${widget.book.pk}');
+
+                                        var data = {
+                                          'username': loggedInUser!.username,
+                                          'last_page': _lastPage.toString(),
+                                        };
+
+                                        var response = await http.post(url, body: data);
+
+                                        if (response.statusCode == 200) {
+                                          Navigator.of(context).pop(true);
+                                          showSuccessNotification(context);
+                                        } else {
+                                          print(response);
+                                        }
+                                      }
                                     },
                                     child: const Text(
                                       'Simpan',
@@ -534,7 +562,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
                               .push(MaterialPageRoute(builder: (context) => DetailReview(bookID: widget.book.pk, bookReviewed: widget.book)));
                         },
                         child: seeReviews()),
-
                     SizedBox(
                       width: 12,
                     ),
