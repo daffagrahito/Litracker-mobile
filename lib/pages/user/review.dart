@@ -37,7 +37,8 @@ class _ReviewContentState extends State<ReviewContent> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                 child: Row(
                   children: [
                     Expanded(
@@ -90,7 +91,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       isScrollable: true,
                       labelPadding: EdgeInsets.only(right: 12),
                       tabs: [
-                        _buildTab("Semua Ulasan", 0),
+                        _buildTab(("Semua Ulasan"), 0),
                         _buildTab("Ulasan Saya", 1),
                       ],
                       onTap: (index) {
@@ -99,15 +100,18 @@ class _ReviewContentState extends State<ReviewContent> {
                         });
                       },
                       indicator: BoxDecoration(
-                        border: Border(bottom: BorderSide(width: 0.0, color: Colors.transparent)),
+                        border: Border(
+                            bottom: BorderSide(
+                                width: 0.0, color: Colors.transparent)),
                       ),
                       indicatorWeight: 0.0,
                       indicatorColor: Colors.transparent,
                       labelColor: Colors.white,
-                      unselectedLabelColor: const Color.fromRGBO(101, 122, 146, 1),
+                      unselectedLabelColor:
+                          const Color.fromRGBO(101, 122, 146, 1),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: TabBarView(
@@ -164,10 +168,12 @@ class _ReviewContentState extends State<ReviewContent> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: _selectedTabIndex == index ? const Color.fromRGBO(81, 23, 255, 1) : Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              color: _selectedTabIndex == index
+                  ? const Color.fromRGBO(81, 23, 255, 1)
+                  : Colors.white,
               // border: Border.all(
               //     color: _selectedTabIndex == index
               //         ? Colors.transparent
@@ -178,7 +184,9 @@ class _ReviewContentState extends State<ReviewContent> {
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: _selectedTabIndex == index ? Colors.white : const Color.fromRGBO(101, 122, 146, 1),
+                color: _selectedTabIndex == index
+                    ? Colors.white
+                    : const Color.fromRGBO(101, 122, 146, 1),
               ),
             ),
           ),
@@ -192,9 +200,9 @@ class _ReviewContentState extends State<ReviewContent> {
 
   Widget _buildReviewContent() {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         color: Colors.white,
         // border: Border.all(
         //   color: Color.fromRGBO(236, 239, 242, 1),
@@ -204,11 +212,8 @@ class _ReviewContentState extends State<ReviewContent> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset('assets/review/dummy-book.png'),
-              const SizedBox(
-                width: 12,
-              ),
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +223,11 @@ class _ReviewContentState extends State<ReviewContent> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
-                          fontFamily: 'SF-Pro', fontSize: 16, letterSpacing: -0.7, fontWeight: FontWeight.w700, color: Color.fromRGBO(8, 4, 22, 1)),
+                          fontFamily: 'SF-Pro',
+                          fontSize: 16,
+                          letterSpacing: -0.7,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromRGBO(8, 4, 22, 1)),
                     ),
                     SizedBox(
                       height: 4,
@@ -238,6 +247,10 @@ class _ReviewContentState extends State<ReviewContent> {
                 ),
               ),
             ],
+          ),
+          Image.asset('assets/review/dummy-book.png'),
+          const SizedBox(
+            width: 12,
           ),
           const SizedBox(
             height: 12,
@@ -396,12 +409,17 @@ class _ReviewContentState extends State<ReviewContent> {
             children: [
               const Text(
                 "67 ulasan",
-                style: TextStyle(fontFamily: 'SF-Pro', fontSize: 10, fontWeight: FontWeight.w500, color: Color.fromRGBO(132, 151, 172, 1)),
+                style: TextStyle(
+                    fontFamily: 'SF-Pro',
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(132, 151, 172, 1)),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   color: const Color.fromRGBO(81, 33, 255, 1),
                 ),
                 child: GestureDetector(
