@@ -192,6 +192,9 @@ class _BookFormPageState extends State<BookFormPage> {
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return "Cover buku tidak boleh kosong!";
+                      } 
+                      if (!(value.startsWith('http://') || value.startsWith('https://'))) {
+                        return 'URL harus dimulai dengan http:// atau https://';
                       }
                       return null;
                     },
