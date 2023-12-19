@@ -3,6 +3,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class UpvotedBook {
+  final int id;
   final String isbn;
   final String title;
   final String author;
@@ -14,6 +15,7 @@ class UpvotedBook {
   final int totalUpvoteThisBook;
 
   UpvotedBook({
+    required this.id,
     required this.isbn,
     required this.title,
     required this.author,
@@ -47,6 +49,7 @@ class _UpVoteListState extends State<UpVoteList> {
 
     for (var bookData in responseUpvotedBooks['upvoted_books']) {
       UpvotedBook upvotedBook = UpvotedBook(
+        id: bookData['id'],
         isbn: bookData['isbn'],
         title: bookData['title'],
         author: bookData['author'],
@@ -64,10 +67,10 @@ class _UpVoteListState extends State<UpVoteList> {
     return fetchedUpvotedBooks;
   }
 
-  void showSuccessNotification() {
+  void showSuccessNotification(bookName) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Berhasil membatalkan upvote!'),
+        content: Text('Berhasil membatalkan upvote buku ${bookName}!'),
       ),
     );
   }
@@ -327,14 +330,23 @@ class _UpVoteListState extends State<UpVoteList> {
                                       : const Text('OK'),
                                   onPressed: () async {
                                     Navigator.pop(context);
+                                    final requestToggleUpvote =
+                                        Provider.of<CookieRequest>(context,
+                                            listen: false);
+                                    final response = await requestToggleUpvote.post(
+                                        "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.id}/",
+                                        {});
 
+                                    String message = response['message'];
                                     setState(() {
-                                      // Set loading state for the current book
-                                      bookLoadingStates[book.isbn] = true;
+                                      if (message == 'Unvoted') {
+                                        bookLoadingStates[book.isbn] = true;
+                                        showSuccessNotification(book.title);
+                                      }
                                     });
 
                                     // Simulate loading
-                                    await Future.delayed(Duration(seconds: 2));
+                                    await Future.delayed(Duration(seconds: 1));
 
                                     setState(() {
                                       // Reset loading state for the current book
@@ -342,7 +354,6 @@ class _UpVoteListState extends State<UpVoteList> {
                                     });
 
                                     // Show success notification
-                                    showSuccessNotification();
                                   },
                                 ),
                               ]),
@@ -360,11 +371,12 @@ class _UpVoteListState extends State<UpVoteList> {
                         alignment: Alignment.center,
                         child: isLoading
                             ? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
+                                height: 28,
+                                width: 28,
+                                child: CircularProgressIndicator.adaptive(
                                   strokeWidth: 4,
-                                  color: Colors.white,
+                                  // You can set a different color here
+                                  // color: Colors.white,
                                 ),
                               )
                             : Text(
