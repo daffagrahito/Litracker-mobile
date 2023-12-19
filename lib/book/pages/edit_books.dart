@@ -202,7 +202,7 @@ class _EditBooksState extends State<EditBooksPage> {
                                     ),
                                     child: Row(
                                       children: [
-                                        Container(
+                                        Flexible(
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
                                             child: Image.network(
@@ -210,6 +210,10 @@ class _EditBooksState extends State<EditBooksPage> {
                                               width: 50,
                                               height: 60,
                                               fit: BoxFit.cover,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                // Handle image loading error
+                                                return Text('Could not load image');
+                                              },
                                             ),
                                           ),
                                         ),

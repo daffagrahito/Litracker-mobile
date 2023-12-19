@@ -444,10 +444,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                           keyboardType: TextInputType.number,
                                           validator: (value) {
                                             if (value == null || value.isEmpty) {
-                                              return "Tahun buku dirilis tidak boleh kosong!";
+                                              return "Nomor halaman tidak boleh kosong!";
                                             }
-                                            if (int.tryParse(value)! < 0 || int.tryParse(value) == null) {
-                                              return "Tahun buku dirilis harus berupa angka!";
+                                            var parsedValue = int.tryParse(value);
+                                            if (parsedValue == null || parsedValue < 0) {
+                                              return "Nomor halaman harus berupa angka!";
                                             }
                                             return null;
                                           },
