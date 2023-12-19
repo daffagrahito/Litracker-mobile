@@ -14,7 +14,9 @@ class DetailReview extends StatefulWidget {
   final int bookID;
   final Book bookReviewed;
 
-  const DetailReview({Key? key, required this.bookID, required this.bookReviewed}) : super(key: key);
+  const DetailReview(
+      {Key? key, required this.bookID, required this.bookReviewed})
+      : super(key: key);
 
   @override
   _DetailReviewState createState() => _DetailReviewState();
@@ -23,7 +25,8 @@ class DetailReview extends StatefulWidget {
 class _DetailReviewState extends State<DetailReview> {
   Future<Map<String, dynamic>> fetchGetBookReviews() async {
     try {
-      var url = Uri.parse('http://localhost:8080/review_book/get_book_reviews/${widget.bookID}/');
+      var url = Uri.parse(
+          'http://localhost:8080/review_book/get_book_reviews/${widget.bookID}/');
       var responseDetailReview = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -43,7 +46,10 @@ class _DetailReviewState extends State<DetailReview> {
               'rating': reviewData['rating'],
             });
           }
-          return {'reviews': reviewsList, 'reviews_count': data['reviews_count']};
+          return {
+            'reviews': reviewsList,
+            'reviews_count': data['reviews_count']
+          };
         } else {
           return {'reviews': <Map<String, dynamic>>[], 'reviews_count': 0};
         }
@@ -58,7 +64,8 @@ class _DetailReviewState extends State<DetailReview> {
 
   Future<void> deleteReview(int reviewId) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:8080/review_book/delete_book_reviews/$reviewId/'),
+      Uri.parse(
+          'http://localhost:8080/review_book/delete_book_reviews/$reviewId/'),
     );
 
     if (response.statusCode != 200) {
@@ -105,9 +112,12 @@ class _DetailReviewState extends State<DetailReview> {
                             borderRadius: BorderRadius.all(Radius.circular(28)),
                             color: Color.fromRGBO(92, 66, 255, 1),
                           ),
-                          padding: const EdgeInsets.all(10), // Benerin ini juga buat padding imagenya
+                          padding: const EdgeInsets.all(
+                              10), // Benerin ini juga buat padding imagenya
                           child: Image.network(
-                            widget.bookReviewed.fields.imageUrlL.replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
+                            widget.bookReviewed.fields.imageUrlL.replaceFirst(
+                                "http://images.amazon.com/",
+                                "https://m.media-amazon.com/"),
                             height: 60,
                           ),
                         ),
@@ -179,13 +189,15 @@ class _DetailReviewState extends State<DetailReview> {
             ),
             FutureBuilder<Map<String, dynamic>>(
               future: fetchGetBookReviews(),
-              builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  List<Map<String, dynamic>> reviews = snapshot.data!['reviews'];
+                  List<Map<String, dynamic>> reviews =
+                      snapshot.data!['reviews'];
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: reviews.length,
@@ -201,12 +213,14 @@ class _DetailReviewState extends State<DetailReview> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset("assets/review/profile-reviewing-other.png"),
+                              Image.asset(
+                                  "assets/review/profile-reviewing-other.png"),
                               const SizedBox(
                                 width: 12,
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width - 80 - 88,
+                                width:
+                                    MediaQuery.of(context).size.width - 80 - 88,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                   horizontal: 12,
@@ -221,6 +235,32 @@ class _DetailReviewState extends State<DetailReview> {
                                 ),
                                 child: Column(
                                   children: <Widget>[
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          "assets/review/rating.png",
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            review['rating'].toString() +
+                                                "/5", // replace "4.5/5" with rating
+                                            style: const TextStyle(
+                                                fontFamily: 'SF-Pro',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                                color: kashmirBlue600),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -234,7 +274,7 @@ class _DetailReviewState extends State<DetailReview> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 8,
+                                      height: 4,
                                     ),
                                     Container(
                                       alignment: Alignment.centerLeft,
@@ -250,45 +290,26 @@ class _DetailReviewState extends State<DetailReview> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    Column(
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              "assets/review/rating.png",
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                review['rating'].toString() + "/5", // replace "4.5/5" with rating
-                                                style: const TextStyle(
-                                                    fontFamily: 'SF-Pro', fontWeight: FontWeight.w600, fontSize: 14, color: kashmirBlue600),
-                                              ),
-                                            ),
-                                          ],
+                                        Image.asset(
+                                          "assets/review/lastupdate.png",
+                                          width: 20,
+                                          height: 20,
                                         ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              "assets/review/lastupdate.png",
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                            const SizedBox(
-                                              width: 12,
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                review['timestamp'], // replace "20 detik yang lalu" with timestamp
-                                                style: const TextStyle(
-                                                    fontFamily: 'SF-Pro', fontWeight: FontWeight.w300, fontSize: 12, color: kashmirBlue600),
-                                              ),
-                                            ),
-                                          ],
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            review[
+                                                'timestamp'], // replace "20 detik yang lalu" with timestamp
+                                            style: const TextStyle(
+                                                fontFamily: 'SF-Pro',
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 12,
+                                                color: kashmirBlue600),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -313,7 +334,8 @@ class _DetailReviewState extends State<DetailReview> {
     );
   }
 
-  late int amountUlasan = 0; // local variable untuk banyak ulasan yang ada di buku ini
+  late int amountUlasan =
+      0; // local variable untuk banyak ulasan yang ada di buku ini
   final String username = loggedInUser!.username;
 
   @override
@@ -334,7 +356,8 @@ class _DetailReviewState extends State<DetailReview> {
           minHeight: 164,
           color: const Color.fromRGBO(72, 22, 236, 1),
           maxHeight: MediaQuery.of(context).size.height * 0.93,
-          borderRadius: const BorderRadius.vertical(top: const Radius.circular(40)),
+          borderRadius:
+              const BorderRadius.vertical(top: const Radius.circular(40)),
           body: buildBody(amountUlasan),
           panelBuilder: (controller) {
             return SingleChildScrollView(
@@ -369,14 +392,16 @@ class _DetailReviewState extends State<DetailReview> {
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(92, 66, 255, 1),
+                            backgroundColor:
+                                const Color.fromRGBO(92, 66, 255, 1),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 24,
                               vertical: 20,
                             ),
                           ),
                           onPressed: () async {
-                            TextEditingController reviewController = TextEditingController();
+                            TextEditingController reviewController =
+                                TextEditingController();
                             String rating = '1';
                             showDialog(
                               context: context,
@@ -390,15 +415,24 @@ class _DetailReviewState extends State<DetailReview> {
                                         children: <Widget>[
                                           TextField(
                                             controller: reviewController,
-                                            decoration: const InputDecoration(hintText: "Berikan reviewmu disini"),
+                                            decoration: const InputDecoration(
+                                                hintText:
+                                                    "Berikan reviewmu disini"),
                                           ),
                                           Row(
                                             children: <Widget>[
                                               const Text('Rating: '),
                                               DropdownButton<String>(
                                                 value: rating,
-                                                items: <String>['1', '2', '3', '4', '5'].map((String value) {
-                                                  return DropdownMenuItem<String>(
+                                                items: <String>[
+                                                  '1',
+                                                  '2',
+                                                  '3',
+                                                  '4',
+                                                  '5'
+                                                ].map((String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
                                                     value: value,
                                                     child: Text(value),
                                                   );
@@ -417,7 +451,11 @@ class _DetailReviewState extends State<DetailReview> {
                                         TextButton(
                                           child: const Text('Submit'),
                                           onPressed: () {
-                                            Navigator.of(context).pop({'review': reviewController.text.toString(), 'rating': rating});
+                                            Navigator.of(context).pop({
+                                              'review': reviewController.text
+                                                  .toString(),
+                                              'rating': rating
+                                            });
                                           },
                                         ),
                                       ],
@@ -428,17 +466,26 @@ class _DetailReviewState extends State<DetailReview> {
                             ).then((value) async {
                               if (value != null) {
                                 var response = await http.post(
-                                  Uri.parse('http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
-                                  body: {'username': username, 'comment': value['review'], 'rating': value['rating']},
+                                  Uri.parse(
+                                      'http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
+                                  body: {
+                                    'username': username,
+                                    'comment': value['review'],
+                                    'rating': value['rating']
+                                  },
                                 );
 
                                 if (response.statusCode == 200) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Ulasan berhasil diposting!')),
+                                    const SnackBar(
+                                        content:
+                                            Text('Ulasan berhasil diposting!')),
                                   );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Terdapat kesalahan. silahkan coba lagi.')),
+                                    const SnackBar(
+                                        content: Text(
+                                            'Terdapat kesalahan. silahkan coba lagi.')),
                                   );
                                 }
                                 fetchGetBookReviews().then((result) {
@@ -483,15 +530,21 @@ class _DetailReviewState extends State<DetailReview> {
                         ),
                         FutureBuilder<Map<String, dynamic>>(
                           future: fetchGetBookReviews(),
-                          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
-                              List<Map<String, dynamic>> reviews = snapshot.data!['reviews'];
+                              List<Map<String, dynamic>> reviews =
+                                  snapshot.data!['reviews'];
                               // Filter the reviews to only include those posted by the current user
-                              reviews = reviews.where((review) => review['username'] == username).toList();
+                              reviews = reviews
+                                  .where((review) =>
+                                      review['username'] == username)
+                                  .toList();
                               return ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: reviews.length,
@@ -499,7 +552,8 @@ class _DetailReviewState extends State<DetailReview> {
                                   var review = reviews[index];
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Image.asset(
                                         "assets/review/profile-reviewing.png",
@@ -510,7 +564,8 @@ class _DetailReviewState extends State<DetailReview> {
                                       ),
                                       Container(
                                         decoration: const BoxDecoration(
-                                          color: Color.fromRGBO(40, 129, 255, 1),
+                                          color:
+                                              Color.fromRGBO(40, 129, 255, 1),
                                           borderRadius: BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             bottomLeft: Radius.circular(20),
@@ -518,7 +573,11 @@ class _DetailReviewState extends State<DetailReview> {
                                           ),
                                         ),
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width - 80 - 60,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              80 -
+                                              60,
                                           padding: const EdgeInsets.only(
                                             top: 12,
                                             bottom: 12,
@@ -526,13 +585,17 @@ class _DetailReviewState extends State<DetailReview> {
                                             right: 12,
                                           ),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Flexible(
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       children: [
@@ -546,25 +609,42 @@ class _DetailReviewState extends State<DetailReview> {
                                                         ),
                                                         Container(
                                                           child: Text(
-                                                            review['rating'].toString() + "/5",
+                                                            review['rating']
+                                                                    .toString() +
+                                                                "/5",
                                                             style: const TextStyle(
-                                                                fontFamily: 'SF-Pro',
-                                                                fontWeight: FontWeight.w600,
+                                                                fontFamily:
+                                                                    'SF-Pro',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
                                                                 fontSize: 12,
-                                                                color: Color.fromARGB(225, 255, 255, 255)),
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        225,
+                                                                        255,
+                                                                        255,
+                                                                        255)),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                     Container(
-                                                      padding: const EdgeInsets.only(top: 16),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 16),
                                                       child: Text(
                                                         review['username'],
                                                         style: const TextStyle(
                                                           fontFamily: 'SF-Pro',
-                                                          fontWeight: FontWeight.w400,
+                                                          fontWeight:
+                                                              FontWeight.w400,
                                                           fontSize: 14,
-                                                          color: Color.fromRGBO(255, 255, 255, 0.7),
+                                                          color: Color.fromRGBO(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              0.7),
                                                         ),
                                                       ),
                                                     ),
@@ -573,26 +653,39 @@ class _DetailReviewState extends State<DetailReview> {
                                                       style: const TextStyle(
                                                         fontFamily: 'SF-Pro',
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.white,
                                                       ),
                                                     ),
                                                     Container(
-                                                      padding: const EdgeInsets.only(top: 16),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 16),
                                                       child: Row(
                                                         children: [
-                                                          Image.asset("assets/review/lastupdate-indark.png"),
+                                                          Image.asset(
+                                                              "assets/review/lastupdate-indark.png"),
                                                           const SizedBox(
                                                             width: 8,
                                                           ),
                                                           Container(
                                                             child: Text(
-                                                              review['timestamp'],
+                                                              review[
+                                                                  'timestamp'],
                                                               style: const TextStyle(
-                                                                  fontFamily: 'SF-Pro',
-                                                                  fontWeight: FontWeight.w300,
+                                                                  fontFamily:
+                                                                      'SF-Pro',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
                                                                   fontSize: 12,
-                                                                  color: Color.fromARGB(172, 255, 255, 255)),
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          172,
+                                                                          255,
+                                                                          255,
+                                                                          255)),
                                                             ),
                                                           ),
                                                         ],
@@ -608,33 +701,58 @@ class _DetailReviewState extends State<DetailReview> {
                                                 onTap: () {
                                                   showDialog(
                                                     context: context,
-                                                    builder: (BuildContext context) {
+                                                    builder:
+                                                        (BuildContext context) {
                                                       return AlertDialog(
                                                         title: const Text(
                                                           'Hapus Ulasan',
                                                           style: TextStyle(
-                                                            fontFamily: 'SF-Pro',
-                                                            fontWeight: FontWeight.w700,
+                                                            fontFamily:
+                                                                'SF-Pro',
+                                                            fontWeight:
+                                                                FontWeight.w700,
                                                             letterSpacing: -1,
                                                             fontSize: 24,
-                                                            color: Color.fromRGBO(8, 4, 22, 1),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    8,
+                                                                    4,
+                                                                    22,
+                                                                    1),
                                                           ),
                                                         ),
                                                         content: const Text(
                                                           'Apa kamu yakin ingin menghapus ulasan ini?',
                                                           style: TextStyle(
-                                                            fontFamily: 'SF-Pro',
-                                                            fontWeight: FontWeight.w400,
+                                                            fontFamily:
+                                                                'SF-Pro',
+                                                            fontWeight:
+                                                                FontWeight.w400,
                                                             fontSize: 14,
-                                                            color: Color.fromRGBO(88, 107, 132, 1),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    88,
+                                                                    107,
+                                                                    132,
+                                                                    1),
                                                           ),
                                                         ),
                                                         actions: [
                                                           TextButton(
-                                                            style: TextButton.styleFrom(
-                                                              foregroundColor: const Color.fromRGBO(8, 4, 22, 1),
-                                                              backgroundColor: Colors.white,
-                                                              padding: const EdgeInsets.symmetric(
+                                                            style: TextButton
+                                                                .styleFrom(
+                                                              foregroundColor:
+                                                                  const Color
+                                                                      .fromRGBO(
+                                                                      8,
+                                                                      4,
+                                                                      22,
+                                                                      1),
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
                                                                 horizontal: 24,
                                                                 vertical: 20,
                                                               ),
@@ -642,48 +760,86 @@ class _DetailReviewState extends State<DetailReview> {
                                                             child: const Text(
                                                               'Batal',
                                                               style: TextStyle(
-                                                                fontFamily: 'SF-Pro',
-                                                                fontWeight: FontWeight.w600,
+                                                                fontFamily:
+                                                                    'SF-Pro',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
                                                                 fontSize: 14,
-                                                                color: Color.fromRGBO(8, 4, 22, 1),
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        8,
+                                                                        4,
+                                                                        22,
+                                                                        1),
                                                               ),
                                                             ),
                                                             onPressed: () {
-                                                              Navigator.pop(context);
+                                                              Navigator.pop(
+                                                                  context);
                                                             },
                                                           ),
                                                           TextButton(
-                                                            style: TextButton.styleFrom(
-                                                              backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
-                                                              padding: const EdgeInsets.symmetric(
+                                                            style: TextButton
+                                                                .styleFrom(
+                                                              backgroundColor:
+                                                                  const Color
+                                                                      .fromRGBO(
+                                                                      72,
+                                                                      22,
+                                                                      236,
+                                                                      1),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
                                                                 horizontal: 24,
                                                                 vertical: 20,
                                                               ),
                                                             ),
-                                                            onPressed: () async {
-                                                              if (review['id'] != null) {
-                                                                await deleteReview(review['id']); // Delete the review
+                                                            onPressed:
+                                                                () async {
+                                                              if (review[
+                                                                      'id'] !=
+                                                                  null) {
+                                                                await deleteReview(
+                                                                    review[
+                                                                        'id']); // Delete the review
                                                                 // Refresh the page
                                                               } else {
-                                                                print('Review ID is null');
+                                                                print(
+                                                                    'Review ID is null');
                                                               }
-                                                              fetchGetBookReviews().then((result) {
+                                                              fetchGetBookReviews()
+                                                                  .then(
+                                                                      (result) {
                                                                 setState(() {
-                                                                  amountUlasan = result['reviews_count'];
+                                                                  amountUlasan =
+                                                                      result[
+                                                                          'reviews_count'];
                                                                 });
                                                               });
-                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                const SnackBar(content: Text('Ulasan berhasil dihapus!')),
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                    content: Text(
+                                                                        'Ulasan berhasil dihapus!')),
                                                               );
-                                                              Navigator.of(context).pop(); // Close the dialog
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Close the dialog
                                                             },
                                                             child: const Text(
                                                               'Ya, hapus',
                                                               style: TextStyle(
-                                                                fontFamily: 'SF-Pro',
-                                                                fontWeight: FontWeight.w600,
+                                                                fontFamily:
+                                                                    'SF-Pro',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
                                                                 fontSize: 14,
-                                                                color: Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                           ),
@@ -692,7 +848,8 @@ class _DetailReviewState extends State<DetailReview> {
                                                     },
                                                   );
                                                 },
-                                                child: Image.asset("assets/review/trash-blue.png"),
+                                                child: Image.asset(
+                                                    "assets/review/trash-blue.png"),
                                               ),
                                             ],
                                           ),
