@@ -143,8 +143,16 @@ Widget buildTextField(TextEditingController controller, String labelText, {bool 
             if (value == null || value.isEmpty) {
               return 'Field ini tidak boleh kosong!';
             }
-            if (isInteger && int.tryParse(value) == null || int.tryParse(value)! < 0) {
-              return 'Field ini harus berupa angka!';
+            if (isInteger) {
+              final number = int.tryParse(value);
+              if (number == null || number < 0) {
+                return 'Field ini harus berupa angka!';
+              }
+            }
+            if (labelText == 'URL Cover Buku') {
+              if (!(value.startsWith('http://') || value.startsWith('https://'))) {
+                return 'URL harus dimulai dengan http:// atau https://';
+              }
             }
             return null;
           },
