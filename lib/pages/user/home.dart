@@ -30,6 +30,8 @@ class _HomeContentState extends State<HomeContent>
   int _currentPage = 0;
   List<Book>? filteredBooks;
 
+  int totalOnReading = 0;
+
   bool isVoted = false;
   int totalUpvotedBookbyUser = 0;
   Future<void> _refreshData() async {
@@ -63,6 +65,15 @@ class _HomeContentState extends State<HomeContent>
         .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['isUpvote'];
+  }
+
+  Future<int> fetchTotalOnReading() async {
+    final requestTotalReading =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseTotalReading = await requestTotalReading
+        .get('http://localhost:8080/reading_history/get_all_reading_history/');
+
+    return responseTotalReading['total_on_reading'];
   }
 
   @override
@@ -241,14 +252,27 @@ class _HomeContentState extends State<HomeContent>
                             width: MediaQuery.of(context).size.width - 188,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "60",
-                                  style: TextStyle(
-                                      fontFamily: 'SF-Pro',
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                      color: jaguar950),
+                              children: [
+                                FutureBuilder<int>(
+                                  future: fetchTotalOnReading(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      totalOnReading = snapshot.data!;
+                                      return Text(
+                                        totalOnReading.toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'SF-Pro',
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w600,
+                                            color: jaguar950),
+                                      );
+                                    }
+                                  },
                                 ),
                                 Text(
                                   "Buku dibaca",
@@ -481,9 +505,13 @@ class _HomeContentState extends State<HomeContent>
                                               width: 50,
                                               height: 60,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              errorBuilder:
+                                                  (BuildContext context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
                                                 // Handle image loading error
-                                                return Text('Could not load image');
+                                                return Text(
+                                                    'Could not load image');
                                               },
                                             ),
                                           ),
