@@ -224,7 +224,7 @@ class _AllBooks extends State<AllBooks> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Container(
+                                          Flexible(
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(4),
@@ -236,6 +236,10 @@ class _AllBooks extends State<AllBooks> {
                                                 width: 50,
                                                 height: 60,
                                                 fit: BoxFit.cover,
+                                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                  // Handle image loading error
+                                                  return Text('Could not load image');
+                                                },
                                               ),
                                             ),
                                           ),

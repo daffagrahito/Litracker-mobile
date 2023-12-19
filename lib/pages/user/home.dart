@@ -463,7 +463,7 @@ class _HomeContentState extends State<HomeContent>
                                     ),
                                     child: Row(
                                       children: [
-                                        Container(
+                                        Flexible(
                                           child: ClipRRect(
                                             borderRadius:
                                                 const BorderRadius.only(
@@ -481,6 +481,10 @@ class _HomeContentState extends State<HomeContent>
                                               width: 50,
                                               height: 60,
                                               fit: BoxFit.cover,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                // Handle image loading error
+                                                return Text('Could not load image');
+                                              },
                                             ),
                                           ),
                                         ),
