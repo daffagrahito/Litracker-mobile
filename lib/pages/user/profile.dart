@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/auth/loginPage.dart';
 import 'package:litracker_mobile/data/models/user.dart';
-import 'package:litracker_mobile/pages/user/upvoteList.dart';
 import 'package:litracker_mobile/pages/user/wishlistList.dart';
+import 'package:litracker_mobile/upvote/profile/upvoteList.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,8 @@ class _ProfileContentState extends State<ProfileContent> {
 
   Future<void> fetchUserData() async {
     final request = context.watch<CookieRequest>();
-    final responseVotes = await request.get('http://localhost:8080/upvote_book/get_upvoted_books/');
+    final responseVotes = await request
+        .get('http://localhost:8080/upvote_book/get_upvoted_books/');
 
     int total_votes = responseVotes['total_upvoted_books'];
 
@@ -139,7 +140,8 @@ class _ProfileContentState extends State<ProfileContent> {
                   height: 40,
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40),
@@ -168,13 +170,17 @@ class _ProfileContentState extends State<ProfileContent> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset('assets/profile/profile-upvote.png'),
+                                  Image.asset(
+                                      'assets/profile/profile-upvote.png'),
                                   const SizedBox(width: 16),
                                   Container(
-                                    width: MediaQuery.of(context).size.width - 240,
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "$totalUpvotedBooks", // Display total votes here
@@ -196,7 +202,8 @@ class _ProfileContentState extends State<ProfileContent> {
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
-                                            color: Color.fromRGBO(132, 151, 172, 1),
+                                            color: Color.fromRGBO(
+                                                132, 151, 172, 1),
                                             fontSize: 12,
                                             letterSpacing: -0.7,
                                           ),
@@ -206,7 +213,8 @@ class _ProfileContentState extends State<ProfileContent> {
                                   ),
                                 ],
                               ),
-                              Image.asset('assets/profile/profile-directto.png'),
+                              Image.asset(
+                                  'assets/profile/profile-directto.png'),
                             ],
                           ),
                         ),
@@ -234,13 +242,17 @@ class _ProfileContentState extends State<ProfileContent> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset('assets/profile/profile-wishlist.png'),
+                                  Image.asset(
+                                      'assets/profile/profile-wishlist.png'),
                                   const SizedBox(width: 16),
                                   Container(
-                                    width: MediaQuery.of(context).size.width - 240,
+                                    width:
+                                        MediaQuery.of(context).size.width - 240,
                                     child: const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "", // Display total wishlist here
@@ -262,7 +274,8 @@ class _ProfileContentState extends State<ProfileContent> {
                                           style: TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w400,
-                                            color: Color.fromRGBO(132, 151, 172, 1),
+                                            color: Color.fromRGBO(
+                                                132, 151, 172, 1),
                                             fontSize: 12,
                                             letterSpacing: -0.7,
                                           ),
@@ -272,7 +285,8 @@ class _ProfileContentState extends State<ProfileContent> {
                                   ),
                                 ],
                               ),
-                              Image.asset('assets/profile/profile-directto.png'),
+                              Image.asset(
+                                  'assets/profile/profile-directto.png'),
                             ],
                           ),
                         ),
@@ -288,7 +302,8 @@ class _ProfileContentState extends State<ProfileContent> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final response = await request.logout("http://localhost:8080/logout-mobile/");
+                        final response = await request
+                            .logout("http://localhost:8080/logout-mobile/");
                         String message = response["message"];
                         if (response['status']) {
                           String uname = response["username"];
@@ -297,7 +312,8 @@ class _ProfileContentState extends State<ProfileContent> {
                           ));
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
