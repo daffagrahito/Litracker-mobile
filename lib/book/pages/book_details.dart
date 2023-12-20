@@ -22,7 +22,25 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   bool isVoted = false;
   int totalUpvotedBookbyUser = 0;
+  bool isWishlisted = false;
+  int totalWishlistedBookbyUser = 0;
   int _lastPage = 0;
+  late Future<int> averageRating;
+
+  @override
+  void initState() {
+    super.initState();
+    averageRating = fetchTotalRating(widget.book.pk);
+  }
+
+  Future<int> fetchTotalRating(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+
+    return responseUsersVote['average_rating'];
+  }
 
   Future<int> fetchTotalUsersVote() async {
     final requestTotalUsers =
@@ -40,6 +58,24 @@ class _BookDetailPageState extends State<BookDetailPage> {
         'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
 
     return responseUsersVote['isUpvote'];
+  }
+
+  Future<int> fetchTotalUsersWishlist() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.book.pk}');
+
+    return responseUsersWishlist['total_users_wishlist'];
+  }
+
+  Future<bool> fetchHasUserWishlisted() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.book.pk}');
+
+    return responseUsersWishlist['isWishlist'];
   }
 
   void showSuccessNotification(BuildContext context) {
@@ -170,7 +206,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   // Star
-  Widget rating() {
+  Widget rating(Future<int> averageRating) {
     return Row(
       children: [
         Image.asset(
@@ -181,16 +217,27 @@ class _BookDetailPageState extends State<BookDetailPage> {
         SizedBox(
           width: 12,
         ),
-        Container(
-          child: Text(
-            "4.5/5",
-            style: TextStyle(
-                fontFamily: 'SF-Pro',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: jaguar950),
-          ),
-        )
+        FutureBuilder<int>(
+          future: averageRating,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Display loading indicator while fetching data
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Container(
+                child: Text(
+                  '${snapshot.data}/5',
+                  style: TextStyle(
+                      fontFamily: 'SF-Pro',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: jaguar950),
+                ),
+              );
+            }
+          },
+        ),
       ],
     );
   }
@@ -383,7 +430,52 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                 year(),
                                 Row(
                                   children: [
-                                    userAddToWishlist(),
+                                    GestureDetector(
+                                        onTap: () async {
+                                          final requestToggleWishlist =
+                                              Provider.of<CookieRequest>(
+                                                  context,
+                                                  listen: false);
+                                          final response =
+                                              await requestToggleWishlist.post(
+                                                  "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${widget.book.pk}/",
+                                                  {});
+
+                                          String message = response['message'];
+                                          if (message == 'Wishlisted' ||
+                                              message == 'Unwishlisted') {
+                                            setState(() {
+                                              if (message == 'Wishlisted') {
+                                                fetchTotalUsersWishlist();
+                                              } else {
+                                                fetchTotalUsersWishlist();
+                                              }
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          child: FutureBuilder<bool>(
+                                            future: fetchHasUserWishlisted(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                    'Error: ${snapshot.error}');
+                                              } else {
+                                                isWishlisted = snapshot.data!;
+                                                return Image.asset(
+                                                  isWishlisted
+                                                      ? "assets/home/wishlist_fill.png"
+                                                      : "assets/home/wishlist_blank.png",
+                                                  width: 36,
+                                                  height: 36,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        )),
                                     SizedBox(
                                       width: 12,
                                     ),
@@ -455,7 +547,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                             padding: EdgeInsets.symmetric(horizontal: 40),
                             child: Column(
                               children: [
-                                rating(),
+                                rating(averageRating),
                                 SizedBox(
                                   height: 20,
                                 ),

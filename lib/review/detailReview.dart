@@ -28,6 +28,20 @@ class _DetailReviewState extends State<DetailReview> {
   bool isVoted = false;
 
   int totalUpvotedBookbyUser = 0;
+  bool isWishlisted = false;
+
+  int totalWishlistedBookbyUser = 0;
+
+  late Future<int> averageRating;
+
+  Future<int> fetchTotalRating(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+
+    return responseUsersVote['average_rating'];
+  }
 
   Future<int> fetchTotalUsersVote() async {
     final requestTotalUsers =
@@ -45,6 +59,24 @@ class _DetailReviewState extends State<DetailReview> {
         'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
 
     return responseUsersVote['isUpvote'];
+  }
+
+  Future<int> fetchTotalUsersWishlist() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_upvoting_users/${widget.bookID}');
+
+    return responseUsersWishlist['total_users_wishlist'];
+  }
+
+  Future<bool> fetchHasUserWishlisted() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.bookID}');
+
+    return responseUsersWishlist['isWishlist'];
   }
 
   Future<Map<String, dynamic>> fetchGetBookReviews() async {
@@ -147,6 +179,46 @@ class _DetailReviewState extends State<DetailReview> {
                         ),
                         const SizedBox(
                           height: 24,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  "assets/review/rating.png",
+                                  width: 32,
+                                  height: 32,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              FutureBuilder<int>(
+                                future: averageRating,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Display loading indicator while fetching data
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    return Container(
+                                      padding: EdgeInsets.only(right: 12),
+                                      child: Text(
+                                        '${snapshot.data}/5',
+                                        style: TextStyle(
+                                            fontFamily: 'SF-Pro',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         Text(
                           widget.bookReviewed.fields.title,
@@ -365,6 +437,7 @@ class _DetailReviewState extends State<DetailReview> {
   @override
   void initState() {
     super.initState();
+    averageRating = fetchTotalRating(widget.bookID);
     fetchGetBookReviews().then((result) {
       setState(() {
         amountUlasan = result['reviews_count'];
@@ -409,7 +482,49 @@ class _DetailReviewState extends State<DetailReview> {
                       children: [
                         Row(
                           children: [
-                            Image.asset("assets/review/heart-fill.png"),
+                            GestureDetector(
+                                onTap: () async {
+                                  final requestToggleWishlist =
+                                      Provider.of<CookieRequest>(context,
+                                          listen: false);
+                                  final response = await requestToggleWishlist.post(
+                                      "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${widget.bookID}/",
+                                      {});
+
+                                  String message = response['message'];
+                                  if (message == 'Wishlisted' ||
+                                      message == 'Unwishlisted') {
+                                    setState(() {
+                                      if (message == 'Wishlisted') {
+                                        fetchTotalUsersWishlist();
+                                      } else {
+                                        fetchTotalUsersWishlist();
+                                      }
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  child: FutureBuilder<bool>(
+                                    future: fetchHasUserWishlisted(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        isVoted = snapshot.data!;
+                                        return Image.asset(
+                                          isVoted
+                                              ? "assets/home/wishlist_fill.png"
+                                              : "assets/home/wishlist_blank.png",
+                                          width: 48,
+                                          height: 48,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )),
                             const SizedBox(),
                             GestureDetector(
                                 // Inside the onTap method for upvote
@@ -457,8 +572,8 @@ class _DetailReviewState extends State<DetailReview> {
                                           isVoted
                                               ? "assets/home/upvote_fill.png"
                                               : "assets/home/upvote_blank.png",
-                                          width: 36,
-                                          height: 36,
+                                          width: 48,
+                                          height: 48,
                                         );
                                       }
                                     },

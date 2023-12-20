@@ -34,6 +34,9 @@ class _HomeContentState extends State<HomeContent>
 
   bool isVoted = false;
   int totalUpvotedBookbyUser = 0;
+  bool isWishlisted = false;
+  int totalWishlistedBookbyUser = 0;
+
   Future<void> _refreshData() async {
     setState(() {
       futureBooks = fetchBooks(); // Refresh the book list
@@ -65,6 +68,24 @@ class _HomeContentState extends State<HomeContent>
         .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['isUpvote'];
+  }
+
+  Future<int> fetchTotalUsersWishlist(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+
+    return responseUsersWishlist['total_users_wishlist'];
+  }
+
+  Future<bool> fetchHasUserWishlisted(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+
+    return responseUsersWishlist['isWishlist'];
   }
 
   Future<int> fetchTotalOnReading() async {
@@ -630,11 +651,66 @@ class _HomeContentState extends State<HomeContent>
                                             SizedBox(
                                               width: 8,
                                             ),
-                                            Image.asset(
-                                              "assets/home/wishlist-blank.png",
-                                              width: 40,
-                                              height: 40,
-                                            ),
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  final requestToggleWishlist =
+                                                      Provider.of<
+                                                              CookieRequest>(
+                                                          context,
+                                                          listen: false);
+                                                  final response =
+                                                      await requestToggleWishlist
+                                                          .post(
+                                                              "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${book.pk}/",
+                                                              {});
+
+                                                  String message =
+                                                      response['message'];
+                                                  if (message == 'Wishlisted' ||
+                                                      message ==
+                                                          'Unwishlisted') {
+                                                    setState(() {
+                                                      if (message ==
+                                                          'Wishlisted') {
+                                                        fetchTotalUsersWishlist(
+                                                            book.pk);
+                                                      } else {
+                                                        fetchTotalUsersWishlist(
+                                                            book.pk);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  child: FutureBuilder<bool>(
+                                                    future:
+                                                        fetchHasUserWishlisted(
+                                                            book.pk),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Text(
+                                                            'Error: ${snapshot.error}');
+                                                      } else {
+                                                        isWishlisted =
+                                                            snapshot.data!;
+                                                        return Image.asset(
+                                                          isWishlisted
+                                                              ? "assets/home/wishlist_fill.png"
+                                                              : "assets/home/wishlist_blank.png",
+                                                          width: 40,
+                                                          height: 40,
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                )),
                                           ],
                                         )
                                       ],
