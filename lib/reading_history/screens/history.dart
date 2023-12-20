@@ -83,27 +83,36 @@ class _HistoryContentState extends State<HistoryContent> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Row(
-            children: [
-              Icon(
-                Icons.check_circle,
-                color: Colors.lightGreen, // Anda dapat menyesuaikan warnanya
-              ),
-              SizedBox(width: 8.0), // Jarak antara ikon dan teks
-              Text(
-                'Reading history deleted successfully',
-                style: TextStyle(
-                  fontFamily: 'SF-Pro',
-                  fontWeight: FontWeight.w400,
+          content: Container(
+            padding: EdgeInsets.all(4),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                      color: jaguar400,
+                      borderRadius: BorderRadius.all(Radius.circular(100))),
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Colors.white, // Anda dapat menyesuaikan warnanya
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(width: 8.0), // Jarak antara ikon dan teks
+                Text(
+                  'Reading history deleted successfully',
+                  style: TextStyle(
+                    fontFamily: 'SF-Pro',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
           ),
           duration: Duration(seconds: 2),
-          backgroundColor: jaguar500, // Anda dapat menyesuaikan warnanya
+          backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(24.0),
           ),
           margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).size.height * 0.85,
