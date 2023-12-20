@@ -12,7 +12,6 @@ class BookReviewWithoutRating {
   final String image;
   final List<ReviewWithoutRating> reviews;
   final String formattedTimestamp;
-  final int total_reviews;
 
   BookReviewWithoutRating({
     required this.id,
@@ -21,7 +20,6 @@ class BookReviewWithoutRating {
     required this.author,
     required this.image,
     required this.formattedTimestamp,
-    required this.total_reviews,
   });
 }
 
@@ -46,7 +44,6 @@ class BookReviewWithoutTimestamp {
   final String image;
   final List<ReviewWithoutTimestamp> reviews;
   final int averageRating;
-  final int total_reviews;
 
   BookReviewWithoutTimestamp({
     required this.id,
@@ -55,7 +52,6 @@ class BookReviewWithoutTimestamp {
     required this.image,
     required this.reviews,
     required this.averageRating,
-    required this.total_reviews,
   });
 }
 
@@ -107,7 +103,6 @@ class _ReviewContentState extends State<ReviewContent> {
         image: bookData['image'],
         reviews: reviews,
         formattedTimestamp: bookData['formatted_timestamp'],
-        total_reviews: bookData['total_reviews'],
       );
 
       reviewsWithoutRating.add(bookReview);
@@ -143,7 +138,6 @@ class _ReviewContentState extends State<ReviewContent> {
         image: bookData['image'],
         reviews: reviews,
         averageRating: bookData['average_rating'],
-        total_reviews: bookData['total_reviews'],
       );
 
       reviewsWithoutTimestamp.add(bookReview);
@@ -255,7 +249,7 @@ class _ReviewContentState extends State<ReviewContent> {
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height + 40,
                       width: MediaQuery.of(context).size.width,
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -400,7 +394,6 @@ class _ReviewContentState extends State<ReviewContent> {
     String image = "";
     String author = "";
     int averageRating = 0;
-    int total_reviews = 0;
     String formattedTimestamp = "";
     List<ReviewWithoutRating> reviewsWithoutRating = [];
     List<ReviewWithoutTimestamp> reviewsWithoutTimestamp = [];
@@ -410,14 +403,12 @@ class _ReviewContentState extends State<ReviewContent> {
       title = bookReview.title;
       image = bookReview.image;
       author = bookReview.author;
-      total_reviews = bookReview.total_reviews;
       formattedTimestamp = bookReview.formattedTimestamp;
       reviewsWithoutRating = bookReview.reviews;
     } else if (bookReview is BookReviewWithoutTimestamp) {
       title = bookReview.title;
       image = bookReview.image;
       author = bookReview.author;
-      total_reviews = bookReview.total_reviews;
       averageRating = bookReview.averageRating;
       reviewsWithoutTimestamp = bookReview.reviews;
     }
@@ -581,8 +572,8 @@ class _ReviewContentState extends State<ReviewContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "${total_reviews} ulasan",
+                    const Text(
+                      "67 ulasan",
                       style: TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 10,
