@@ -1,7 +1,9 @@
 # Litracker-mobile
 
+https://build.appcenter.ms/v0.1/apps/988c4412-1772-46ef-adff-f0b462a44b52/branches/main/badge
+
 **PBP A - Kelompok A01**
-**URL: (https://litracker-a01-tk.pbp.cs.ui.ac.id/)**
+**URL WEB APP: (https://litracker-a01-tk.pbp.cs.ui.ac.id/)**
 
 ### Anggota 👨‍💻👩‍💻:
 1. Anindya Maulida Widyatmoko - 2206082915
