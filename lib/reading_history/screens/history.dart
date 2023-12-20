@@ -47,7 +47,7 @@ class _HistoryContentState extends State<HistoryContent> {
   Future<void> saveLastPage(int bookId, int lastPage) async {
     final cookieRequest = Provider.of<CookieRequest>(context, listen: false);
     final url =
-        'http://localhost:8080/reading_history/$bookId/post_reading_history/';
+        'http://localhost:8080/reading_history/post_reading_history/$bookId/';
 
     try {
       final response = await cookieRequest.post(
@@ -84,21 +84,21 @@ class _HistoryContentState extends State<HistoryContent> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Container(
-            padding: EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4),
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
                       color: jaguar400,
                       borderRadius: BorderRadius.all(Radius.circular(100))),
-                  child: Icon(
+                  child: const Icon(
                     Icons.check_circle,
                     color: Colors.white, // Anda dapat menyesuaikan warnanya
                   ),
                 ),
-                SizedBox(width: 8.0), // Jarak antara ikon dan teks
-                Text(
+                const SizedBox(width: 8.0), // Jarak antara ikon dan teks
+                const Text(
                   'Berhasil dihapus!',
                   style: TextStyle(
                     fontFamily: 'SF-Pro',
@@ -108,7 +108,7 @@ class _HistoryContentState extends State<HistoryContent> {
               ],
             ),
           ),
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
           backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -130,13 +130,13 @@ class _HistoryContentState extends State<HistoryContent> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           alignment: Alignment.centerLeft,
-          child: Text(
+          child: const Text(
             "Riwayat Bacaan",
             style: TextStyle(
                 fontFamily: 'SF-Pro',
@@ -146,13 +146,13 @@ class _HistoryContentState extends State<HistoryContent> {
                 letterSpacing: -0.7),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           alignment: Alignment.centerLeft,
-          child: Text(
+          child: const Text(
             "Nomor Tersimpan",
             style: TextStyle(
                 fontFamily: 'SF-Pro',
@@ -161,14 +161,14 @@ class _HistoryContentState extends State<HistoryContent> {
                 color: kashmirBlue600),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         FutureBuilder<List<ReadingHistory>>(
           future: fetchReadingHistories(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
@@ -186,7 +186,7 @@ class _HistoryContentState extends State<HistoryContent> {
                             children:
                                 snapshot.data!.map((ReadingHistory history) {
                               return Container(
-                                margin: EdgeInsets.only(bottom: 20),
+                                margin: const EdgeInsets.only(bottom: 20),
                                 padding: const EdgeInsets.all(12),
                                 width: MediaQuery.of(context).size.width,
                                 alignment: Alignment.topLeft,
@@ -209,7 +209,7 @@ class _HistoryContentState extends State<HistoryContent> {
                                       ),
                                       child: Text(
                                         history.lastPage.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'SF-Pro',
                                           fontSize: 24,
@@ -228,7 +228,7 @@ class _HistoryContentState extends State<HistoryContent> {
                                           children: [
                                             Text(
                                               history.bookTitle,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color:
                                                     Color.fromRGBO(8, 4, 22, 1),
                                                 fontFamily: 'SF-Pro',
@@ -238,7 +238,7 @@ class _HistoryContentState extends State<HistoryContent> {
                                             ),
                                             Text(
                                               history.bookAuthor,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Color.fromRGBO(
                                                     132, 151, 172, 1),
                                                 fontFamily: 'SF-Pro',
@@ -246,7 +246,7 @@ class _HistoryContentState extends State<HistoryContent> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 8,
                                             )
                                           ],

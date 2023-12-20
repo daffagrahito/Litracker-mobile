@@ -11,7 +11,6 @@ import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 class DetailReview extends StatefulWidget {
   final int bookID;

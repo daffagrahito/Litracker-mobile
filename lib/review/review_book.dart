@@ -169,58 +169,9 @@ class _ReviewContentState extends State<ReviewContent> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
-              )
-              // Container(
-              //   padding:
-              //       const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //         child: Container(
-              //           decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(16),
-              //             color: const Color.fromRGBO(236, 239, 242, 1),
-              //           ),
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(horizontal: 20),
-              //             child: Row(
-              //               children: [
-              //                 Image.asset("assets/review/search.png"),
-              //                 const SizedBox(
-              //                   width: 16,
-              //                 ),
-              //                 const Expanded(
-              //                   child: TextField(
-              //                     decoration: InputDecoration(
-              //                       hintText: "Cari Buku",
-              //                       hintStyle: TextStyle(
-              //                         fontFamily: 'SF-Pro',
-              //                         fontSize: 16,
-              //                         fontWeight: FontWeight.w400,
-              //                         letterSpacing: -1,
-              //                         color: Color.fromRGBO(101, 122, 146, 1),
-              //                       ),
-              //                       border: InputBorder.none,
-              //                       focusedBorder: UnderlineInputBorder(
-              //                         borderSide: BorderSide(
-              //                           color: Color.fromRGBO(186, 191, 255, 1),
-              //                           width: 2,
-              //                         ),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              ,
+              ),
               Container(
                 child: Column(
                   children: [
@@ -259,33 +210,32 @@ class _ReviewContentState extends State<ReviewContent> {
                             child: Container(
                               padding: const EdgeInsets.only(top: 24),
                               color: const Color.fromRGBO(246, 247, 249, 1),
-                              child: FutureBuilder<
-                                  List<BookReviewWithoutTimestamp>>(
-                                future: fetchReviewsWithoutTimestamp(),
+                              child: FutureBuilder<List<BookReviewWithoutRating>>(
+                                future: fetchReviewsWithoutRating(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
                                     // Access data for each index
-                                    return Column(
-                                      children:
-                                          snapshot.data!.map((bookReview) {
-                                        // Access bookReview.id, bookReview.title, etc.
-                                        return Column(
-                                          children: [
-                                            Container(
-                                              child: _buildReviewContent(
-                                                  "newest", bookReview),
-                                            ),
-                                            SizedBox(
-                                              height: 12,
-                                            )
-                                          ],
-                                        );
-                                      }).toList(),
+                                    return SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+                                      child: Column(
+                                        children: snapshot.data!
+                                            .map((bookReview) {
+                                          // Access bookReview.id, bookReview.title, etc.
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                child: _buildReviewContent("newest", bookReview),
+                                              ),
+                                              const SizedBox(
+                                                height: 12,
+                                              )
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ),
                                     );
                                   }
                                 },
@@ -294,47 +244,43 @@ class _ReviewContentState extends State<ReviewContent> {
                           ),
                           Material(
                             color: const Color.fromRGBO(246, 247, 249, 1),
-                            child: SingleChildScrollView(
-                              // Wrap with SingleChildScrollView
+                            child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
                               child: Container(
                                 padding: const EdgeInsets.only(top: 24),
                                 color: const Color.fromRGBO(246, 247, 249, 1),
-                                child: Column(
-                                  children: [
-                                    FutureBuilder<
-                                        List<BookReviewWithoutTimestamp>>(
-                                      future: fetchReviewsWithoutTimestamp(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return CircularProgressIndicator();
-                                        } else if (snapshot.hasError) {
-                                          return Text(
-                                              'Error: ${snapshot.error}');
-                                        } else {
-                                          // Access data for each index
-                                          return Column(
-                                            children: snapshot.data!
-                                                .map((bookReview) {
-                                              // Access bookReview.id, bookReview.title, etc.
-                                              return Column(
-                                                children: [
-                                                  Container(
-                                                    child: _buildReviewContent(
-                                                        "mostrated",
-                                                        bookReview),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 12,
-                                                  )
-                                                ],
-                                              );
-                                            }).toList(),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
+                                child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+                                  child: Column(
+                                    children: [
+                                      FutureBuilder<List<BookReviewWithoutTimestamp>>(
+                                        future: fetchReviewsWithoutTimestamp(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                            return const CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text('Error: ${snapshot.error}');
+                                          } else {
+                                            // Access data for each index
+                                            return Column(
+                                              children: snapshot.data!
+                                                  .map((bookReview) {
+                                                // Access bookReview.id, bookReview.title, etc.
+                                                return Column(
+                                                  children: [
+                                                    Container(
+                                                      child: _buildReviewContent("mostrated", bookReview),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 12,
+                                                    )
+                                                  ],
+                                                );
+                                              }).toList(),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -397,6 +343,8 @@ class _ReviewContentState extends State<ReviewContent> {
     String formattedTimestamp = "";
     List<ReviewWithoutRating> reviewsWithoutRating = [];
     List<ReviewWithoutTimestamp> reviewsWithoutTimestamp = [];
+    String latestUsername = "";
+    String latestReview = "";
 
     if (bookReview is BookReviewWithoutRating) {
       bookid = bookReview.id;
@@ -405,14 +353,33 @@ class _ReviewContentState extends State<ReviewContent> {
       author = bookReview.author;
       formattedTimestamp = bookReview.formattedTimestamp;
       reviewsWithoutRating = bookReview.reviews;
+
+      // Check if there are any reviews
+      if (reviewsWithoutRating.isNotEmpty) {
+        // Get the latest review
+        ReviewWithoutRating latestReviewObj = reviewsWithoutRating.last;
+
+        // Extract the username and comment
+        latestUsername = latestReviewObj.username;
+        latestReview = latestReviewObj.comment;
+      }
     } else if (bookReview is BookReviewWithoutTimestamp) {
       title = bookReview.title;
       image = bookReview.image;
       author = bookReview.author;
       averageRating = bookReview.averageRating;
       reviewsWithoutTimestamp = bookReview.reviews;
-    }
+      
+      // Check if there are any reviews
+      if (reviewsWithoutTimestamp.isNotEmpty) {
+        // Get the latest review
+        ReviewWithoutTimestamp latestReviewObj = reviewsWithoutTimestamp.last;
 
+        // Extract the username and comment
+        latestUsername = latestReviewObj.username;
+        latestReview = latestReviewObj.comment;
+      }
+    }
     // Replace with your actual reviews property
     return content == "newest" && content != "mostrated"
         ? Container(
@@ -433,12 +400,12 @@ class _ReviewContentState extends State<ReviewContent> {
                       width: 20,
                       height: 20,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Text(
                       "${formattedTimestamp}",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -446,7 +413,7 @@ class _ReviewContentState extends State<ReviewContent> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Row(
@@ -463,21 +430,21 @@ class _ReviewContentState extends State<ReviewContent> {
                               "${title}",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontSize: 16,
                                   letterSpacing: -0.7,
                                   fontWeight: FontWeight.w700,
                                   color: Color.fromRGBO(8, 4, 22, 1)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
                               "${author}",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontSize: 14,
                                   letterSpacing: -0.7,
@@ -489,7 +456,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       ),
                     ),
                     ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(6),
                             bottomLeft: Radius.circular(4),
@@ -528,13 +495,13 @@ class _ReviewContentState extends State<ReviewContent> {
                             const SizedBox(
                               width: 4,
                             ),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "rozieistripopo",
-                                    style: TextStyle(
+                                    "${latestUsername}",
+                                    style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -542,14 +509,14 @@ class _ReviewContentState extends State<ReviewContent> {
                                         color:
                                             Color.fromRGBO(132, 151, 172, 1)),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
-                                  Text(
-                                    "Aku bacanya sampe ngantuk sumpah recommended abis cuyyyyy",
+                                   Text(
+                                    "${latestReview}",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
@@ -572,9 +539,9 @@ class _ReviewContentState extends State<ReviewContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "67 ulasan",
-                      style: TextStyle(
+                    Text(
+                      "${bookReview.reviews.length} ulasan",
+                      style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -620,12 +587,12 @@ class _ReviewContentState extends State<ReviewContent> {
                       width: 20,
                       height: 20,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 4,
                     ),
                     Text(
                       '${averageRating}/5',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -633,7 +600,7 @@ class _ReviewContentState extends State<ReviewContent> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Row(
@@ -650,21 +617,21 @@ class _ReviewContentState extends State<ReviewContent> {
                               "${title}",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontSize: 16,
                                   letterSpacing: -0.7,
                                   fontWeight: FontWeight.w700,
                                   color: Color.fromRGBO(8, 4, 22, 1)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
                               "${author}",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontSize: 14,
                                   letterSpacing: -0.7,
@@ -676,7 +643,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       ),
                     ),
                     ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(6),
                             bottomLeft: Radius.circular(4),
@@ -715,13 +682,13 @@ class _ReviewContentState extends State<ReviewContent> {
                             const SizedBox(
                               width: 4,
                             ),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "rozieistripopo",
-                                    style: TextStyle(
+                                    "${latestUsername}",
+                                    style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -729,14 +696,14 @@ class _ReviewContentState extends State<ReviewContent> {
                                         color:
                                             Color.fromRGBO(132, 151, 172, 1)),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
-                                    "Aku bacanya sampe ngantuk sumpah recommended abis cuyyyyy",
+                                    "${latestReview}",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
@@ -759,9 +726,9 @@ class _ReviewContentState extends State<ReviewContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "67 ulasan",
-                      style: TextStyle(
+                    Text(
+                      "${bookReview.reviews.length} ulasan",
+                      style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -775,10 +742,6 @@ class _ReviewContentState extends State<ReviewContent> {
                         color: const Color.fromRGBO(81, 33, 255, 1),
                       ),
                       child: GestureDetector(
-                        // onTap: () {
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //       builder: (context) => const DetailReview()));
-                        // },
                         child: Image.asset(
                           "assets/review/right-arrow.png",
                         ),
