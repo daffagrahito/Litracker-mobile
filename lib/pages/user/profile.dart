@@ -28,9 +28,11 @@ class _ProfileContentState extends State<ProfileContent> {
 
     int total_votes = responseVotes['total_upvoted_books'];
 
-    setState(() {
+    @override
+    void initState() {
+      super.initState();
       totalUpvotedBooks = total_votes;
-    });
+    }
   }
 
   @override
