@@ -1,6 +1,6 @@
 # Litracker-mobile
 
-https://build.appcenter.ms/v0.1/apps/988c4412-1772-46ef-adff-f0b462a44b52/branches/main/badge
+[![Build status](https://build.appcenter.ms/v0.1/apps/988c4412-1772-46ef-adff-f0b462a44b52/branches/main/badge)](https://appcenter.ms)
 
 **PBP A - Kelompok A01**
 **URL WEB APP: (https://litracker-a01-tk.pbp.cs.ui.ac.id/)**
