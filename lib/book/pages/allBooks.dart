@@ -29,7 +29,7 @@ class _AllBooks extends State<AllBooks> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['total_users_upvote'];
   }
@@ -38,7 +38,7 @@ class _AllBooks extends State<AllBooks> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -47,7 +47,7 @@ class _AllBooks extends State<AllBooks> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${bookID}');
 
     return responseUsersWishlist['total_users_wishlist'];
   }
@@ -56,7 +56,7 @@ class _AllBooks extends State<AllBooks> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${bookID}');
 
     return responseUsersWishlist['isWishlist'];
   }
@@ -351,7 +351,7 @@ class _AllBooks extends State<AllBooks> {
                                                     final response =
                                                         await requestToggleUpvote
                                                             .post(
-                                                                "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/",
+                                                                "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${book.pk}/",
                                                                 {});
 
                                                     // Check if the book is upvoted or unvoted
@@ -423,7 +423,7 @@ class _AllBooks extends State<AllBooks> {
                                                     final response =
                                                         await requestToggleWishlist
                                                             .post(
-                                                                "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${book.pk}/",
+                                                                "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${book.pk}/",
                                                                 {});
 
                                                     String message =

@@ -250,7 +250,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     });
 
                     final response = await request
-                        .login("http://localhost:8080/admin-login/", {
+                        .login("https://litracker-a01-tk.pbp.cs.ui.ac.id/admin-login/", {
                       'username': username,
                       'password': password,
                     });

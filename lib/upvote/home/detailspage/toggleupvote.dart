@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/upvote/home/detailspage/fetch/fetchisupvote.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 
 toggleUpvote(context, bookID, isVoted) {
   return Container(
@@ -9,7 +7,7 @@ toggleUpvote(context, bookID, isVoted) {
       future: fetchHasUserUpvoted(context, bookID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

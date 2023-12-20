@@ -44,23 +44,23 @@ class _LoginPageState extends State<LoginPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Container(
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
                     color: jaguar400,
                     borderRadius: BorderRadius.all(Radius.circular(100))),
-                child: Icon(
+                child: const Icon(
                   Icons.check_circle,
                   color: Colors.white, // Anda dapat menyesuaikan warnanya
                 ),
               ),
-              SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              const SizedBox(width: 8.0), // Jarak antara ikon dan teks
               Text(
                 message,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'SF-Pro',
                   fontWeight: FontWeight.w400,
                 ),
@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -276,7 +276,7 @@ class _LoginPageState extends State<LoginPage> {
                     });
 
                     final response = await request
-                        .login("http://localhost:8080/mobile-login/", {
+                        .login("https://litracker-a01-tk.pbp.cs.ui.ac.id/mobile-login/", {
                       'username': username,
                       'password': password,
                     });
@@ -369,26 +369,26 @@ class _LoginPageState extends State<LoginPage> {
                         ..showSnackBar(
                           SnackBar(
                             content: Container(
-                              padding: EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(4),
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
                                         color: jaguar400,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(100))),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.error,
                                       color: Colors
                                           .white, // Anda dapat menyesuaikan warnanya
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                       width: 8.0), // Jarak antara ikon dan teks
                                   Text(
                                     '${message}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'SF-Pro',
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -396,7 +396,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                             ),
-                            duration: Duration(seconds: 2),
+                            duration: const Duration(seconds: 2),
                             backgroundColor:
                                 jaguar600, // Anda dapat menyesuaikan warnanya
                             behavior: SnackBarBehavior.floating,
@@ -426,26 +426,26 @@ class _LoginPageState extends State<LoginPage> {
                       ..showSnackBar(
                         SnackBar(
                           content: Container(
-                            padding: EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(4),
                             child: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
                                       color: jaguar400,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(100))),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.check_circle,
                                     color: Colors
                                         .white, // Anda dapat menyesuaikan warnanya
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     width: 8.0), // Jarak antara ikon dan teks
                                 Text(
                                   'Error, nih! ${e}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'SF-Pro',
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -453,7 +453,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                          duration: Duration(seconds: 2),
+                          duration: const Duration(seconds: 2),
                           backgroundColor:
                               jaguar600, // Anda dapat menyesuaikan warnanya
                           behavior: SnackBarBehavior.floating,

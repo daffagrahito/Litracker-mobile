@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
@@ -23,7 +23,7 @@ class _HistoryContentState extends State<HistoryContent> {
     final requestReadingHistories =
         Provider.of<CookieRequest>(context, listen: false);
     final responseReadingHistories = await requestReadingHistories
-        .get('http://localhost:8080/reading_history/get_all_reading_history/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/get_all_reading_history/');
 
     List<ReadingHistory> fetchedReadingHistories = [];
 
@@ -47,7 +47,7 @@ class _HistoryContentState extends State<HistoryContent> {
   Future<void> saveLastPage(int bookId, int lastPage) async {
     // Define the URL of the view
     var url = Uri.parse(
-        'http://localhost:8080/reading_history/post_reading_history/$bookId/');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/post_reading_history/$bookId/');
 
     var data = {
       'username': loggedInUser!.username,
@@ -69,7 +69,7 @@ class _HistoryContentState extends State<HistoryContent> {
   Future<void> deleteReadingHistory(int bookId) async {
     final cookieRequest = Provider.of<CookieRequest>(context, listen: false);
     final String url =
-        'http://localhost:8080/reading_history/delete_reading_history/$bookId/';
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/delete_reading_history/$bookId/';
 
     try {
       final response = await cookieRequest.post(url, {});

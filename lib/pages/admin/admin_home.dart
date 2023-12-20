@@ -67,19 +67,19 @@ class AdminHome extends StatelessWidget {
               "Logout",
               () async {
                 final response = await request
-                    .logout("http://localhost:8080/logout-mobile/");
+                    .logout("https://litracker-a01-tk.pbp.cs.ui.ac.id/logout-mobile/");
                 String message = response["message"];
                 if (response['status']) {
                   String uname = response["username"];
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Container(
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                         child: Row(
                           children: [
                             Text(
                               "$message Sampai jumpa, $uname.",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w400,
                               ),
@@ -87,7 +87,7 @@ class AdminHome extends StatelessWidget {
                           ],
                         ),
                       ),
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                       backgroundColor:
                           jaguar600, // Anda dapat menyesuaikan warnanya
                       behavior: SnackBarBehavior.floating,
@@ -108,13 +108,13 @@ class AdminHome extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Container(
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                         child: Row(
                           children: [
                             // Jarak antara ikon dan teks
                             Text(
                               '${message}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w400,
                               ),
@@ -122,7 +122,7 @@ class AdminHome extends StatelessWidget {
                           ],
                         ),
                       ),
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                       backgroundColor:
                           jaguar600, // Anda dapat menyesuaikan warnanya
                       behavior: SnackBarBehavior.floating,

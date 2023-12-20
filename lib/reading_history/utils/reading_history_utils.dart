@@ -86,7 +86,7 @@ void showSuccessNotification(BuildContext context) {
 }
 
 Future<List<ReadingHistory>> fetchHistory() async {
-  var url = Uri.parse('http://localhost:8080/reading_history/get_all_reading_history/');
+  var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/get_all_reading_history/');
   var response = await http.get(
     url,
     headers: {"Content-Type": "application/json"},
@@ -109,7 +109,7 @@ Future<List<ReadingHistory>> fetchHistory() async {
 // ini gatau kepake atau engga
 
 // Future<List<ReadingHistory>> fetchHistory() async {
-//   var url = Uri.parse('http://localhost:8080/reading_history/get_all_reading_history/');
+//   var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/get_all_reading_history/');
 //   var response = await http.get(
 //     url,
 //     headers: {"Content-Type": "application/json"},

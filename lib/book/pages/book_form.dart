@@ -213,7 +213,7 @@ class _BookFormPageState extends State<BookFormPage> {
                         if (_formKey.currentState!.validate()) {
                           // Send to Django and wait for response
                           final response = await request.postJson(
-                              "http://localhost:8080/home/add-book-mobile/",
+                              "https://litracker-a01-tk.pbp.cs.ui.ac.id/home/add-book-mobile/",
                               jsonEncode(<String, String>{
                                 'isbn': _isbn,
                                 'title': _title,

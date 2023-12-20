@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
@@ -37,7 +36,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_total_rating/${bookID}/');
 
     return responseUsersVote['average_rating'];
   }
@@ -46,7 +45,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${widget.book.pk}');
 
     return responseUsersVote['total_users_upvote'];
   }
@@ -55,7 +54,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.book.pk}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${widget.book.pk}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -64,7 +63,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.book.pk}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${widget.book.pk}');
 
     return responseUsersWishlist['total_users_wishlist'];
   }
@@ -73,7 +72,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.book.pk}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${widget.book.pk}');
 
     return responseUsersWishlist['isWishlist'];
   }
@@ -438,7 +437,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                                   listen: false);
                                           final response =
                                               await requestToggleWishlist.post(
-                                                  "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${widget.book.pk}/",
+                                                  "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${widget.book.pk}/",
                                                   {});
 
                                           String message = response['message'];
@@ -489,7 +488,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                                   listen: false);
                                           final response =
                                               await requestToggleUpvote.post(
-                                                  "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
+                                                  "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
                                                   {});
 
                                           // Check if the book is upvoted or unvoted
@@ -725,7 +724,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                       if (_formKey.currentState!.validate()) {
                                         // Define the URL of the view
                                         var url = Uri.parse(
-                                            'http://localhost:8080/reading_history/post_reading_history/${widget.book.pk}/');
+                                            'https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/post_reading_history/${widget.book.pk}/');
 
                                         var data = {
                                           'username': loggedInUser!.username,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
-import 'package:litracker_mobile/review/detailReview.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class BookReviewWithoutRating {
   final int id;
@@ -80,7 +78,7 @@ class _ReviewContentState extends State<ReviewContent> {
   Future<List<BookReviewWithoutRating>> fetchReviewsWithoutRating() async {
     final request = Provider.of<CookieRequest>(context, listen: false);
     final response = await request.get(
-        'http://localhost:8080/review_book/get_snippet_reviews_without_rating');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_snippet_reviews_without_rating');
 
     List<BookReviewWithoutRating> reviewsWithoutRating = [];
 
@@ -115,7 +113,7 @@ class _ReviewContentState extends State<ReviewContent> {
       fetchReviewsWithoutTimestamp() async {
     final request = Provider.of<CookieRequest>(context, listen: false);
     final response = await request.get(
-        'http://localhost:8080/review_book/get_snippet_reviews_without_timestamp');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_snippet_reviews_without_timestamp');
 
     List<BookReviewWithoutTimestamp> reviewsWithoutTimestamp = [];
 

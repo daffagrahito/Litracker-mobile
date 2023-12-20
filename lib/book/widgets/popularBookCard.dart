@@ -14,7 +14,7 @@ class PopularBookCard extends StatefulWidget {
 
 class _PopularBookCardState extends State<PopularBookCard> {
   Future<Map<String, dynamic>> fetchPopularBook() async {
-    var url = Uri.parse('http://localhost:8080/upvote_book/get_top_books/');
+    var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_top_books/');
     var responsePopularBook = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
