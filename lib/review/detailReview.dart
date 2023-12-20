@@ -29,6 +29,9 @@ class _DetailReviewState extends State<DetailReview> {
   bool isVoted = false;
 
   int totalUpvotedBookbyUser = 0;
+  bool isWishlisted = false;
+
+  int totalWishlistedBookbyUser = 0;
 
   late Future<int> averageRating;
 
@@ -57,6 +60,24 @@ class _DetailReviewState extends State<DetailReview> {
         'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
 
     return responseUsersVote['isUpvote'];
+  }
+
+  Future<int> fetchTotalUsersWishlist() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_upvoting_users/${widget.bookID}');
+
+    return responseUsersWishlist['total_users_wishlist'];
+  }
+
+  Future<bool> fetchHasUserWishlisted() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersWishlist = await requestTotalUsers.get(
+        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.bookID}');
+
+    return responseUsersWishlist['isWishlist'];
   }
 
   Future<Map<String, dynamic>> fetchGetBookReviews() async {
@@ -462,7 +483,49 @@ class _DetailReviewState extends State<DetailReview> {
                       children: [
                         Row(
                           children: [
-                            Image.asset("assets/review/heart-fill.png"),
+                            GestureDetector(
+                                onTap: () async {
+                                  final requestToggleWishlist =
+                                      Provider.of<CookieRequest>(context,
+                                          listen: false);
+                                  final response = await requestToggleWishlist.post(
+                                      "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${widget.bookID}/",
+                                      {});
+
+                                  String message = response['message'];
+                                  if (message == 'Wishlisted' ||
+                                      message == 'Unwishlisted') {
+                                    setState(() {
+                                      if (message == 'Wishlisted') {
+                                        fetchTotalUsersWishlist();
+                                      } else {
+                                        fetchTotalUsersWishlist();
+                                      }
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  child: FutureBuilder<bool>(
+                                    future: fetchHasUserWishlisted(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        isVoted = snapshot.data!;
+                                        return Image.asset(
+                                          isVoted
+                                              ? "assets/home/wishlist_fill.png"
+                                              : "assets/home/wishlist_blank.png",
+                                          width: 48,
+                                          height: 48,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                )),
                             const SizedBox(),
                             GestureDetector(
                                 // Inside the onTap method for upvote
@@ -510,8 +573,8 @@ class _DetailReviewState extends State<DetailReview> {
                                           isVoted
                                               ? "assets/home/upvote_fill.png"
                                               : "assets/home/upvote_blank.png",
-                                          width: 36,
-                                          height: 36,
+                                          width: 48,
+                                          height: 48,
                                         );
                                       }
                                     },
