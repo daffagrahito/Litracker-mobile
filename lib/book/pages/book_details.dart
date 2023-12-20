@@ -3,8 +3,8 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
-import 'package:litracker_mobile/review/detailReview.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
+import 'package:litracker_mobile/review/detail_review.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/book.dart';

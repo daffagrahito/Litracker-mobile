@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/book/pages/allBooks.dart';
 import 'dart:math';
 import 'package:litracker_mobile/book/models/book.dart';
+import 'package:litracker_mobile/book/pages/all_books.dart';
 import 'package:litracker_mobile/book/pages/book_details.dart';
 import 'package:litracker_mobile/book/utils/books_utils.dart';
-import 'package:litracker_mobile/book/widgets/popularBookCard.dart';
+import 'package:litracker_mobile/book/widgets/popular_book_card.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';

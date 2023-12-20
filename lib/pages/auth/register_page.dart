@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:litracker_mobile/pages/auth/adminLoginPage.dart';
-import 'package:litracker_mobile/pages/auth/loginPage.dart';
+import 'package:litracker_mobile/pages/auth/admin_login_page.dart';
+import 'package:litracker_mobile/pages/auth/login_page.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';

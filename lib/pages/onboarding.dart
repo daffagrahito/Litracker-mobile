@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
-import 'package:litracker_mobile/data/onboardingData.dart';
-import 'package:litracker_mobile/pages/auth/loginPage.dart';
+import 'package:litracker_mobile/data/onboarding_data.dart';
+import 'package:litracker_mobile/pages/auth/login_page.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);

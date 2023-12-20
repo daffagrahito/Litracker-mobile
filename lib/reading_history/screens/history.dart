@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
-import 'package:litracker_mobile/reading_history/models/seehistory.dart';
+import 'package:litracker_mobile/reading_history/models/see_history.dart';
 import 'package:litracker_mobile/reading_history/utils/reading_history_utils.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';

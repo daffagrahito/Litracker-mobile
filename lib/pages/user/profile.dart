@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:litracker_mobile/pages/auth/login_page.dart';
+import 'package:litracker_mobile/pages/user/upvote_list.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 import 'package:flutter/material.dart';
-import 'package:litracker_mobile/pages/auth/loginPage.dart';
 import 'package:litracker_mobile/data/models/user.dart';
-import 'package:litracker_mobile/upvote/profile/upvoteList.dart';
-import 'package:litracker_mobile/wishlist/profile/wishlistList.dart';
+import 'package:litracker_mobile/wishlist/profile/wishlist_list.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
