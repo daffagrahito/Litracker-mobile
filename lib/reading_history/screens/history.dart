@@ -99,7 +99,7 @@ class _HistoryContentState extends State<HistoryContent> {
                 ),
                 SizedBox(width: 8.0), // Jarak antara ikon dan teks
                 Text(
-                  'Reading history deleted successfully',
+                  'Berhasil dihapus!',
                   style: TextStyle(
                     fontFamily: 'SF-Pro',
                     fontWeight: FontWeight.w400,

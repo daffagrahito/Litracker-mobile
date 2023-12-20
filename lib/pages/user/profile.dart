@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/auth/loginPage.dart';
@@ -307,9 +308,36 @@ class _ProfileContentState extends State<ProfileContent> {
                         String message = response["message"];
                         if (response['status']) {
                           String uname = response["username"];
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("$message Sampai jumpa, $uname."),
-                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Container(
+                                padding: EdgeInsets.all(4),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${message} Sampai jumpa ${uname}!',
+                                      style: TextStyle(
+                                        fontFamily: 'SF-Pro',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              duration: Duration(seconds: 2),
+                              backgroundColor:
+                                  jaguar600, // Anda dapat menyesuaikan warnanya
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                              margin: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).size.height * 0.85,
+                                  left: 40,
+                                  right: 40),
+                            ),
+                          );
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

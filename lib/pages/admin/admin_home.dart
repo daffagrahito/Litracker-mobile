@@ -29,7 +29,9 @@ class AdminHome extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 40), // Add some space between the header and the buttons
+            const SizedBox(
+                height:
+                    40), // Add some space between the header and the buttons
             buildButton(
               context,
               "Tambah Buku",
@@ -64,21 +66,75 @@ class AdminHome extends StatelessWidget {
               context,
               "Logout",
               () async {
-                final response = await request.logout("http://localhost:8080/logout-mobile/");
+                final response = await request
+                    .logout("http://localhost:8080/logout-mobile/");
                 String message = response["message"];
                 if (response['status']) {
                   String uname = response["username"];
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("$message Sampai jumpa, $uname."),
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Container(
+                        padding: EdgeInsets.all(4),
+                        child: Row(
+                          children: [
+                            Text(
+                              "$message Sampai jumpa, $uname.",
+                              style: TextStyle(
+                                fontFamily: 'SF-Pro',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      duration: Duration(seconds: 2),
+                      backgroundColor:
+                          jaguar600, // Anda dapat menyesuaikan warnanya
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.85,
+                          left: 40,
+                          right: 40),
+                    ),
+                  );
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("$message"),
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Container(
+                        padding: EdgeInsets.all(4),
+                        child: Row(
+                          children: [
+                            // Jarak antara ikon dan teks
+                            Text(
+                              '${message}',
+                              style: TextStyle(
+                                fontFamily: 'SF-Pro',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      duration: Duration(seconds: 2),
+                      backgroundColor:
+                          jaguar600, // Anda dapat menyesuaikan warnanya
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.85,
+                          left: 40,
+                          right: 40),
+                    ),
+                  );
                 }
               },
               image: Image.asset('assets/profile/profile-logout.png'),

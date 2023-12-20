@@ -11,6 +11,7 @@ import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 class DetailReview extends StatefulWidget {
   final int bookID;
@@ -553,15 +554,105 @@ class _DetailReviewState extends State<DetailReview> {
 
                                 if (response.statusCode == 200) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Ulasan berhasil diposting!')),
+                                    SnackBar(
+                                      content: Container(
+                                        padding: EdgeInsets.all(4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                  color: jaguar400,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              100))),
+                                              child: Icon(
+                                                Icons.check_circle,
+                                                color: Colors
+                                                    .white, // Anda dapat menyesuaikan warnanya
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    8.0), // Jarak antara ikon dan teks
+                                            Text(
+                                              'Ulasan berhasil diposting!',
+                                              style: TextStyle(
+                                                fontFamily: 'SF-Pro',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                      backgroundColor:
+                                          jaguar600, // Anda dapat menyesuaikan warnanya
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.85,
+                                          left: 40,
+                                          right: 40),
+                                    ),
                                   );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Terdapat kesalahan. silahkan coba lagi.')),
+                                    SnackBar(
+                                      content: Container(
+                                        padding: EdgeInsets.all(4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                  color: jaguar400,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              100))),
+                                              child: Icon(
+                                                Icons.error,
+                                                color: Colors
+                                                    .white, // Anda dapat menyesuaikan warnanya
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    8.0), // Jarak antara ikon dan teks
+                                            Text(
+                                              'Terdapat kesalahan. Coba lagi!',
+                                              style: TextStyle(
+                                                fontFamily: 'SF-Pro',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                      backgroundColor:
+                                          jaguar600, // Anda dapat menyesuaikan warnanya
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.85,
+                                          left: 40,
+                                          right: 40),
+                                    ),
                                   );
                                 }
                                 fetchGetBookReviews().then((result) {
@@ -897,9 +988,67 @@ class _DetailReviewState extends State<DetailReview> {
                                                               ScaffoldMessenger
                                                                       .of(context)
                                                                   .showSnackBar(
-                                                                const SnackBar(
-                                                                    content: Text(
-                                                                        'Ulasan berhasil dihapus!')),
+                                                                SnackBar(
+                                                                  content:
+                                                                      Container(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(4),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          padding:
+                                                                              EdgeInsets.all(4),
+                                                                          decoration: BoxDecoration(
+                                                                              color: jaguar400,
+                                                                              borderRadius: BorderRadius.all(Radius.circular(100))),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.check_circle,
+                                                                            color:
+                                                                                Colors.white, // Anda dapat menyesuaikan warnanya
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                8.0), // Jarak antara ikon dan teks
+                                                                        Text(
+                                                                          'Ulasan berhasil dihapus!',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'SF-Pro',
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  duration:
+                                                                      Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                  backgroundColor:
+                                                                      jaguar600, // Anda dapat menyesuaikan warnanya
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            24.0),
+                                                                  ),
+                                                                  margin: EdgeInsets.only(
+                                                                      bottom: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.85,
+                                                                      left: 40,
+                                                                      right:
+                                                                          40),
+                                                                ),
                                                               );
                                                               Navigator.of(
                                                                       context)

@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
@@ -42,7 +43,41 @@ class _LoginPageState extends State<LoginPage> {
   void showSuccessNotification(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Container(
+          padding: EdgeInsets.all(4),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    color: jaguar400,
+                    borderRadius: BorderRadius.all(Radius.circular(100))),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.white, // Anda dapat menyesuaikan warnanya
+                ),
+              ),
+              SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              Text(
+                message,
+                style: TextStyle(
+                  fontFamily: 'SF-Pro',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.85,
+            left: 40,
+            right: 40),
       ),
     );
   }
@@ -331,7 +366,50 @@ class _LoginPageState extends State<LoginPage> {
                       // Show error and trigger the error border
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
-                        ..showSnackBar(SnackBar(content: Text("$message")));
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Container(
+                              padding: EdgeInsets.all(4),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: jaguar400,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100))),
+                                    child: Icon(
+                                      Icons.error,
+                                      color: Colors
+                                          .white, // Anda dapat menyesuaikan warnanya
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width: 8.0), // Jarak antara ikon dan teks
+                                  Text(
+                                    '${message}',
+                                    style: TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            duration: Duration(seconds: 2),
+                            backgroundColor:
+                                jaguar600, // Anda dapat menyesuaikan warnanya
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                            ),
+                            margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.85,
+                                left: 40,
+                                right: 40),
+                          ),
+                        );
                       setState(() {
                         showError = true;
                       });
@@ -346,7 +424,48 @@ class _LoginPageState extends State<LoginPage> {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
-                          SnackBar(content: Text("An error occurred: $e")));
+                        SnackBar(
+                          content: Container(
+                            padding: EdgeInsets.all(4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                      color: jaguar400,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100))),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors
+                                        .white, // Anda dapat menyesuaikan warnanya
+                                  ),
+                                ),
+                                SizedBox(
+                                    width: 8.0), // Jarak antara ikon dan teks
+                                Text(
+                                  'Error, nih! ${e}',
+                                  style: TextStyle(
+                                    fontFamily: 'SF-Pro',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          duration: Duration(seconds: 2),
+                          backgroundColor:
+                              jaguar600, // Anda dapat menyesuaikan warnanya
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.0),
+                          ),
+                          margin: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height * 0.85,
+                              left: 40,
+                              right: 40),
+                        ),
+                      );
                     setState(() {
                       showError = true;
                     });

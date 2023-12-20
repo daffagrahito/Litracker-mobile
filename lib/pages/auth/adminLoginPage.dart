@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api
 
+import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,12 +21,47 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-  bool showError = false; // Add this variable to track whether to show the error
+  bool showError =
+      false; // Add this variable to track whether to show the error
 
   void showSuccessNotification(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Container(
+          padding: EdgeInsets.all(4),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    color: jaguar400,
+                    borderRadius: BorderRadius.all(Radius.circular(100))),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.white, // Anda dapat menyesuaikan warnanya
+                ),
+              ),
+              SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              Text(
+                message,
+                style: TextStyle(
+                  fontFamily: 'SF-Pro',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.85,
+            left: 40,
+            right: 40),
       ),
     );
   }
@@ -84,7 +120,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 alignment: Alignment.centerLeft,
                 child: RichText(
                   text: const TextSpan(
-                    text: "Jika Anda bukan admin, Anda bisa kembali ke laman sebelumnya",
+                    text:
+                        "Jika Anda bukan admin, Anda bisa kembali ke laman sebelumnya",
                     style: TextStyle(
                       color: Color.fromRGBO(8, 4, 22, 1),
                       fontFamily: 'SF-Pro',
@@ -123,14 +160,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     color: Color.fromRGBO(132, 151, 172, 1),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color.fromRGBO(234, 237, 255, 1)), // Warna saat normal
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(
+                            234, 237, 255, 1)), // Warna saat normal
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color.fromRGBO(145, 149, 255, 1)), // Warna saat dalam fokus
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(
+                            145, 149, 255, 1)), // Warna saat dalam fokus
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   prefixIcon: Image.asset(
                     'assets/images/email.png',
                     width: 32,
@@ -170,14 +212,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     color: Color.fromRGBO(132, 151, 172, 1),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color.fromRGBO(234, 237, 255, 1)), // Warna saat normal
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(
+                            234, 237, 255, 1)), // Warna saat normal
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color.fromRGBO(145, 149, 255, 1)), // Warna saat dalam fokus
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(
+                            145, 149, 255, 1)), // Warna saat dalam fokus
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   prefixIcon: Image.asset(
                     'assets/images/password.png',
                     width: 32,
@@ -202,7 +249,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       isLoading = true;
                     });
 
-                    final response = await request.login("http://localhost:8080/admin-login/", {
+                    final response = await request
+                        .login("http://localhost:8080/admin-login/", {
                       'username': username,
                       'password': password,
                     });
@@ -214,7 +262,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       loggedInAdmin = Admin(username: uname, id: id);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const AdminHome()),
+                        MaterialPageRoute(
+                            builder: (context) => const AdminHome()),
                       );
 
                       // Hide the loading indicator
@@ -255,7 +304,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                           actions: [
                             TextButton(
                               style: TextButton.styleFrom(
-                                backgroundColor: const Color.fromRGBO(72, 22, 236, 1),
+                                backgroundColor:
+                                    const Color.fromRGBO(72, 22, 236, 1),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 20,
@@ -278,7 +328,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         ),
                       );
                     } else {
-                      String message = response != null ? response['message'] : 'Login failed';
+                      String message = response != null
+                          ? response['message']
+                          : 'Login failed';
 
                       // Hide the loading indicator
                       setState(() {
@@ -288,7 +340,50 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       // Show error and trigger the error border
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
-                        ..showSnackBar(SnackBar(content: Text("$message")));
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Container(
+                              padding: EdgeInsets.all(4),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: jaguar400,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100))),
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      color: Colors
+                                          .white, // Anda dapat menyesuaikan warnanya
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width: 8.0), // Jarak antara ikon dan teks
+                                  Text(
+                                    '${message}',
+                                    style: TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            duration: Duration(seconds: 2),
+                            backgroundColor: Color.fromRGBO(78, 60, 241,
+                                1), // Anda dapat menyesuaikan warnanya
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                            ),
+                            margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.85,
+                                left: 40,
+                                right: 40),
+                          ),
+                        );
                       setState(() {
                         showError = true;
                       });
@@ -302,19 +397,64 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     // Show error and trigger the error border
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
-                      ..showSnackBar(SnackBar(content: Text("An error occurred: $e")));
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Container(
+                            padding: EdgeInsets.all(4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                      color: jaguar400,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100))),
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Colors
+                                        .white, // Anda dapat menyesuaikan warnanya
+                                  ),
+                                ),
+                                SizedBox(
+                                    width: 8.0), // Jarak antara ikon dan teks
+                                Text(
+                                  'Error, nih!',
+                                  style: TextStyle(
+                                    fontFamily: 'SF-Pro',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          duration: Duration(seconds: 2),
+                          backgroundColor:
+                              jaguar600, // Anda dapat menyesuaikan warnanya
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.0),
+                          ),
+                          margin: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height * 0.85,
+                              left: 40,
+                              right: 40),
+                        ),
+                      );
+
                     setState(() {
                       showError = true;
                     });
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                   backgroundColor: const Color.fromRGBO(8, 4, 22, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  minimumSize: Size(MediaQuery.of(context).size.width, 0), // Set minimumSize ke lebar layar
+                  minimumSize: Size(MediaQuery.of(context).size.width,
+                      0), // Set minimumSize ke lebar layar
                 ),
                 child: isLoading
                     ? const SizedBox(
