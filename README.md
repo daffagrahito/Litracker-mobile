@@ -25,7 +25,7 @@ Melalui fitur ulasan buku, Litracker menciptakan ruang untuk berbagi pemikiran d
        - Edit informasi buku: Ketika admin ingin merubah informasi terkait buku tersebut.
      - User:
        - Melihat detail buku: User hanya bisa melihat isi dari buku yang sudah ditambahkan oleh admin.
-
+ 
 2. **Buku Favorit (Data Favorit buku tiap user)** (Haffie Noorcahyo)
    - "Buku Favorit" adalah sebuah komponen yang memungkinkan pengguna untuk mengelola buku-buku yang mereka tandai sebagai favorit.
    - Pengguna dapat menambahkan, melihat, mengedit, dan menghapus buku dari daftar favorit mereka.
@@ -60,7 +60,7 @@ Integrasi dengan Situs Web:
 - Implementasikan desain front-end untuk aplikasi berdasarkan desain website yang sudah ada sebelumnya.
 - Melakukan integrasi antara front-end dengan back-end dengan menggunakan konsep asynchronous HTTP.
 
-## Link Figma
+## Link Figma Desain
 [Link Figma](https://www.figma.com/file/2qF9VsruxY210YQlroCY7p/Untitled?type=design&node-id=0%3A1&mode=design&t=sHFg9JkCRC0ICr06-1)
 
 ## Link Wireframe
