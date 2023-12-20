@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/home.dart';
 import '../../reading_history/screens/history.dart'; // Import your HistoryContent class
@@ -43,7 +45,7 @@ class _NavigateUserState extends State<NavigateUser> {
       case 0:
         return const HomeContent();
       case 1:
-        return ReviewContent();
+        return const ReviewContent();
       case 2:
         return const HistoryContent();
       case 3:

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unnecessary_string_interpolations
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -293,7 +295,7 @@ class _RegisterPageState extends State<RegistPage> {
                                         width:
                                             8.0), // Jarak antara ikon dan teks
                                     Text(
-                                      '${message}',
+                                      '$message',
                                       style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontWeight: FontWeight.w400,

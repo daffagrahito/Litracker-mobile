@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class PopularBookCard extends StatefulWidget {
   final int index;
 
-  const PopularBookCard({Key? key, required this.index}) : super(key: key);
+  const PopularBookCard({super.key, required this.index});
 
   @override
   State<PopularBookCard> createState() => _PopularBookCardState();
@@ -160,20 +160,18 @@ class _PopularBookCardState extends State<PopularBookCard> {
                 ),
               ],
             ),
-            Container(
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(4), topRight: Radius.circular(12), bottomLeft: Radius.circular(4), bottomRight: Radius.circular(12)),
-                  child: Image.network(
-                    book['image_url_l'].replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
-                    width: 72,
-                    height: 100,
-                    fit: BoxFit.cover,
-                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return Image.asset("assets/home/dummy-book.png"); // Replace with your default image
-                    },
-                  )),
-            )
+            ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4), topRight: Radius.circular(12), bottomLeft: Radius.circular(4), bottomRight: Radius.circular(12)),
+                child: Image.network(
+                  book['image_url_l'].replaceFirst("http://images.amazon.com/", "https://m.media-amazon.com/"),
+                  width: 72,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return Image.asset("assets/home/dummy-book.png"); // Replace with your default image
+                  },
+                ))
           ],
         ),
         const SizedBox(
@@ -195,13 +193,13 @@ class _PopularBookCardState extends State<PopularBookCard> {
               const SizedBox(
                 width: 16,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width - 200,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      book['total_upvotes'].toString() + ' upvote buku ini',
+                      '${book['total_upvotes']} upvote buku ini',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(

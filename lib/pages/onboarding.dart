@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
@@ -44,36 +46,34 @@ class _OnBoardingState extends State<OnBoarding> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                          top: 60.0,
-                          left: 40.0,
-                          right: 40.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              listKonten[i].title,
-                              style: const TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 36,
-                                fontWeight: FontWeight.w800,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
+                      padding: const EdgeInsets.only(
+                        top: 60.0,
+                        left: 40.0,
+                        right: 40.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            listKonten[i].title,
+                            style: const TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontSize: 36,
+                              fontWeight: FontWeight.w800,
+                              color: Color.fromRGBO(255, 255, 255, 1),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              listKonten[i].desc,
-                              style: const TextStyle(
-                                fontFamily: 'SF-Pro',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w200,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            listKonten[i].desc,
+                            style: const TextStyle(
+                              fontFamily: 'SF-Pro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w200,
+                              color: Color.fromRGBO(255, 255, 255, 1),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     Expanded(
@@ -99,7 +99,7 @@ class _OnBoardingState extends State<OnBoarding> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                   width: 60,
                   height: 60,
                   child: ListView.builder(

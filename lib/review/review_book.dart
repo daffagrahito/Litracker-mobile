@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -68,6 +70,8 @@ class ReviewWithoutTimestamp {
 }
 
 class ReviewContent extends StatefulWidget {
+  const ReviewContent({super.key});
+
   @override
   _ReviewContentState createState() => _ReviewContentState();
 }
@@ -170,124 +174,122 @@ class _ReviewContentState extends State<ReviewContent> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                child: Column(
-                  children: [
-                    TabBar(
-                      isScrollable: true,
-                      labelPadding: const EdgeInsets.only(right: 12),
-                      tabs: [
-                        _buildTab("Terbaru", 0),
-                        _buildTab("Rating Tertinggi", 1),
-                      ],
-                      onTap: (index) {
-                        setState(() {
-                          _selectedTabIndex = index;
-                        });
-                      },
-                      indicator: const BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 0.0, color: Colors.transparent)),
-                      ),
-                      indicatorWeight: 0.0,
-                      indicatorColor: Colors.transparent,
-                      labelColor: Colors.white,
-                      unselectedLabelColor:
-                          const Color.fromRGBO(101, 122, 146, 1),
+              Column(
+                children: [
+                  TabBar(
+                    isScrollable: true,
+                    labelPadding: const EdgeInsets.only(right: 12),
+                    tabs: [
+                      _buildTab("Terbaru", 0),
+                      _buildTab("Rating Tertinggi", 1),
+                    ],
+                    onTap: (index) {
+                      setState(() {
+                        _selectedTabIndex = index;
+                      });
+                    },
+                    indicator: const BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 0.0, color: Colors.transparent)),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      height: MediaQuery.of(context).size.height + 40,
-                      width: MediaQuery.of(context).size.width,
-                      child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          Material(
+                    indicatorWeight: 0.0,
+                    indicatorColor: Colors.transparent,
+                    labelColor: Colors.white,
+                    unselectedLabelColor:
+                        const Color.fromRGBO(101, 122, 146, 1),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    height: MediaQuery.of(context).size.height + 40,
+                    width: MediaQuery.of(context).size.width,
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        Material(
+                          color: const Color.fromRGBO(246, 247, 249, 1),
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 24),
                             color: const Color.fromRGBO(246, 247, 249, 1),
+                            child: FutureBuilder<List<BookReviewWithoutRating>>(
+                              future: fetchReviewsWithoutRating(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  // Access data for each index
+                                  return SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+                                    child: Column(
+                                      children: snapshot.data!
+                                          .map((bookReview) {
+                                        // Access bookReview.id, bookReview.title, etc.
+                                        return Column(
+                                          children: [
+                                            Container(
+                                              child: _buildReviewContent("newest", bookReview),
+                                            ),
+                                            const SizedBox(
+                                              height: 12,
+                                            )
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        Material(
+                          color: const Color.fromRGBO(246, 247, 249, 1),
+                          child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
                             child: Container(
                               padding: const EdgeInsets.only(top: 24),
                               color: const Color.fromRGBO(246, 247, 249, 1),
-                              child: FutureBuilder<List<BookReviewWithoutRating>>(
-                                future: fetchReviewsWithoutRating(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    // Access data for each index
-                                    return SingleChildScrollView( // Wrap the Column with SingleChildScrollView
-                                      child: Column(
-                                        children: snapshot.data!
-                                            .map((bookReview) {
-                                          // Access bookReview.id, bookReview.title, etc.
+                              child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+                                child: Column(
+                                  children: [
+                                    FutureBuilder<List<BookReviewWithoutTimestamp>>(
+                                      future: fetchReviewsWithoutTimestamp(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          return Text('Error: ${snapshot.error}');
+                                        } else {
+                                          // Access data for each index
                                           return Column(
-                                            children: [
-                                              Container(
-                                                child: _buildReviewContent("newest", bookReview),
-                                              ),
-                                              const SizedBox(
-                                                height: 12,
-                                              )
-                                            ],
+                                            children: snapshot.data!
+                                                .map((bookReview) {
+                                              // Access bookReview.id, bookReview.title, etc.
+                                              return Column(
+                                                children: [
+                                                  Container(
+                                                    child: _buildReviewContent("mostrated", bookReview),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 12,
+                                                  )
+                                                ],
+                                              );
+                                            }).toList(),
                                           );
-                                        }).toList(),
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          Material(
-                            color: const Color.fromRGBO(246, 247, 249, 1),
-                            child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 24),
-                                color: const Color.fromRGBO(246, 247, 249, 1),
-                                child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
-                                  child: Column(
-                                    children: [
-                                      FutureBuilder<List<BookReviewWithoutTimestamp>>(
-                                        future: fetchReviewsWithoutTimestamp(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                            return const CircularProgressIndicator();
-                                          } else if (snapshot.hasError) {
-                                            return Text('Error: ${snapshot.error}');
-                                          } else {
-                                            // Access data for each index
-                                            return Column(
-                                              children: snapshot.data!
-                                                  .map((bookReview) {
-                                                // Access bookReview.id, bookReview.title, etc.
-                                                return Column(
-                                                  children: [
-                                                    Container(
-                                                      child: _buildReviewContent("mostrated", bookReview),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 12,
-                                                    )
-                                                  ],
-                                                );
-                                              }).toList(),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ],
           ),
@@ -402,7 +404,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       width: 8,
                     ),
                     Text(
-                      "${formattedTimestamp}",
+                      formattedTimestamp,
                       style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 12,
@@ -419,13 +421,13 @@ class _ReviewContentState extends State<ReviewContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${title}",
+                              title,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: const TextStyle(
@@ -439,7 +441,7 @@ class _ReviewContentState extends State<ReviewContent> {
                               height: 4,
                             ),
                             Text(
-                              "${author}",
+                              author,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: const TextStyle(
@@ -460,7 +462,7 @@ class _ReviewContentState extends State<ReviewContent> {
                             bottomLeft: Radius.circular(4),
                             bottomRight: Radius.circular(4)),
                         child: Image.network(
-                          '${image}'.replaceFirst("http://images.amazon.com/",
+                          image.replaceFirst("http://images.amazon.com/",
                               "https://m.media-amazon.com/"),
                           fit: BoxFit.cover,
                           width: 36,
@@ -482,50 +484,48 @@ class _ReviewContentState extends State<ReviewContent> {
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/review/profile-picture.png",
-                              width: 24,
-                              height: 24,
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/review/profile-picture.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  latestUsername,
+                                  style: const TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: -0.3,
+                                      color:
+                                          Color.fromRGBO(132, 151, 172, 1)),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                 Text(
+                                  latestReview,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: -0.4,
+                                      color: Color.fromRGBO(66, 80, 98, 1)),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${latestUsername}",
-                                    style: const TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: -0.3,
-                                        color:
-                                            Color.fromRGBO(132, 151, 172, 1)),
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                   Text(
-                                    "${latestReview}",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: -0.4,
-                                        color: Color.fromRGBO(66, 80, 98, 1)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -589,7 +589,7 @@ class _ReviewContentState extends State<ReviewContent> {
                       width: 4,
                     ),
                     Text(
-                      '${averageRating}/5',
+                      '$averageRating/5',
                       style: const TextStyle(
                           fontFamily: 'SF-Pro',
                           fontSize: 12,
@@ -606,13 +606,13 @@ class _ReviewContentState extends State<ReviewContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${title}",
+                              title,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: const TextStyle(
@@ -626,7 +626,7 @@ class _ReviewContentState extends State<ReviewContent> {
                               height: 4,
                             ),
                             Text(
-                              "${author}",
+                              author,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: const TextStyle(
@@ -647,7 +647,7 @@ class _ReviewContentState extends State<ReviewContent> {
                             bottomLeft: Radius.circular(4),
                             bottomRight: Radius.circular(4)),
                         child: Image.network(
-                          "${image}".replaceFirst("http://images.amazon.com/",
+                          image.replaceFirst("http://images.amazon.com/",
                               "https://m.media-amazon.com/"),
                           fit: BoxFit.cover,
                           width: 36,
@@ -669,50 +669,48 @@ class _ReviewContentState extends State<ReviewContent> {
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/review/profile-picture.png",
-                              width: 24,
-                              height: 24,
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/review/profile-picture.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  latestUsername,
+                                  style: const TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: -0.3,
+                                      color:
+                                          Color.fromRGBO(132, 151, 172, 1)),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  latestReview,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      fontFamily: 'SF-Pro',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: -0.4,
+                                      color: Color.fromRGBO(66, 80, 98, 1)),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${latestUsername}",
-                                    style: const TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: -0.3,
-                                        color:
-                                            Color.fromRGBO(132, 151, 172, 1)),
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    "${latestReview}",
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        fontFamily: 'SF-Pro',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: -0.4,
-                                        color: Color.fromRGBO(66, 80, 98, 1)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, library_private_types_in_public_api, use_super_parameters
+
 import 'package:flutter/material.dart';
 
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';

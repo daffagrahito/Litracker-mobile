@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_unnecessary_containers, use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -131,11 +133,9 @@ class _UpVoteListState extends State<UpVoteList> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Container(
-                      child: Image.asset(
-                        "assets/upvote/left-arrow.png",
-                        width: 36,
-                      ),
+                    child: Image.asset(
+                      "assets/upvote/left-arrow.png",
+                      width: 36,
                     ),
                   ),
                   const SizedBox(
@@ -223,35 +223,31 @@ class _UpVoteListState extends State<UpVoteList> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Text(
-                          book.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'SF-Pro',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Color.fromRGBO(8, 4, 22, 1),
-                            letterSpacing: -0.7,
-                          ),
+                      Text(
+                        book.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Color.fromRGBO(8, 4, 22, 1),
+                          letterSpacing: -0.7,
                         ),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
-                      Container(
-                        child: Text(
-                          book.author,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'SF-Pro',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color.fromRGBO(132, 151, 172, 1),
-                            letterSpacing: -0.4,
-                          ),
+                      Text(
+                        book.author,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color.fromRGBO(132, 151, 172, 1),
+                          letterSpacing: -0.4,
                         ),
                       ),
                     ],

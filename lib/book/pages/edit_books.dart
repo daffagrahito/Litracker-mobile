@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_unnecessary_containers
 
 import 'dart:convert';
 
@@ -220,7 +220,7 @@ class _EditBooksState extends State<EditBooksPage> {
                                         SizedBox(
                                           width: 12,
                                         ),
-                                        Container(
+                                        SizedBox(
                                             width: MediaQuery.of(context).size.width - 272,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,

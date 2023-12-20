@@ -1,5 +1,5 @@
 
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print, use_build_context_synchronously, use_key_in_widget_constructors
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

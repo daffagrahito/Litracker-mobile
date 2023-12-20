@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api
+// ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:flutter/gestures.dart';
@@ -360,7 +360,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                   SizedBox(
                                       width: 8.0), // Jarak antara ikon dan teks
                                   Text(
-                                    '${message}',
+                                    message,
                                     style: TextStyle(
                                       fontFamily: 'SF-Pro',
                                       fontWeight: FontWeight.w400,
