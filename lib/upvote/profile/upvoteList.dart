@@ -81,7 +81,7 @@ class _UpVoteListState extends State<UpVoteList> {
       backgroundColor: const Color.fromRGBO(246, 247, 249, 1),
       body: SingleChildScrollView(
         child: Container(
-          width: double.infinity,
+          // width: double.infinity,
           padding: const EdgeInsets.symmetric(
             horizontal: 40,
           ),
@@ -185,44 +185,41 @@ class _UpVoteListState extends State<UpVoteList> {
                   SizedBox(
                     width: 12,
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 220,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Text(
-                            book.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'SF-Pro',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                              color: Color.fromRGBO(8, 4, 22, 1),
-                              letterSpacing: -0.7,
-                            ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text(
+                          book.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'SF-Pro',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: Color.fromRGBO(8, 4, 22, 1),
+                            letterSpacing: -0.7,
                           ),
                         ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          child: Text(
-                            book.author,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'SF-Pro',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Color.fromRGBO(132, 151, 172, 1),
-                              letterSpacing: -0.4,
-                            ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        child: Text(
+                          book.author,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'SF-Pro',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Color.fromRGBO(132, 151, 172, 1),
+                            letterSpacing: -0.4,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   )
                 ],
               ),

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/models/seehistory.dart';
 import 'package:litracker_mobile/reading_history/utils/reading_history_utils.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class HistoryContent extends StatefulWidget {
   const HistoryContent({Key? key});
@@ -15,6 +18,7 @@ class HistoryContent extends StatefulWidget {
 class _HistoryContentState extends State<HistoryContent> {
   late int lastPage;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   Future<List<ReadingHistory>> fetchReadingHistories() async {
     final requestReadingHistories =
         Provider.of<CookieRequest>(context, listen: false);
@@ -63,6 +67,53 @@ class _HistoryContentState extends State<HistoryContent> {
     } catch (error) {
       // Tangani kesalahan selama proses request
       showConfirmationDialog(context, 'Terjadi kesalahan: $error');
+    }
+  }
+
+  Future<void> deleteReadingHistory(int bookId) async {
+    final cookieRequest = Provider.of<CookieRequest>(context, listen: false);
+    final String url =
+        'http://localhost:8080/reading_history/delete_reading_history/$bookId/';
+
+    try {
+      final response = await cookieRequest.post(url, {});
+
+      // Reload the reading histories after successful deletion
+      setState(() {});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.lightGreen, // Anda dapat menyesuaikan warnanya
+              ),
+              SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              Text(
+                'Reading history deleted successfully',
+                style: TextStyle(
+                  fontFamily: 'SF-Pro',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          duration: Duration(seconds: 2),
+          backgroundColor: jaguar500, // Anda dapat menyesuaikan warnanya
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height * 0.85,
+              left: 40,
+              right: 40),
+        ),
+      );
+    } catch (error) {
+      print('Error deleting reading history: $error');
+      // Handle error scenarios here
     }
   }
 
@@ -403,8 +454,9 @@ class _HistoryContentState extends State<HistoryContent> {
                                             );
 
                                             if (result != null && result) {
-                                              // Logic untuk menghapus
-                                              showSuccessNotification(context);
+                                              // Call the function to delete reading history
+                                              await deleteReadingHistory(
+                                                  history.bookId);
                                             }
                                           },
                                           child: Image.asset(
