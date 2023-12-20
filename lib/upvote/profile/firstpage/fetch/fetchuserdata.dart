@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 Future<void> fetchUserData(context, totalUpvotedBooks) async {

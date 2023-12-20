@@ -1,9 +1,11 @@
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
-class UpvotedBook {
+class WishlistedBook {
   final int id;
   final String isbn;
   final String title;
@@ -13,9 +15,9 @@ class UpvotedBook {
   final String imageUrlS;
   final String imageUrlM;
   final String imageUrlL;
-  final int totalUpvoteThisBook;
+  final int totalWishlistThisBook;
 
-  UpvotedBook({
+  WishlistedBook({
     required this.id,
     required this.isbn,
     required this.title,
@@ -25,31 +27,31 @@ class UpvotedBook {
     required this.imageUrlS,
     required this.imageUrlM,
     required this.imageUrlL,
-    required this.totalUpvoteThisBook,
+    required this.totalWishlistThisBook,
   });
 }
 
-class UpVoteList extends StatefulWidget {
-  const UpVoteList({Key? key}) : super(key: key);
+class WishListList extends StatefulWidget {
+  const WishListList({Key? key}) : super(key: key);
 
   @override
-  _UpVoteListState createState() => _UpVoteListState();
+  _WishListListState createState() => _WishListListState();
 }
 
-class _UpVoteListState extends State<UpVoteList> {
+class _WishListListState extends State<WishListList> {
   bool isLoading = false;
   Map<String, bool> bookLoadingStates = {};
 
-  Future<List<UpvotedBook>> fetchUpvotedBooks() async {
-    final requestUpvotedBooks =
+  Future<List<WishlistedBook>> fetchWishlistedBooks() async {
+    final requestWishlistedBooks =
         Provider.of<CookieRequest>(context, listen: false);
-    final responseUpvotedBooks = await requestUpvotedBooks
-        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoted_books');
+    final responseWishlistedBooks = await requestWishlistedBooks
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisted_books/');
 
-    List<UpvotedBook> fetchedUpvotedBooks = [];
+    List<WishlistedBook> fetchedWishlistedBooks = [];
 
-    for (var bookData in responseUpvotedBooks['upvoted_books']) {
-      UpvotedBook upvotedBook = UpvotedBook(
+    for (var bookData in responseWishlistedBooks['wishlisted_books']) {
+      WishlistedBook wishlistedBook = WishlistedBook(
         id: bookData['id'],
         isbn: bookData['isbn'],
         title: bookData['title'],
@@ -59,13 +61,13 @@ class _UpVoteListState extends State<UpVoteList> {
         imageUrlS: bookData['image_url_s'],
         imageUrlM: bookData['image_url_m'],
         imageUrlL: bookData['image_url_l'],
-        totalUpvoteThisBook: bookData['total_upvote_thisbook'],
+        totalWishlistThisBook: bookData['total_wishlist_thisbook'],
       );
 
-      fetchedUpvotedBooks.add(upvotedBook);
+      fetchedWishlistedBooks.add(wishlistedBook);
     }
 
-    return fetchedUpvotedBooks;
+    return fetchedWishlistedBooks;
   }
 
   void showSuccessNotification(bookName) {
@@ -133,7 +135,7 @@ class _UpVoteListState extends State<UpVoteList> {
                     },
                     child: Container(
                       child: Image.asset(
-                        "assets/upvote/left-arrow.png",
+                        "assets/wishlist/left-arrow.png",
                         width: 36,
                       ),
                     ),
@@ -142,7 +144,7 @@ class _UpVoteListState extends State<UpVoteList> {
                     width: 8,
                   ),
                   const Text(
-                    "Buku Terupvote",
+                    "Wishlist Saya",
                     style: TextStyle(
                       fontFamily: 'SF-Pro',
                       letterSpacing: -0.7,
@@ -161,21 +163,21 @@ class _UpVoteListState extends State<UpVoteList> {
               const SizedBox(
                 height: 40,
               ),
-              FutureBuilder<List<UpvotedBook>>(
-                future: fetchUpvotedBooks(),
+              FutureBuilder<List<WishlistedBook>>(
+                future: fetchWishlistedBooks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    List<UpvotedBook> upvotedBooks = snapshot.data ?? [];
+                    List<WishlistedBook> wishlistedBooks = snapshot.data ?? [];
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: upvotedBooks.length,
+                      itemCount: wishlistedBooks.length,
                       itemBuilder: (context, index) {
-                        return cardBook(context, upvotedBooks[index]);
+                        return cardBook(context, wishlistedBooks[index]);
                       },
                     );
                   }
@@ -188,7 +190,7 @@ class _UpVoteListState extends State<UpVoteList> {
     );
   }
 
-  Widget cardBook(BuildContext context, UpvotedBook book) {
+  Widget cardBook(BuildContext context, WishlistedBook book) {
     return Column(
       children: [
         Container(
@@ -273,12 +275,12 @@ class _UpVoteListState extends State<UpVoteList> {
                     Container(
                       child: Row(
                         children: [
-                          Image.asset("assets/upvote/upvote-36.png"),
+                          Image.asset("assets/wishlist/wishlist-36.png"),
                           const SizedBox(
                             width: 4,
                           ),
                           Text(
-                            book.totalUpvoteThisBook.toString(),
+                            book.totalWishlistThisBook.toString(),
                             style: const TextStyle(
                               fontFamily: 'SF-Pro',
                               fontWeight: FontWeight.w700,
@@ -296,7 +298,7 @@ class _UpVoteListState extends State<UpVoteList> {
                           context: context,
                           builder: (context) => AlertDialog(
                               title: const Text(
-                                'Yakin ingin membatalkan upvote?',
+                                'Yakin ingin membatalkan wishlist?',
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontWeight: FontWeight.w700,
@@ -362,12 +364,13 @@ class _UpVoteListState extends State<UpVoteList> {
                                       : const Text('OK'),
                                   onPressed: () async {
                                     Navigator.pop(context);
-                                    final requestToggleUpvote =
+                                    final requestToggleWishlist =
                                         Provider.of<CookieRequest>(context,
                                             listen: false);
-                                    final response = await requestToggleUpvote.post(
-                                        "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${book.id}/",
-                                        {});
+                                    final response = await requestToggleWishlist
+                                        .post(
+                                            "https://litracker-a01-tk.pbp.cs.ui.ac.id/wishlist_book/toggle_wishlist_flutter/${book.id}/",
+                                            {});
 
                                     String message = response['message'];
                                     setState(() {

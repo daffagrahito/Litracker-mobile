@@ -75,9 +75,9 @@ class Fields {
       };
 }
 
-enum Model { BOOK_BOOK }
+enum Model { bookBook }
 
-final modelValues = EnumValues({"book.book": Model.BOOK_BOOK});
+final modelValues = EnumValues({"book.book": Model.bookBook});
 
 class EnumValues<T> {
   Map<String, T> map;

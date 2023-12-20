@@ -1,10 +1,12 @@
 // File location: ..lib/pages/user/review.dart
 
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 
 class ReviewContent extends StatefulWidget {
+  const ReviewContent({super.key});
+
   @override
   _ReviewContentState createState() => _ReviewContentState();
 }
@@ -212,8 +214,8 @@ class _ReviewContentState extends State<ReviewContent> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

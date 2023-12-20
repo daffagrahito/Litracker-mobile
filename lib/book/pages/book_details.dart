@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
-import 'package:litracker_mobile/review/detailReview.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
+import 'package:litracker_mobile/review/detail_review.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/book.dart';
@@ -12,7 +12,7 @@ import '../models/book.dart';
 class BookDetailPage extends StatefulWidget {
   final Book book;
 
-  BookDetailPage({required this.book});
+  const BookDetailPage({super.key, required this.book});
 
   @override
   State<BookDetailPage> createState() => _BookDetailPageState();
@@ -36,7 +36,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_total_rating/${bookID}/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_total_rating/$bookID/');
 
     return responseUsersVote['average_rating'];
   }
@@ -156,20 +156,18 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   // Buku
   Widget imageBookStyle() {
-    return Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(4),
-            bottomLeft: Radius.circular(4),
-            topRight: Radius.circular(12),
-            bottomRight: Radius.circular(12)),
-        child: Image.network(
-          widget.book.fields.imageUrlL.replaceFirst(
-              "http://images.amazon.com/", "https://m.media-amazon.com/"),
-          width: 184,
-          height: 232,
-          fit: BoxFit.cover,
-        ),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(4),
+          bottomLeft: Radius.circular(4),
+          topRight: Radius.circular(12),
+          bottomRight: Radius.circular(12)),
+      child: Image.network(
+        widget.book.fields.imageUrlL.replaceFirst(
+            "http://images.amazon.com/", "https://m.media-amazon.com/"),
+        width: 184,
+        height: 232,
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -196,12 +194,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   // Atur add to wishlist
   Widget userAddToWishlist() {
-    return Container(
-        child: Image.asset(
-      "assets/home/wishlist_blank.png",
-      width: 36,
-      height: 36,
-    ));
+    return Image.asset(
+          "assets/home/wishlist_blank.png",
+          width: 36,
+          height: 36,
+        );
   }
 
   // Star
@@ -224,15 +221,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return Container(
-                child: Text(
-                  '${snapshot.data}/5',
-                  style: TextStyle(
-                      fontFamily: 'SF-Pro',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: jaguar950),
-                ),
+              return Text(
+                '${snapshot.data}/5',
+                style: TextStyle(
+                    fontFamily: 'SF-Pro',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: jaguar950),
               );
             }
           },
@@ -272,7 +267,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   // ISBN
-  Widget ISBN_ofBook() {
+  Widget isbnOfBook() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
@@ -280,28 +275,24 @@ class _BookDetailPageState extends State<BookDetailPage> {
           borderRadius: BorderRadius.all(Radius.circular(12))),
       child: Row(
         children: [
-          Container(
-            child: Text(
-              "ISBN",
-              style: TextStyle(
-                  fontFamily: 'SF-Pro',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: kashmirBlue600),
-            ),
+          Text(
+            "ISBN",
+            style: TextStyle(
+                fontFamily: 'SF-Pro',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: kashmirBlue600),
           ),
           SizedBox(
             width: 12,
           ),
-          Container(
-            child: Text(
-              widget.book.fields.isbn,
-              style: TextStyle(
-                  fontFamily: 'SF-Pro',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
-                  color: kashmirBlue950),
-            ),
+          Text(
+            widget.book.fields.isbn,
+            style: TextStyle(
+                fontFamily: 'SF-Pro',
+                fontSize: 12,
+                fontWeight: FontWeight.w900,
+                color: kashmirBlue950),
           ),
         ],
       ),
@@ -310,23 +301,19 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   // Back to Home
   Widget backtoHome() {
-    return Container(
-      child: Image.asset(
-        "assets/home/back.png",
-        width: 48,
-        height: 48,
-      ),
+    return Image.asset(
+      "assets/home/back.png",
+      width: 48,
+      height: 48,
     );
   }
 
   // Back to Home
   Widget seeReviews() {
-    return Container(
-      child: Image.asset(
-        "assets/home/seereviews.png",
-        width: 48,
-        height: 48,
-      ),
+    return Image.asset(
+      "assets/home/seereviews.png",
+      width: 48,
+      height: 48,
     );
   }
 
@@ -354,222 +341,216 @@ class _BookDetailPageState extends State<BookDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
             SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  children: [
-                    // BG Grey -> Buku
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: kashmirBlue100,
-                        padding: EdgeInsets.only(
-                          top: 60,
+              child: Column(
+                children: [
+                  // BG Grey -> Buku
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: kashmirBlue100,
+                      padding: EdgeInsets.only(
+                        top: 60,
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FutureBuilder<int>(
+                              future: fetchTotalUsersVote(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  totalUpvotedBookbyUser = snapshot.data!;
+                                  return totalUpvoteStyle();
+                                }
+                              },
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            imageBookStyle(),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ]),
+                    ),
+                  ),
+                  Container(
+                    color: kashmirBlue100,
+                    height: 40,
+                    child: Container(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40))),
+                    ),
+                  ),
+                  // BG White -> Informasi Buku
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
                         ),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Row(
+                            // crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              FutureBuilder<int>(
-                                future: fetchTotalUsersVote(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    totalUpvotedBookbyUser = snapshot.data!;
-                                    return totalUpvoteStyle();
-                                  }
-                                },
+                              year(),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                      onTap: () async {
+                                        final requestToggleWishlist =
+                                            Provider.of<CookieRequest>(
+                                                context,
+                                                listen: false);
+                                        final response =
+                                            await requestToggleWishlist.post(
+                                                "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${widget.book.pk}/",
+                                                {});
+              
+                                        String message = response['message'];
+                                        if (message == 'Wishlisted' ||
+                                            message == 'Unwishlisted') {
+                                          setState(() {
+                                            if (message == 'Wishlisted') {
+                                              fetchTotalUsersWishlist();
+                                            } else {
+                                              fetchTotalUsersWishlist();
+                                            }
+                                          });
+                                        }
+                                      },
+                                      child: FutureBuilder<bool>(
+                                        future: fetchHasUserWishlisted(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Error: ${snapshot.error}');
+                                          } else {
+                                            isWishlisted = snapshot.data!;
+                                            return Image.asset(
+                                              isWishlisted
+                                                  ? "assets/home/wishlist_fill.png"
+                                                  : "assets/home/wishlist_blank.png",
+                                              width: 36,
+                                              height: 36,
+                                            );
+                                          }
+                                        },
+                                      )),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  GestureDetector(
+                                      // Inside the onTap method for upvote
+                                      // Inside the onTap method for upvote
+                                      onTap: () async {
+                                        final requestToggleUpvote =
+                                            Provider.of<CookieRequest>(
+                                                context,
+                                                listen: false);
+                                        final response =
+                                            await requestToggleUpvote.post(
+                                                "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
+                                                {});
+              
+                                        // Check if the book is upvoted or unvoted
+              
+                                        String message = response['message'];
+                                        // int total_votes =
+                                        //     response['total_votes'];
+                                        if (message == 'Upvoted' ||
+                                            message == 'Unvoted') {
+                                          setState(() {
+                                            if (message == 'Upvoted') {
+                                              // isVoted = true;
+                                              // totalUpvotedBookbyUser =
+                                              //     total_votes;
+                                              fetchTotalUsersVote();
+                                            } else {
+                                              // isVoted = false;
+                                              fetchTotalUsersVote();
+                                            }
+                                          });
+                                        }
+                                      },
+                                      child: FutureBuilder<bool>(
+                                        future: fetchHasUserUpvoted(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Error: ${snapshot.error}');
+                                          } else {
+                                            isVoted = snapshot.data!;
+                                            return Image.asset(
+                                              isVoted
+                                                  ? "assets/home/upvote_fill.png"
+                                                  : "assets/home/upvote_blank.png",
+                                              width: 36,
+                                              height: 36,
+                                            );
+                                          }
+                                        },
+                                      ))
+                                ],
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            children: [
+                              rating(averageRating),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              titleBook(),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              authorofBook(),
                               SizedBox(
                                 height: 24,
                               ),
-                              imageBookStyle(),
+                              isbnOfBook(),
                               SizedBox(
-                                height: 20,
-                              )
-                            ]),
-                      ),
+                                height: 160,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      color: kashmirBlue100,
-                      height: 40,
-                      child: Container(
-                        height: 20,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40))),
-                      ),
-                    ),
-                    // BG White -> Informasi Buku
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 40),
-                            child: Row(
-                              // crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                year(),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                        onTap: () async {
-                                          final requestToggleWishlist =
-                                              Provider.of<CookieRequest>(
-                                                  context,
-                                                  listen: false);
-                                          final response =
-                                              await requestToggleWishlist.post(
-                                                  "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${widget.book.pk}/",
-                                                  {});
-
-                                          String message = response['message'];
-                                          if (message == 'Wishlisted' ||
-                                              message == 'Unwishlisted') {
-                                            setState(() {
-                                              if (message == 'Wishlisted') {
-                                                fetchTotalUsersWishlist();
-                                              } else {
-                                                fetchTotalUsersWishlist();
-                                              }
-                                            });
-                                          }
-                                        },
-                                        child: Container(
-                                          child: FutureBuilder<bool>(
-                                            future: fetchHasUserWishlisted(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error: ${snapshot.error}');
-                                              } else {
-                                                isWishlisted = snapshot.data!;
-                                                return Image.asset(
-                                                  isWishlisted
-                                                      ? "assets/home/wishlist_fill.png"
-                                                      : "assets/home/wishlist_blank.png",
-                                                  width: 36,
-                                                  height: 36,
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        )),
-                                    SizedBox(
-                                      width: 12,
-                                    ),
-                                    GestureDetector(
-                                        // Inside the onTap method for upvote
-                                        // Inside the onTap method for upvote
-                                        onTap: () async {
-                                          final requestToggleUpvote =
-                                              Provider.of<CookieRequest>(
-                                                  context,
-                                                  listen: false);
-                                          final response =
-                                              await requestToggleUpvote.post(
-                                                  "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${widget.book.pk}/",
-                                                  {});
-
-                                          // Check if the book is upvoted or unvoted
-
-                                          String message = response['message'];
-                                          // int total_votes =
-                                          //     response['total_votes'];
-                                          if (message == 'Upvoted' ||
-                                              message == 'Unvoted') {
-                                            setState(() {
-                                              if (message == 'Upvoted') {
-                                                // isVoted = true;
-                                                // totalUpvotedBookbyUser =
-                                                //     total_votes;
-                                                fetchTotalUsersVote();
-                                              } else {
-                                                // isVoted = false;
-                                                fetchTotalUsersVote();
-                                              }
-                                            });
-                                          }
-                                        },
-                                        child: Container(
-                                          child: FutureBuilder<bool>(
-                                            future: fetchHasUserUpvoted(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error: ${snapshot.error}');
-                                              } else {
-                                                isVoted = snapshot.data!;
-                                                return Image.asset(
-                                                  isVoted
-                                                      ? "assets/home/upvote_fill.png"
-                                                      : "assets/home/upvote_blank.png",
-                                                  width: 36,
-                                                  height: 36,
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ))
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 40),
-                            child: Column(
-                              children: [
-                                rating(averageRating),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                titleBook(),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                authorofBook(),
-                                SizedBox(
-                                  height: 24,
-                                ),
-                                ISBN_ofBook(),
-                                SizedBox(
-                                  height: 160,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ), // Mulai dari sini
             Positioned(
@@ -598,10 +579,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     GestureDetector(
                         onTap: () async {
-                          final _formKey = GlobalKey<FormState>();
-                          final _controller = TextEditingController();
+                          final formKey = GlobalKey<FormState>();
+                          final controller = TextEditingController();
 
-                          bool? result = await showDialog<bool?>(
+                          await showDialog<bool?>(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
@@ -616,7 +597,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                   ),
                                 ),
                                 content: Form(
-                                  key: _formKey,
+                                  key: formKey,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
@@ -630,7 +611,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                               246, 247, 249, 1),
                                         ),
                                         child: TextFormField(
-                                          controller: _controller,
+                                          controller: controller,
                                           keyboardType: TextInputType.number,
                                           validator: (value) {
                                             if (value == null ||
@@ -721,7 +702,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         // Define the URL of the view
                                         var url = Uri.parse(
                                             'https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/post_reading_history/${widget.book.pk}/');
@@ -737,8 +718,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                         if (response.statusCode == 200) {
                                           Navigator.of(context).pop(true);
                                           showSuccessNotification(context);
-                                        } else {
-                                          print(response);
                                         }
                                       }
                                     },

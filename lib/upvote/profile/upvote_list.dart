@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_unnecessary_containers, use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
-class WishlistedBook {
+class UpvotedBook {
   final int id;
   final String isbn;
   final String title;
@@ -13,9 +15,9 @@ class WishlistedBook {
   final String imageUrlS;
   final String imageUrlM;
   final String imageUrlL;
-  final int totalWishlistThisBook;
+  final int totalUpvoteThisBook;
 
-  WishlistedBook({
+  UpvotedBook({
     required this.id,
     required this.isbn,
     required this.title,
@@ -25,31 +27,31 @@ class WishlistedBook {
     required this.imageUrlS,
     required this.imageUrlM,
     required this.imageUrlL,
-    required this.totalWishlistThisBook,
+    required this.totalUpvoteThisBook,
   });
 }
 
-class WishListList extends StatefulWidget {
-  const WishListList({Key? key}) : super(key: key);
+class UpVoteList extends StatefulWidget {
+  const UpVoteList({Key? key}) : super(key: key);
 
   @override
-  _WishListListState createState() => _WishListListState();
+  _UpVoteListState createState() => _UpVoteListState();
 }
 
-class _WishListListState extends State<WishListList> {
+class _UpVoteListState extends State<UpVoteList> {
   bool isLoading = false;
   Map<String, bool> bookLoadingStates = {};
 
-  Future<List<WishlistedBook>> fetchWishlistedBooks() async {
-    final requestWishlistedBooks =
+  Future<List<UpvotedBook>> fetchUpvotedBooks() async {
+    final requestUpvotedBooks =
         Provider.of<CookieRequest>(context, listen: false);
-    final responseWishlistedBooks = await requestWishlistedBooks
-        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisted_books/');
+    final responseUpvotedBooks = await requestUpvotedBooks
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoted_books');
 
-    List<WishlistedBook> fetchedWishlistedBooks = [];
+    List<UpvotedBook> fetchedUpvotedBooks = [];
 
-    for (var bookData in responseWishlistedBooks['wishlisted_books']) {
-      WishlistedBook wishlistedBook = WishlistedBook(
+    for (var bookData in responseUpvotedBooks['upvoted_books']) {
+      UpvotedBook upvotedBook = UpvotedBook(
         id: bookData['id'],
         isbn: bookData['isbn'],
         title: bookData['title'],
@@ -59,13 +61,13 @@ class _WishListListState extends State<WishListList> {
         imageUrlS: bookData['image_url_s'],
         imageUrlM: bookData['image_url_m'],
         imageUrlL: bookData['image_url_l'],
-        totalWishlistThisBook: bookData['total_wishlist_thisbook'],
+        totalUpvoteThisBook: bookData['total_upvote_thisbook'],
       );
 
-      fetchedWishlistedBooks.add(wishlistedBook);
+      fetchedUpvotedBooks.add(upvotedBook);
     }
 
-    return fetchedWishlistedBooks;
+    return fetchedUpvotedBooks;
   }
 
   void showSuccessNotification(bookName) {
@@ -131,18 +133,16 @@ class _WishListListState extends State<WishListList> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Container(
-                      child: Image.asset(
-                        "assets/wishlist/left-arrow.png",
-                        width: 36,
-                      ),
+                    child: Image.asset(
+                      "assets/upvote/left-arrow.png",
+                      width: 36,
                     ),
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   const Text(
-                    "Wishlist Saya",
+                    "Buku Terupvote",
                     style: TextStyle(
                       fontFamily: 'SF-Pro',
                       letterSpacing: -0.7,
@@ -161,21 +161,21 @@ class _WishListListState extends State<WishListList> {
               const SizedBox(
                 height: 40,
               ),
-              FutureBuilder<List<WishlistedBook>>(
-                future: fetchWishlistedBooks(),
+              FutureBuilder<List<UpvotedBook>>(
+                future: fetchUpvotedBooks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    List<WishlistedBook> wishlistedBooks = snapshot.data ?? [];
+                    List<UpvotedBook> upvotedBooks = snapshot.data ?? [];
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: wishlistedBooks.length,
+                      itemCount: upvotedBooks.length,
                       itemBuilder: (context, index) {
-                        return cardBook(context, wishlistedBooks[index]);
+                        return cardBook(context, upvotedBooks[index]);
                       },
                     );
                   }
@@ -188,7 +188,7 @@ class _WishListListState extends State<WishListList> {
     );
   }
 
-  Widget cardBook(BuildContext context, WishlistedBook book) {
+  Widget cardBook(BuildContext context, UpvotedBook book) {
     return Column(
       children: [
         Container(
@@ -223,35 +223,31 @@ class _WishListListState extends State<WishListList> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Text(
-                          book.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'SF-Pro',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Color.fromRGBO(8, 4, 22, 1),
-                            letterSpacing: -0.7,
-                          ),
+                      Text(
+                        book.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Color.fromRGBO(8, 4, 22, 1),
+                          letterSpacing: -0.7,
                         ),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
-                      Container(
-                        child: Text(
-                          book.author,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'SF-Pro',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color.fromRGBO(132, 151, 172, 1),
-                            letterSpacing: -0.4,
-                          ),
+                      Text(
+                        book.author,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'SF-Pro',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color.fromRGBO(132, 151, 172, 1),
+                          letterSpacing: -0.4,
                         ),
                       ),
                     ],
@@ -273,12 +269,12 @@ class _WishListListState extends State<WishListList> {
                     Container(
                       child: Row(
                         children: [
-                          Image.asset("assets/wishlist/wishlist-36.png"),
+                          Image.asset("assets/upvote/upvote-36.png"),
                           const SizedBox(
                             width: 4,
                           ),
                           Text(
-                            book.totalWishlistThisBook.toString(),
+                            book.totalUpvoteThisBook.toString(),
                             style: const TextStyle(
                               fontFamily: 'SF-Pro',
                               fontWeight: FontWeight.w700,
@@ -296,7 +292,7 @@ class _WishListListState extends State<WishListList> {
                           context: context,
                           builder: (context) => AlertDialog(
                               title: const Text(
-                                'Yakin ingin membatalkan wishlist?',
+                                'Yakin ingin membatalkan upvote?',
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
                                   fontWeight: FontWeight.w700,
@@ -362,13 +358,12 @@ class _WishListListState extends State<WishListList> {
                                       : const Text('OK'),
                                   onPressed: () async {
                                     Navigator.pop(context);
-                                    final requestToggleWishlist =
+                                    final requestToggleUpvote =
                                         Provider.of<CookieRequest>(context,
                                             listen: false);
-                                    final response = await requestToggleWishlist
-                                        .post(
-                                            "https://litracker-a01-tk.pbp.cs.ui.ac.id/wishlist_book/toggle_wishlist_flutter/${book.id}/",
-                                            {});
+                                    final response = await requestToggleUpvote.post(
+                                        "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${book.id}/",
+                                        {});
 
                                     String message = response['message'];
                                     setState(() {

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/wishlist/home/detail/fetch/fetchiswishlist.dart';
 
@@ -7,7 +9,7 @@ toggleWishlist(context, bookID, isWishlisted) {
       future: fetchHasUserWishlisted(context, bookID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

@@ -1,5 +1,5 @@
 // File location: ..lib/pages/user/detailReview.dart
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, use_build_context_synchronously, avoid_print, avoid_unnecessary_containers, unnecessary_brace_in_string_interps, library_private_types_in_public_api, use_super_parameters
 
 import 'dart:convert';
 
@@ -454,6 +454,7 @@ class _DetailReviewState extends State<DetailReview> {
           color: const Color.fromRGBO(72, 22, 236, 1),
           maxHeight: MediaQuery.of(context).size.height * 0.93,
           borderRadius:
+              // ignore: unnecessary_const
               const BorderRadius.vertical(top: const Radius.circular(40)),
           body: buildBody(amountUlasan),
           panelBuilder: (controller) {

@@ -1,11 +1,10 @@
-// ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api
+// ignore_for_file: file_names, unused_import, use_build_context_synchronously, prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:litracker_mobile/pages/admin/admin_home.dart';
-import 'package:litracker_mobile/pages/auth/registPage.dart';
 import 'package:litracker_mobile/data/models/user.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -361,7 +360,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                   SizedBox(
                                       width: 8.0), // Jarak antara ikon dan teks
                                   Text(
-                                    '${message}',
+                                    message,
                                     style: TextStyle(
                                       fontFamily: 'SF-Pro',
                                       fontWeight: FontWeight.w400,

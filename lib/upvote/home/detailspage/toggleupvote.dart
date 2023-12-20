@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/upvote/home/detailspage/fetch/fetchisupvote.dart';
 

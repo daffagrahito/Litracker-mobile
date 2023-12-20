@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/book/pages/book_form.dart';
 import 'package:litracker_mobile/book/pages/edit_books.dart';
-import 'package:litracker_mobile/pages/auth/loginPage.dart';
+import 'package:litracker_mobile/pages/auth/login_page.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({Key? key}) : super(key: key);
+  const AdminHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,7 @@ class AdminHome extends StatelessWidget {
                           children: [
                             // Jarak antara ikon dan teks
                             Text(
-                              '${message}',
+                              message,
                               style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w400,
