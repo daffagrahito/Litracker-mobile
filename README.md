@@ -3,7 +3,7 @@
 [![Release](https://github.com/PBP23-A01/Litracker-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/PBP23-A01/Litracker-mobile/actions/workflows/release.yml) [![Build status](https://build.appcenter.ms/v0.1/apps/988c4412-1772-46ef-adff-f0b462a44b52/branches/main/badge)](https://appcenter.ms)
 
 **PBP A - Kelompok A01**
-**URL WEB APP: [Litracker]((https://litracker-a01-tk.pbp.cs.ui.ac.id/))**
+**URL WEB APP: [Litracker](https://litracker-a01-tk.pbp.cs.ui.ac.id/)**
 
 
 ### Anggota 👨‍💻👩‍💻:
