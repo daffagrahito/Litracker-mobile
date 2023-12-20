@@ -601,7 +601,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                           final _formKey = GlobalKey<FormState>();
                           final _controller = TextEditingController();
 
-                          bool? result = await showDialog<bool?>(
+                          await showDialog<bool?>(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(

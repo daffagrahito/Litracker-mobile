@@ -1,4 +1,6 @@
 
+// ignore_for_file: unused_local_variable
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
