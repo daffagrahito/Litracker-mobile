@@ -1,4 +1,4 @@
-# ![Litracker-mobile](https://install.appcenter.ms/orgs/pbpa01/apps/litracker-mobile/distribution_groups/public)
+# [Litracker-mobile](https://install.appcenter.ms/orgs/pbpa01/apps/litracker-mobile/distribution_groups/public)
 
 [![Release](https://github.com/PBP23-A01/Litracker-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/PBP23-A01/Litracker-mobile/actions/workflows/release.yml) [![Build status](https://build.appcenter.ms/v0.1/apps/988c4412-1772-46ef-adff-f0b462a44b52/branches/main/badge)](https://appcenter.ms)
 
@@ -9,7 +9,8 @@
 1. Anindya Maulida Widyatmoko - 2206082915
 2. Henry Soedibjo - 2206827762
 3. Muhammad Fawwaz Arshad Said - 2206082511
-4. Haffie Noorcahyo - 2206081515
+4.
+ Haffie Noorcahyo - 2206081515
 5. Muhammad Daffa Grahito Triharsanto - 2206820075
 
 ## Deskripsi Aplikasi
