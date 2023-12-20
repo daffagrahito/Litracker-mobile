@@ -4,8 +4,8 @@ import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/pages/auth/loginPage.dart';
 import 'package:litracker_mobile/data/models/user.dart';
-import 'package:litracker_mobile/pages/user/wishlistList.dart';
 import 'package:litracker_mobile/upvote/profile/upvoteList.dart';
+import 'package:litracker_mobile/wishlist/profile/wishlistList.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +16,7 @@ class ProfileContent extends StatefulWidget {
 
 class _ProfileContentState extends State<ProfileContent> {
   int totalUpvotedBooks = 0;
+  int totalWishlistedBooks = 0;
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,20 @@ class _ProfileContentState extends State<ProfileContent> {
     void initState() {
       super.initState();
       totalUpvotedBooks = total_votes;
+    }
+  }
+
+  Future<void> fetchUserData2() async {
+    final request = context.watch<CookieRequest>();
+    final responseVotes = await request
+        .get('http://localhost:8080/wishlist_book/get_wishlisted_books/');
+
+    int total_wishlist = responseVotes['total_wishlisted_books'];
+
+    @override
+    void initState() {
+      super.initState();
+      totalWishlistedBooks = total_wishlist;
     }
   }
 
@@ -228,7 +243,7 @@ class _ProfileContentState extends State<ProfileContent> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const WishlistList(),
+                              builder: (context) => const WishListList(),
                             ),
                           );
                         },
@@ -251,14 +266,14 @@ class _ProfileContentState extends State<ProfileContent> {
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width - 240,
-                                    child: const Column(
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "", // Display total wishlist here
+                                          "$totalWishlistedBooks",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: TextStyle(
