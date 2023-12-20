@@ -23,6 +23,22 @@ class _BookDetailPageState extends State<BookDetailPage> {
   bool isVoted = false;
   int totalUpvotedBookbyUser = 0;
   int _lastPage = 0;
+  late Future<int> averageRating;
+
+  @override
+  void initState() {
+    super.initState();
+    averageRating = fetchTotalRating(widget.book.pk);
+  }
+
+  Future<int> fetchTotalRating(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+
+    return responseUsersVote['average_rating'];
+  }
 
   Future<int> fetchTotalUsersVote() async {
     final requestTotalUsers =
@@ -170,7 +186,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   // Star
-  Widget rating() {
+  Widget rating(Future<int> averageRating) {
     return Row(
       children: [
         Image.asset(
@@ -181,16 +197,27 @@ class _BookDetailPageState extends State<BookDetailPage> {
         SizedBox(
           width: 12,
         ),
-        Container(
-          child: Text(
-            "4.5/5",
-            style: TextStyle(
-                fontFamily: 'SF-Pro',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: jaguar950),
-          ),
-        )
+        FutureBuilder<int>(
+          future: averageRating,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Display loading indicator while fetching data
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Container(
+                child: Text(
+                  '${snapshot.data}/5',
+                  style: TextStyle(
+                      fontFamily: 'SF-Pro',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: jaguar950),
+                ),
+              );
+            }
+          },
+        ),
       ],
     );
   }
@@ -455,7 +482,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                             padding: EdgeInsets.symmetric(horizontal: 40),
                             child: Column(
                               children: [
-                                rating(),
+                                rating(averageRating),
                                 SizedBox(
                                   height: 20,
                                 ),

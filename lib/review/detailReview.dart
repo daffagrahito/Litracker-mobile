@@ -30,6 +30,17 @@ class _DetailReviewState extends State<DetailReview> {
 
   int totalUpvotedBookbyUser = 0;
 
+  late Future<int> averageRating;
+
+  Future<int> fetchTotalRating(bookID) async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers
+        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+
+    return responseUsersVote['average_rating'];
+  }
+
   Future<int> fetchTotalUsersVote() async {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
@@ -148,6 +159,46 @@ class _DetailReviewState extends State<DetailReview> {
                         ),
                         const SizedBox(
                           height: 24,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  "assets/review/rating.png",
+                                  width: 32,
+                                  height: 32,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              FutureBuilder<int>(
+                                future: averageRating,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Display loading indicator while fetching data
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    return Container(
+                                      padding: EdgeInsets.only(right: 12),
+                                      child: Text(
+                                        '${snapshot.data}/5',
+                                        style: TextStyle(
+                                            fontFamily: 'SF-Pro',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         Text(
                           widget.bookReviewed.fields.title,
@@ -366,6 +417,7 @@ class _DetailReviewState extends State<DetailReview> {
   @override
   void initState() {
     super.initState();
+    averageRating = fetchTotalRating(widget.bookID);
     fetchGetBookReviews().then((result) {
       setState(() {
         amountUlasan = result['reviews_count'];
