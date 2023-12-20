@@ -1,11 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors, library_private_types_in_public_api, non_constant_identifier_names, unused_element, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_brace_in_string_interps, unnecessary_string_interpolations
 import 'package:litracker_mobile/pages/auth/login_page.dart';
-import 'package:litracker_mobile/pages/user/upvote_list.dart';
+
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 
 import 'package:flutter/material.dart';
 import 'package:litracker_mobile/data/models/user.dart';
+import 'package:litracker_mobile/upvote/profile/upvote_list.dart';
 import 'package:litracker_mobile/wishlist/profile/wishlist_list.dart';
+
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
