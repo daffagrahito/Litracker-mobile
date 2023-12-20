@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:litracker_mobile/book/models/book.dart';
 import 'package:litracker_mobile/data/models/user.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailReview extends StatefulWidget {
@@ -23,6 +25,28 @@ class DetailReview extends StatefulWidget {
 }
 
 class _DetailReviewState extends State<DetailReview> {
+  bool isVoted = false;
+
+  int totalUpvotedBookbyUser = 0;
+
+  Future<int> fetchTotalUsersVote() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get(
+        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
+
+    return responseUsersVote['total_users_upvote'];
+  }
+
+  Future<bool> fetchHasUserUpvoted() async {
+    final requestTotalUsers =
+        Provider.of<CookieRequest>(context, listen: false);
+    final responseUsersVote = await requestTotalUsers.get(
+        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
+
+    return responseUsersVote['isUpvote'];
+  }
+
   Future<Map<String, dynamic>> fetchGetBookReviews() async {
     try {
       var url = Uri.parse(
@@ -387,7 +411,59 @@ class _DetailReviewState extends State<DetailReview> {
                           children: [
                             Image.asset("assets/review/heart-fill.png"),
                             const SizedBox(),
-                            Image.asset("assets/review/upvote-blank.png"),
+                            GestureDetector(
+                                // Inside the onTap method for upvote
+                                // Inside the onTap method for upvote
+                                onTap: () async {
+                                  final requestToggleUpvote =
+                                      Provider.of<CookieRequest>(context,
+                                          listen: false);
+                                  final response = await requestToggleUpvote.post(
+                                      "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.bookID}/",
+                                      {});
+
+                                  // Check if the book is upvoted or unvoted
+
+                                  String message = response['message'];
+                                  // int total_votes =
+                                  //     response['total_votes'];
+                                  if (message == 'Upvoted' ||
+                                      message == 'Unvoted') {
+                                    setState(() {
+                                      if (message == 'Upvoted') {
+                                        // isVoted = true;
+                                        // totalUpvotedBookbyUser =
+                                        //     total_votes;
+                                        fetchTotalUsersVote();
+                                      } else {
+                                        // isVoted = false;
+                                        fetchTotalUsersVote();
+                                      }
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  child: FutureBuilder<bool>(
+                                    future: fetchHasUserUpvoted(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        isVoted = snapshot.data!;
+                                        return Image.asset(
+                                          isVoted
+                                              ? "assets/home/upvote_fill.png"
+                                              : "assets/home/upvote_blank.png",
+                                          width: 36,
+                                          height: 36,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ))
                           ],
                         ),
                         TextButton(
