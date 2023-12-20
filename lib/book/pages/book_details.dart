@@ -725,7 +725,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                       if (_formKey.currentState!.validate()) {
                                         // Define the URL of the view
                                         var url = Uri.parse(
-                                            'http://localhost:8080/reading_history/post_reading_history/${widget.book.pk}');
+                                            'http://localhost:8080/reading_history/post_reading_history/${widget.book.pk}/');
 
                                         var data = {
                                           'username': loggedInUser!.username,

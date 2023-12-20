@@ -1,12 +1,12 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:litracker_mobile/data/models/user.dart';
 import 'package:litracker_mobile/pages/user/utils/color_choice.dart';
 import 'package:litracker_mobile/reading_history/models/seehistory.dart';
 import 'package:litracker_mobile/reading_history/utils/reading_history_utils.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class HistoryContent extends StatefulWidget {
   const HistoryContent({Key? key});
@@ -45,28 +45,24 @@ class _HistoryContentState extends State<HistoryContent> {
   }
 
   Future<void> saveLastPage(int bookId, int lastPage) async {
-    final cookieRequest = Provider.of<CookieRequest>(context, listen: false);
-    final url =
-        'http://localhost:8080/reading_history/post_reading_history/$bookId/';
+    // Define the URL of the view
+    var url = Uri.parse(
+        'http://localhost:8080/reading_history/post_reading_history/$bookId/');
 
-    try {
-      final response = await cookieRequest.post(
-        url,
-        {
-          'last_page': lastPage.toString(),
-        },
-      );
+    var data = {
+      'username': loggedInUser!.username,
+      'last_page': lastPage.toString(),
+    };
 
-      if (response.statusCode == 200) {
-        // Berhasil menyimpan, bisa menampilkan notifikasi atau melakukan tindakan lainnya
-        showConfirmationDialog(context, '');
-      } else {
-        // Gagal menyimpan, bisa menampilkan pesan kesalahan atau melakukan tindakan lainnya
-        showConfirmationDialog(context, 'Gagal menyimpan nomor halaman');
-      }
-    } catch (error) {
-      // Tangani kesalahan selama proses request
-      showConfirmationDialog(context, 'Terjadi kesalahan: $error');
+    var response =
+        await http.post(url, body: data);
+
+    if (response.statusCode == 200) {
+      // Berhasil menyimpan, bisa menampilkan notifikasi atau melakukan tindakan lainnya
+      setState(() {});
+    } else {
+      // Gagal menyimpan, bisa menampilkan pesan kesalahan atau melakukan tindakan lainnya
+      showConfirmationDialog(context, 'Gagal menyimpan nomor halaman');
     }
   }
 
