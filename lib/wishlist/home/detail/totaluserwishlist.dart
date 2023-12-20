@@ -4,8 +4,8 @@ Widget totalWishlistStyle(totalWishlistedBookbyUser) {
   return Container(
     width: 200,
     alignment: Alignment.center,
-    padding: EdgeInsets.all(12),
-    decoration: BoxDecoration(
+    padding: const EdgeInsets.all(12),
+    decoration: const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(28)),
       color: Colors.white,
     ),
@@ -18,12 +18,12 @@ Widget totalWishlistStyle(totalWishlistedBookbyUser) {
           width: 36,
           height: 36,
         ),
-        SizedBox(
+        const SizedBox(
           width: 8,
         ),
         Text(
           "$totalWishlistedBookbyUser suka buku ini",
-          style: TextStyle(
+          style: const TextStyle(
               fontFamily: 'SF-Pro',
               letterSpacing: -0.7,
               fontSize: 12,

@@ -25,7 +25,7 @@ class _ProfileContentState extends State<ProfileContent> {
   Future<void> fetchUserData() async {
     final request = context.watch<CookieRequest>();
     final responseVotes = await request
-        .get('http://localhost:8080/upvote_book/get_upvoted_books/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoted_books/');
 
     int total_votes = responseVotes['total_upvoted_books'];
 
@@ -39,7 +39,7 @@ class _ProfileContentState extends State<ProfileContent> {
   Future<void> fetchUserData2() async {
     final request = context.watch<CookieRequest>();
     final responseVotes = await request
-        .get('http://localhost:8080/wishlist_book/get_wishlisted_books/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/wishlist_book/get_wishlisted_books/');
 
     int total_wishlist = responseVotes['total_wishlisted_books'];
 
@@ -321,7 +321,7 @@ class _ProfileContentState extends State<ProfileContent> {
                     GestureDetector(
                       onTap: () async {
                         final response = await request
-                            .logout("http://localhost:8080/logout-mobile/");
+                            .logout("https://litracker-a01-tk.pbp.cs.ui.ac.id/logout-mobile/");
                         String message = response["message"];
                         if (response['status']) {
                           String uname = response["username"];

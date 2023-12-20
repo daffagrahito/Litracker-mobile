@@ -20,7 +20,7 @@ class _NavigateUser2State extends State<NavigateUser2> with SingleTickerProvider
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
   }
 
@@ -49,11 +49,11 @@ class _NavigateUser2State extends State<NavigateUser2> with SingleTickerProvider
   Widget _getContentWidget() {
     switch (_currentIndex) {
       case 0:
-        return HomeContent();
+        return const HomeContent();
       case 1:
         return ReviewContent();
       case 2:
-        return HistoryContent();
+        return const HistoryContent();
       case 3:
         return ProfileContent();
       default:
@@ -102,14 +102,14 @@ class _NavigateUser2State extends State<NavigateUser2> with SingleTickerProvider
                 duration: const Duration(milliseconds: 300),
                 width: 40,
                 height: isSelected ? 40 : 40,
+                margin: EdgeInsets.only(
+                  left: isSelected ? 32 : 0,
+                  right: isSelected ? 8 : 0,
+                ),
                 child: Image.asset(
                   isSelected ? activeImagePath : imagePath,
                   width: 40,
                   height: 40,
-                ),
-                margin: EdgeInsets.only(
-                  left: isSelected ? 32 : 0,
-                  right: isSelected ? 8 : 0,
                 ),
               ),
               Container(

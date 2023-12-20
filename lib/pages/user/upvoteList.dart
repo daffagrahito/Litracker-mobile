@@ -16,21 +16,21 @@ class _UpVoteListState extends State<UpVoteList> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Container(
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
                     color: jaguar400,
                     borderRadius: BorderRadius.all(Radius.circular(100))),
-                child: Icon(
+                child: const Icon(
                   Icons.check_circle,
                   color: Colors.white, // Anda dapat menyesuaikan warnanya
                 ),
               ),
-              SizedBox(width: 8.0), // Jarak antara ikon dan teks
-              Text(
+              const SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              const Text(
                 'Berhasil membatalkan upvote!',
                 style: TextStyle(
                   fontFamily: 'SF-Pro',
@@ -40,7 +40,7 @@ class _UpVoteListState extends State<UpVoteList> {
             ],
           ),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

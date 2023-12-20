@@ -56,7 +56,7 @@ class _HomeContentState extends State<HomeContent>
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['total_users_upvote'];
   }
@@ -65,7 +65,7 @@ class _HomeContentState extends State<HomeContent>
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/upvote_book/get_upvoting_users/${bookID}');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${bookID}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -74,7 +74,7 @@ class _HomeContentState extends State<HomeContent>
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${bookID}');
 
     return responseUsersWishlist['total_users_wishlist'];
   }
@@ -83,7 +83,7 @@ class _HomeContentState extends State<HomeContent>
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${bookID}');
 
     return responseUsersWishlist['isWishlist'];
   }
@@ -92,7 +92,7 @@ class _HomeContentState extends State<HomeContent>
     final requestTotalReading =
         Provider.of<CookieRequest>(context, listen: false);
     final responseTotalReading = await requestTotalReading
-        .get('http://localhost:8080/reading_history/get_all_reading_history/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/reading_history/get_all_reading_history/');
 
     return responseTotalReading['total_on_reading'];
   }
@@ -592,7 +592,7 @@ class _HomeContentState extends State<HomeContent>
                                                   final response =
                                                       await requestToggleUpvote
                                                           .post(
-                                                              "http://localhost:8080/upvote_book/toggle_upvote_flutter/${book.pk}/",
+                                                              "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${book.pk}/",
                                                               {});
 
                                                   // Check if the book is upvoted or unvoted
@@ -661,7 +661,7 @@ class _HomeContentState extends State<HomeContent>
                                                   final response =
                                                       await requestToggleWishlist
                                                           .post(
-                                                              "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${book.pk}/",
+                                                              "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${book.pk}/",
                                                               {});
 
                                                   String message =

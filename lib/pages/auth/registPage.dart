@@ -202,24 +202,24 @@ class _RegisterPageState extends State<RegistPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Container(
-                              padding: EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(4),
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
                                         color: jaguar400,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(100))),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.warning,
                                       color: Colors
                                           .white, // Anda dapat menyesuaikan warnanya
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                       width: 8.0), // Jarak antara ikon dan teks
-                                  Text(
+                                  const Text(
                                     'Lengkapi data Anda!',
                                     style: TextStyle(
                                       fontFamily: 'SF-Pro',
@@ -229,7 +229,7 @@ class _RegisterPageState extends State<RegistPage> {
                                 ],
                               ),
                             ),
-                            duration: Duration(seconds: 2),
+                            duration: const Duration(seconds: 2),
                             backgroundColor:
                                 jaguar600, // Anda dapat menyesuaikan warnanya
                             behavior: SnackBarBehavior.floating,
@@ -251,7 +251,7 @@ class _RegisterPageState extends State<RegistPage> {
                       });
 
                       final response = await request
-                          .post("http://localhost:8080/register-mobile/", {
+                          .post("https://litracker-a01-tk.pbp.cs.ui.ac.id/register-mobile/", {
                         'username': username,
                         'password': password,
                       });
@@ -274,27 +274,27 @@ class _RegisterPageState extends State<RegistPage> {
                           ..showSnackBar(
                             SnackBar(
                               content: Container(
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 child: Row(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
                                           color: jaguar400,
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(100))),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.check_circle,
                                         color: Colors
                                             .white, // Anda dapat menyesuaikan warnanya
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                         width:
                                             8.0), // Jarak antara ikon dan teks
                                     Text(
                                       '${message}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'SF-Pro',
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -302,7 +302,7 @@ class _RegisterPageState extends State<RegistPage> {
                                   ],
                                 ),
                               ),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               backgroundColor:
                                   jaguar600, // Anda dapat menyesuaikan warnanya
                               behavior: SnackBarBehavior.floating,
@@ -332,7 +332,7 @@ class _RegisterPageState extends State<RegistPage> {
                             ),
                             content: Text(
                               response['message'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'SF-Pro',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -340,8 +340,8 @@ class _RegisterPageState extends State<RegistPage> {
                               ),
                             ),
                             backgroundColor: Colors.white,
-                            buttonPadding: EdgeInsets.all(16),
-                            contentPadding: EdgeInsets.only(
+                            buttonPadding: const EdgeInsets.all(16),
+                            contentPadding: const EdgeInsets.only(
                               bottom: 40,
                               left: 24,
                               top: 12,
@@ -350,8 +350,8 @@ class _RegisterPageState extends State<RegistPage> {
                               TextButton(
                                 style: TextButton.styleFrom(
                                   backgroundColor:
-                                      Color.fromRGBO(72, 22, 236, 1),
-                                  padding: EdgeInsets.symmetric(
+                                      const Color.fromRGBO(72, 22, 236, 1),
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 24,
                                     vertical: 20,
                                   ),
@@ -385,7 +385,7 @@ class _RegisterPageState extends State<RegistPage> {
                           0), // Set minimumSize ke lebar layar
                     ),
                     child: _isLoading
-                        ? SizedBox(
+                        ? const SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
@@ -479,7 +479,7 @@ class _RegisterPageState extends State<RegistPage> {
           if (_isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),

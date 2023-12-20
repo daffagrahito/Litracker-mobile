@@ -44,7 +44,7 @@ class _WishListListState extends State<WishListList> {
     final requestWishlistedBooks =
         Provider.of<CookieRequest>(context, listen: false);
     final responseWishlistedBooks = await requestWishlistedBooks
-        .get('http://localhost:8080/favorite_book/get_wishlisted_books/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisted_books/');
 
     List<WishlistedBook> fetchedWishlistedBooks = [];
 
@@ -72,21 +72,21 @@ class _WishListListState extends State<WishListList> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Container(
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
                     color: jaguar400,
                     borderRadius: BorderRadius.all(Radius.circular(100))),
-                child: Icon(
+                child: const Icon(
                   Icons.check_circle,
                   color: Colors.white, // Anda dapat menyesuaikan warnanya
                 ),
               ),
-              SizedBox(width: 8.0), // Jarak antara ikon dan teks
-              Text(
+              const SizedBox(width: 8.0), // Jarak antara ikon dan teks
+              const Text(
                 'Berhasil diunvote!',
                 style: TextStyle(
                   fontFamily: 'SF-Pro',
@@ -96,7 +96,7 @@ class _WishListListState extends State<WishListList> {
             ],
           ),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: jaguar600, // Anda dapat menyesuaikan warnanya
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -122,7 +122,7 @@ class _WishListListState extends State<WishListList> {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
@@ -138,10 +138,10 @@ class _WishListListState extends State<WishListList> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  Text(
+                  const Text(
                     "Wishlist Saya",
                     style: TextStyle(
                       fontFamily: 'SF-Pro',
@@ -158,21 +158,21 @@ class _WishListListState extends State<WishListList> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               FutureBuilder<List<WishlistedBook>>(
                 future: fetchWishlistedBooks(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     List<WishlistedBook> wishlistedBooks = snapshot.data ?? [];
                     return ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: wishlistedBooks.length,
                       itemBuilder: (context, index) {
                         return cardBook(context, wishlistedBooks[index]);
@@ -192,7 +192,7 @@ class _WishListListState extends State<WishListList> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -204,7 +204,7 @@ class _WishListListState extends State<WishListList> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(2),
                         topRight: Radius.circular(6),
                         bottomLeft: Radius.circular(2),
@@ -217,7 +217,7 @@ class _WishListListState extends State<WishListList> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   Column(
@@ -228,7 +228,7 @@ class _WishListListState extends State<WishListList> {
                           book.title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'SF-Pro',
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
@@ -237,7 +237,7 @@ class _WishListListState extends State<WishListList> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Container(
@@ -245,7 +245,7 @@ class _WishListListState extends State<WishListList> {
                           book.author,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'SF-Pro',
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -258,13 +258,13 @@ class _WishListListState extends State<WishListList> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(246, 247, 249, 1),
+                  color: const Color.fromRGBO(246, 247, 249, 1),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Row(
@@ -274,12 +274,12 @@ class _WishListListState extends State<WishListList> {
                       child: Row(
                         children: [
                           Image.asset("assets/wishlist/wishlist-36.png"),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           Text(
                             book.totalWishlistThisBook.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'SF-Pro',
                               fontWeight: FontWeight.w700,
                               fontSize: 12,
@@ -305,7 +305,7 @@ class _WishListListState extends State<WishListList> {
                                   color: Color.fromRGBO(8, 4, 22, 1),
                                 ),
                               ),
-                              content: Text(
+                              content: const Text(
                                 'Tekan OK untuk melanjutkan',
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
@@ -315,8 +315,8 @@ class _WishListListState extends State<WishListList> {
                                 ),
                               ),
                               backgroundColor: Colors.white,
-                              buttonPadding: EdgeInsets.all(16),
-                              contentPadding: EdgeInsets.only(
+                              buttonPadding: const EdgeInsets.all(16),
+                              contentPadding: const EdgeInsets.only(
                                 bottom: 40,
                                 left: 24,
                                 top: 12,
@@ -325,9 +325,9 @@ class _WishListListState extends State<WishListList> {
                                 TextButton(
                                   style: TextButton.styleFrom(
                                     foregroundColor:
-                                        Color.fromRGBO(8, 4, 22, 1),
+                                        const Color.fromRGBO(8, 4, 22, 1),
                                     backgroundColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       horizontal: 24,
                                       vertical: 20,
                                     ),
@@ -349,14 +349,14 @@ class _WishListListState extends State<WishListList> {
                                   style: TextButton.styleFrom(
                                     foregroundColor: Colors.white,
                                     backgroundColor:
-                                        Color.fromRGBO(72, 22, 236, 1),
-                                    padding: EdgeInsets.symmetric(
+                                        const Color.fromRGBO(72, 22, 236, 1),
+                                    padding: const EdgeInsets.symmetric(
                                       horizontal: 24,
                                       vertical: 20,
                                     ),
                                   ),
                                   child: bookLoadingStates[book.isbn] ?? false
-                                      ? CircularProgressIndicator(
+                                      ? const CircularProgressIndicator(
                                           color: Colors.white,
                                         )
                                       : const Text('OK'),
@@ -367,7 +367,7 @@ class _WishListListState extends State<WishListList> {
                                             listen: false);
                                     final response = await requestToggleWishlist
                                         .post(
-                                            "http://localhost:8080/wishlist_book/toggle_wishlist_flutter/${book.id}/",
+                                            "https://litracker-a01-tk.pbp.cs.ui.ac.id/wishlist_book/toggle_wishlist_flutter/${book.id}/",
                                             {});
 
                                     String message = response['message'];
@@ -379,7 +379,7 @@ class _WishListListState extends State<WishListList> {
                                     });
 
                                     // Simulate loading
-                                    await Future.delayed(Duration(seconds: 1));
+                                    await Future.delayed(const Duration(seconds: 1));
 
                                     setState(() {
                                       // Reset loading state for the current book
@@ -396,14 +396,14 @@ class _WishListListState extends State<WishListList> {
                         decoration: BoxDecoration(
                           color: isLoading
                               ? Colors.grey
-                              : Color.fromRGBO(81, 33, 255, 1),
+                              : const Color.fromRGBO(81, 33, 255, 1),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         height: 36,
                         width: 88,
                         alignment: Alignment.center,
                         child: isLoading
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 28,
                                 width: 28,
                                 child: CircularProgressIndicator.adaptive(
@@ -412,7 +412,7 @@ class _WishListListState extends State<WishListList> {
                                   // color: Colors.white,
                                 ),
                               )
-                            : Text(
+                            : const Text(
                                 "Batalkan",
                                 style: TextStyle(
                                   fontFamily: 'SF-Pro',
@@ -429,7 +429,7 @@ class _WishListListState extends State<WishListList> {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 16,
         )
       ],

@@ -5,7 +5,7 @@ import 'package:litracker_mobile/book/models/book.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Book>> fetchBooks() async {
-  var url = Uri.parse('http://localhost:8080/home/api/book/');
+  var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/home/api/book/');
   var response = await http.get(
     url,
     headers: {
@@ -26,7 +26,7 @@ Future<List<Book>> fetchBooks() async {
 }
 
 Future<Book> fetchBook(int bookId) async {
-  var url = Uri.parse('http://localhost:8080/home/api/book/$bookId');
+  var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/home/api/book/$bookId');
   var response = await http.get(
     url,
     headers: {
@@ -99,7 +99,7 @@ void showDialogWithText(BuildContext context, String dialogText) {
 }
 
 Future<void> deleteBook(int pk) async {
-  var url = Uri.parse('http://localhost:8080/home/api/book/delete/$pk/');
+  var url = Uri.parse('https://litracker-a01-tk.pbp.cs.ui.ac.id/home/api/book/delete/$pk/');
   var response = await http.delete(url);
 
   if (response.statusCode != 200) {

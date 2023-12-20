@@ -323,7 +323,7 @@ class _EditBooksState extends State<EditBooksPage> {
                                                               final String imageUrlL = imageUrlLController.text;
 
                                                               final response = await request.postJson(
-                                                                "http://localhost:8080/home/api/book/edit/${book.pk}/",
+                                                                "https://litracker-a01-tk.pbp.cs.ui.ac.id/home/api/book/edit/${book.pk}/",
                                                                 jsonEncode(
                                                                   <String, dynamic>{
                                                                     'isbn': isbn,

@@ -38,7 +38,7 @@ class _DetailReviewState extends State<DetailReview> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers
-        .get('http://localhost:8080/review_book/get_total_rating/${bookID}/');
+        .get('https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_total_rating/${bookID}/');
 
     return responseUsersVote['average_rating'];
   }
@@ -47,7 +47,7 @@ class _DetailReviewState extends State<DetailReview> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${widget.bookID}');
 
     return responseUsersVote['total_users_upvote'];
   }
@@ -56,7 +56,7 @@ class _DetailReviewState extends State<DetailReview> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersVote = await requestTotalUsers.get(
-        'http://localhost:8080/upvote_book/get_upvoting_users/${widget.bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/get_upvoting_users/${widget.bookID}');
 
     return responseUsersVote['isUpvote'];
   }
@@ -65,7 +65,7 @@ class _DetailReviewState extends State<DetailReview> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_upvoting_users/${widget.bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_upvoting_users/${widget.bookID}');
 
     return responseUsersWishlist['total_users_wishlist'];
   }
@@ -74,7 +74,7 @@ class _DetailReviewState extends State<DetailReview> {
     final requestTotalUsers =
         Provider.of<CookieRequest>(context, listen: false);
     final responseUsersWishlist = await requestTotalUsers.get(
-        'http://localhost:8080/favorite_book/get_wishlisting_users/${widget.bookID}');
+        'https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/get_wishlisting_users/${widget.bookID}');
 
     return responseUsersWishlist['isWishlist'];
   }
@@ -82,7 +82,7 @@ class _DetailReviewState extends State<DetailReview> {
   Future<Map<String, dynamic>> fetchGetBookReviews() async {
     try {
       var url = Uri.parse(
-          'http://localhost:8080/review_book/get_book_reviews/${widget.bookID}/');
+          'https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/get_book_reviews/${widget.bookID}/');
       var responseDetailReview = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -121,7 +121,7 @@ class _DetailReviewState extends State<DetailReview> {
   Future<void> deleteReview(int reviewId) async {
     final response = await http.delete(
       Uri.parse(
-          'http://localhost:8080/review_book/delete_book_reviews/$reviewId/'),
+          'https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/delete_book_reviews/$reviewId/'),
     );
 
     if (response.statusCode != 200) {
@@ -181,7 +181,7 @@ class _DetailReviewState extends State<DetailReview> {
                           height: 24,
                         ),
                         Container(
-                          margin: EdgeInsets.only(right: 4),
+                          margin: const EdgeInsets.only(right: 4),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -200,15 +200,15 @@ class _DetailReviewState extends State<DetailReview> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return CircularProgressIndicator(); // Display loading indicator while fetching data
+                                    return const CircularProgressIndicator(); // Display loading indicator while fetching data
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
                                     return Container(
-                                      padding: EdgeInsets.only(right: 12),
+                                      padding: const EdgeInsets.only(right: 12),
                                       child: Text(
                                         '${snapshot.data}/5',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontFamily: 'SF-Pro',
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white),
@@ -354,7 +354,7 @@ class _DetailReviewState extends State<DetailReview> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 12,
                                     ),
                                     Container(
@@ -488,7 +488,7 @@ class _DetailReviewState extends State<DetailReview> {
                                       Provider.of<CookieRequest>(context,
                                           listen: false);
                                   final response = await requestToggleWishlist.post(
-                                      "http://localhost:8080/favorite_book/toggle_wishlist_flutter/${widget.bookID}/",
+                                      "https://litracker-a01-tk.pbp.cs.ui.ac.id/favorite_book/toggle_wishlist_flutter/${widget.bookID}/",
                                       {});
 
                                   String message = response['message'];
@@ -509,7 +509,7 @@ class _DetailReviewState extends State<DetailReview> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
                                       } else {
@@ -534,7 +534,7 @@ class _DetailReviewState extends State<DetailReview> {
                                       Provider.of<CookieRequest>(context,
                                           listen: false);
                                   final response = await requestToggleUpvote.post(
-                                      "http://localhost:8080/upvote_book/toggle_upvote_flutter/${widget.bookID}/",
+                                      "https://litracker-a01-tk.pbp.cs.ui.ac.id/upvote_book/toggle_upvote_flutter/${widget.bookID}/",
                                       {});
 
                                   // Check if the book is upvoted or unvoted
@@ -563,7 +563,7 @@ class _DetailReviewState extends State<DetailReview> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
                                       } else {
@@ -658,7 +658,7 @@ class _DetailReviewState extends State<DetailReview> {
                               if (value != null) {
                                 var response = await http.post(
                                   Uri.parse(
-                                      'http://localhost:8080/review_book/post_book_reviews/${widget.bookID}/'),
+                                      'https://litracker-a01-tk.pbp.cs.ui.ac.id/review_book/post_book_reviews/${widget.bookID}/'),
                                   body: {
                                     'username': username,
                                     'comment': value['review'],
@@ -670,27 +670,27 @@ class _DetailReviewState extends State<DetailReview> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Container(
-                                        padding: EdgeInsets.all(4),
+                                        padding: const EdgeInsets.all(4),
                                         child: Row(
                                           children: [
                                             Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
                                                   color: jaguar400,
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(
                                                               100))),
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.check_circle,
                                                 color: Colors
                                                     .white, // Anda dapat menyesuaikan warnanya
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                                 width:
                                                     8.0), // Jarak antara ikon dan teks
-                                            Text(
+                                            const Text(
                                               'Ulasan berhasil diposting!',
                                               style: TextStyle(
                                                 fontFamily: 'SF-Pro',
@@ -700,7 +700,7 @@ class _DetailReviewState extends State<DetailReview> {
                                           ],
                                         ),
                                       ),
-                                      duration: Duration(seconds: 2),
+                                      duration: const Duration(seconds: 2),
                                       backgroundColor:
                                           jaguar600, // Anda dapat menyesuaikan warnanya
                                       behavior: SnackBarBehavior.floating,
@@ -721,27 +721,27 @@ class _DetailReviewState extends State<DetailReview> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Container(
-                                        padding: EdgeInsets.all(4),
+                                        padding: const EdgeInsets.all(4),
                                         child: Row(
                                           children: [
                                             Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
                                                   color: jaguar400,
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(
                                                               100))),
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.error,
                                                 color: Colors
                                                     .white, // Anda dapat menyesuaikan warnanya
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                                 width:
                                                     8.0), // Jarak antara ikon dan teks
-                                            Text(
+                                            const Text(
                                               'Terdapat kesalahan. Coba lagi!',
                                               style: TextStyle(
                                                 fontFamily: 'SF-Pro',
@@ -751,7 +751,7 @@ class _DetailReviewState extends State<DetailReview> {
                                           ],
                                         ),
                                       ),
-                                      duration: Duration(seconds: 2),
+                                      duration: const Duration(seconds: 2),
                                       backgroundColor:
                                           jaguar600, // Anda dapat menyesuaikan warnanya
                                       behavior: SnackBarBehavior.floating,
@@ -1106,27 +1106,27 @@ class _DetailReviewState extends State<DetailReview> {
                                                                   content:
                                                                       Container(
                                                                     padding:
-                                                                        EdgeInsets
+                                                                        const EdgeInsets
                                                                             .all(4),
                                                                     child: Row(
                                                                       children: [
                                                                         Container(
                                                                           padding:
-                                                                              EdgeInsets.all(4),
-                                                                          decoration: BoxDecoration(
+                                                                              const EdgeInsets.all(4),
+                                                                          decoration: const BoxDecoration(
                                                                               color: jaguar400,
                                                                               borderRadius: BorderRadius.all(Radius.circular(100))),
                                                                           child:
-                                                                              Icon(
+                                                                              const Icon(
                                                                             Icons.check_circle,
                                                                             color:
                                                                                 Colors.white, // Anda dapat menyesuaikan warnanya
                                                                           ),
                                                                         ),
-                                                                        SizedBox(
+                                                                        const SizedBox(
                                                                             width:
                                                                                 8.0), // Jarak antara ikon dan teks
-                                                                        Text(
+                                                                        const Text(
                                                                           'Ulasan berhasil dihapus!',
                                                                           style:
                                                                               TextStyle(
@@ -1140,7 +1140,7 @@ class _DetailReviewState extends State<DetailReview> {
                                                                     ),
                                                                   ),
                                                                   duration:
-                                                                      Duration(
+                                                                      const Duration(
                                                                           seconds:
                                                                               2),
                                                                   backgroundColor:

@@ -41,11 +41,11 @@ class _NavigateUserState extends State<NavigateUser> {
   Widget _getContentWidget() {
     switch (_currentIndex) {
       case 0:
-        return HomeContent();
+        return const HomeContent();
       case 1:
         return ReviewContent();
       case 2:
-        return HistoryContent();
+        return const HistoryContent();
       case 3:
         return ProfileContent();
       default:
