@@ -10,8 +10,7 @@
 1. Anindya Maulida Widyatmoko - 2206082915
 2. Henry Soedibjo - 2206827762
 3. Muhammad Fawwaz Arshad Said - 2206082511
-4.
- Haffie Noorcahyo - 2206081515
+4. Haffie Noorcahyo - 2206081515
 5. Muhammad Daffa Grahito Triharsanto - 2206820075
 
 ## Deskripsi Aplikasi
